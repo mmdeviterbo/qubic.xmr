@@ -24,16 +24,21 @@ const QubicLogo: FC<{withText?: boolean }> = ({ withText }) => {
 }
 
 
-const Container: FC<{ label: string, value: string, customClass?: string, loading: boolean }> = ({
+const Container: FC<{ label: string, value: string, subValue?: string, customClass?: string, loading: boolean }> = ({
   label,
   value,
+  subValue = "",
   loading,
   customClass = ""
 }) => {
   return (
     <div className={`${customClass} flex flex-col gap-8 font-space rounded-12 px-24 py-16 ${loading ? "animate-pulse bg-gray-800 h-22" : "border-1 border-primary-60 bg-primary-70"}`}>
       <p className="text-14 text-gray-50">{label}</p>
-      <p className="text-18 xs:text-24 sm:text-22">{value}</p>
+      
+      <div className="flex items-center">
+        <p className="text-18 xs:text-24 sm:text-22">{value}</p>
+        {subValue && <span className="ml-2 text-gray-50 text-18">{subValue}</span>}
+      </div>
     </div> 
   )
 }
@@ -75,6 +80,14 @@ const MiningStats: NextPage = () => {
     return miningStats?.last_block_found ? dayjs(new Date(latestBlockFound)).format("MMM D, YYYY h:mA") : "";
   }
 
+  const formatPoolBlocksFoundSubValue = () => {
+    const poolBlocksFound = miningStats?.pool_blocks_found;
+    if(!isNaN(poolBlocksFound)) {
+      const totalXMR = 0.6 * poolBlocksFound;
+      return `≈${totalXMR.toFixed(2)} XMR`
+    }
+  }
+
   const isLoading = useMemo(() => !Object.keys((miningStats ?? {})).length, [miningStats])
 
   return (
@@ -97,6 +110,7 @@ const MiningStats: NextPage = () => {
           <Container
             label={"Qubic Pool Blocks Found"}
             value={miningStats?.pool_blocks_found?.toLocaleString()}
+            subValue={formatPoolBlocksFoundSubValue()}
             loading={isLoading}
           />
           <Container
