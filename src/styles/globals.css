@@ -69,6 +69,8 @@ html {
     line-height: 1.25;
 }
 
+
+
 .text-gray-50 {
     --tw-text-opacity: 1;
     color: rgb(128 139 155 / var(--tw-text-opacity));
@@ -93,3 +95,9 @@ html {
   }
 }
 
+@media (min-width: 375px) {
+    .xs\:text-24 {
+        font-size: 1.5rem;
+        line-height: 1.25;
+    }
+}

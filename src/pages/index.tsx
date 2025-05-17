@@ -32,12 +32,11 @@ const Container: FC<{ label: string, value: string, subValue?: string, customCla
   customClass = ""
 }) => {
   return (
-    <div className={`${customClass} flex flex-col gap-8 font-space rounded-12 px-24 py-16 ${loading ? "animate-pulse bg-gray-800 h-22" : "border-1 border-primary-60 bg-primary-70"}`}>
-      <p className="text-14 text-gray-50">{label}</p>
-      
+    <div className={`${customClass} flex flex-col gap-8 rounded-12 px-24 py-16 ${loading ? "animate-pulse bg-gray-800 h-22" : "border-1 border-primary-60 bg-primary-70"}`}>
+      <p className="font-space text-14 text-gray-50">{label}</p>
       <div className="flex items-center">
-        <p className="text-18 xs:text-24 sm:text-22">{value}</p>
-        {subValue && <span className="ml-2 text-gray-50 text-18">{subValue}</span>}
+        <p className="font-space text-18 xs:text-24 sm:text-22">{value}</p>
+        {subValue && <span className="ml-2 font-space text-gray-50 text-18">{subValue}</span>}
       </div>
     </div> 
   )
@@ -100,9 +99,12 @@ const MiningStats: NextPage = () => {
           Qubic-XMR Live
         </title>
       </Head>
-      <div className="py-8 px-4 flex justify-center">
+      <div className="md:mt-4 flex justify-center">
         <main className="w-full flex flex-col gap-16 lg:w-1/3 px-12 py-32">
-          <QubicLogo withText={true}/>
+          <div className="md:mb-2">
+            <QubicLogo withText={true}/>
+          </div>
+          
           <Container
             label={"Qubic Pool Hashrate"}
             value={formatPoolHashrate()}
