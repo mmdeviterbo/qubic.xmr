@@ -1,5 +1,6 @@
 import { FC, useEffect, useMemo, useState } from "react";
-import { Metadata, NextPage } from "next";
+import { NextPage } from "next";
+import { Analytics } from "@vercel/analytics/next"
 
 import axios from "axios";
 import dayjs from "dayjs";
@@ -75,6 +76,7 @@ const MiningStats: NextPage = () => {
 
   return (
     <>
+      <Analytics/>
       <Head>
         <link rel="icon" href="/qubic.svg" sizes="any" type="image/svg+xml" />
         <title>
