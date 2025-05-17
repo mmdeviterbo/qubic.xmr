@@ -108,19 +108,19 @@ const MiningStats: NextPage = () => {
           </div>
           
           <Container
-            label={"Qubic Pool Hashrate"}
+            label={"Pool Hashrate"}
             value={miningStats?.pool_hashrate?.toLocaleString()}
             subValue={formatPoolHashrateSubValue()}
             loading={isLoading}
           />
           <Container
-            label={"Qubic Pool Blocks Found"}
+            label={"Pool Blocks Found"}
             value={miningStats?.pool_blocks_found?.toLocaleString()}
             subValue={formatPoolBlocksFoundSubValue()}
             loading={isLoading}
           />
           <Container
-            label={"Qubic Last Block Found"}
+            label={"Last Block Found"}
             value={formatLatestBlockFound()}
             loading={isLoading}
           />
