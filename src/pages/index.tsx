@@ -82,10 +82,11 @@ const MiningStats: NextPage = () => {
 
   const formatPoolBlocksFoundSubValue = () => {
     const poolBlocksFound = miningStats?.pool_blocks_found;
-    if(!isNaN(poolBlocksFound)) {
+    if(poolBlocksFound > 0 && !isNaN(poolBlocksFound)) {
       const totalXMR = 0.6 * poolBlocksFound;
       return `≈${totalXMR.toFixed(2)} XMR`
     }
+    return '';
   }
 
   const isLoading = useMemo(() => !Object.keys((miningStats ?? {})).length, [miningStats])
