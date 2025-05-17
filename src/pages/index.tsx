@@ -28,7 +28,7 @@ const Container: FC<{ label: string, value: string, customClass?: string, loadin
   label,
   value,
   loading,
-  customClass
+  customClass = ""
 }) => {
   return (
     <div className={`${customClass} flex flex-col gap-8 font-space rounded-12 px-24 py-16 ${loading ? "animate-pulse bg-gray-800 h-22" : "border-1 border-primary-60 bg-primary-70"}`}>
