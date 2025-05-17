@@ -57,12 +57,10 @@ const MiningStats: NextPage = () => {
     }, 2500)
   }, [])
 
-  const formatPoolHashrate = () => {
+  const formatPoolHashrateSubValue = () => {
     const qubicPoolHashrate = miningStats?.pool_hashrate;
     const moneroNetworkHashrate = miningStats?.network_hashrate;
-
     let percentage: string | number = (qubicPoolHashrate/moneroNetworkHashrate * 100)
-
     if(Number(percentage.toFixed(3)) === 0) {
       percentage = Math.trunc(percentage);
     } else if(Math.trunc(percentage) > 0) {
@@ -70,8 +68,7 @@ const MiningStats: NextPage = () => {
     } else {
         percentage = percentage.toFixed(3)
     }
-    const poolHashrateWithPercentage = miningStats?.pool_hashrate?.toLocaleString().concat(` (${percentage}%)`);
-    return poolHashrateWithPercentage;
+    return `≈${percentage}%`;
   }
 
   const formatLatestBlockFound = () => {
@@ -107,7 +104,8 @@ const MiningStats: NextPage = () => {
           
           <Container
             label={"Qubic Pool Hashrate"}
-            value={formatPoolHashrate()}
+            value={miningStats?.pool_hashrate?.toLocaleString()}
+            subValue={formatPoolHashrateSubValue()}
             loading={isLoading}
           />
           <Container
