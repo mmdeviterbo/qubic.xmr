@@ -60,7 +60,12 @@ const MiningStats: NextPage = () => {
   const formatPoolHashrateSubValue = () => {
     const qubicPoolHashrate = miningStats?.pool_hashrate;
     const moneroNetworkHashrate = miningStats?.network_hashrate;
-    let percentage: string | number = (qubicPoolHashrate/moneroNetworkHashrate * 100)
+    let percentage: string | number = (qubicPoolHashrate/moneroNetworkHashrate * 100);
+
+    if(isNaN(percentage)) {
+      return ''
+    }
+
     if(Number(percentage.toFixed(3)) === 0) {
       percentage = Math.trunc(percentage);
     } else if(Math.trunc(percentage) > 0) {
