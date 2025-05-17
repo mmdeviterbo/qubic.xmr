@@ -58,7 +58,10 @@ const MiningStats: NextPage = () => {
     const moneroNetworkHashrate = miningStats?.network_hashrate;
 
     let percentage: string | number = (qubicPoolHashrate/moneroNetworkHashrate * 100)
-    if(Math.trunc(percentage) > 0) {
+
+    if(Number(percentage.toFixed(3)) === 0) {
+      percentage = Math.trunc(percentage);
+    } else if(Math.trunc(percentage) > 0) {
         percentage = percentage.toFixed(1)
     } else {
         percentage = percentage.toFixed(3)
