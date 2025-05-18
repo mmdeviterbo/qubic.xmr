@@ -34,8 +34,6 @@ const MiningStats: NextPage = () => {
 
   const fetchMiningStats = async () => {
     let stats = (await axios.get("/api")).data;
-
-    console.log("stats: ", stats);
     setMiningStats(stats);
   };
 
