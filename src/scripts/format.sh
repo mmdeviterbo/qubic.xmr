@@ -11,4 +11,6 @@ npx prettier . --write \
   "!**/tsconfig.json" \
   "!**/next-env.d.ts" \
   "!**/next.config.ts" \
+  "!**/app/generated/**" \
+  "!**/primas.config.ts" \
 

@@ -10,7 +10,7 @@ const saveAndGetHighestPoolHashrate = async (newMiningStats: MiningStats) => {
   try {
     const currentMiningStatsWithHighestPoolHashrate =
       await prisma.miningStats.findFirst();
-  
+
     if (!currentMiningStatsWithHighestPoolHashrate) {
       const createdMiningStats = await prisma.miningStats.create({
         data: {
@@ -19,7 +19,7 @@ const saveAndGetHighestPoolHashrate = async (newMiningStats: MiningStats) => {
       });
       return createdMiningStats.highest_pool_hashrate;
     }
-  
+
     const currentHighestPoolHashrate =
       currentMiningStatsWithHighestPoolHashrate.highest_pool_hashrate;
     const newPoolHashrate = newMiningStats.pool_hashrate;
@@ -34,7 +34,7 @@ const saveAndGetHighestPoolHashrate = async (newMiningStats: MiningStats) => {
     }
     return currentMiningStatsWithHighestPoolHashrate.highest_pool_hashrate;
   } catch (error) {
-    return 0;    
+    return 0;
   }
 };
 
@@ -43,14 +43,14 @@ export default async function handler(
   res: NextApiResponse<MiningStats>,
 ) {
   try {
-    const newtMiningStats: MiningStats = (await axios.get(QUBIC_XMR_STATS_URL)).data;
+    const newtMiningStats: MiningStats = (await axios.get(QUBIC_XMR_STATS_URL))
+      .data;
 
-    newtMiningStats.highest_pool_hashrate = (await saveAndGetHighestPoolHashrate(
-      newtMiningStats,
-    )) as number;
-  
+    newtMiningStats.highest_pool_hashrate =
+      (await saveAndGetHighestPoolHashrate(newtMiningStats)) as number;
+
     res.status(200).json(newtMiningStats);
   } catch (error) {
-    res.status(400);    
+    res.status(400);
   }
 }
