@@ -73,7 +73,7 @@ const MiningStats: NextPage = () => {
               monero_network_hashrate,
             )}
             loading={isLoading}
-            toolTip={"Percentage of pool hasharate over Monero's network hashrate"}
+            toolTip={"Percentage of pool hashrate over Monero's network hashrate"}
           />
           <Card
             label={"Blocks Found"}
