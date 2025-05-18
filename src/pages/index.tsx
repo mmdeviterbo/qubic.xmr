@@ -37,10 +37,11 @@ const MiningStats: NextPage = () => {
   };
 
   useEffect(() => {
+    const intervalInSeconds = 1000 * 5;
     void fetchMiningStats();
     setInterval(() => {
       void fetchMiningStats();
-    }, 2500);
+    }, intervalInSeconds);
   }, []);
 
   const isLoading = useMemo(
@@ -76,6 +77,7 @@ const MiningStats: NextPage = () => {
             label={"Pool Blocks Found"}
             value={pool_blocks_found?.toLocaleString()}
             subValue={formatPoolBlocksFoundSubValue(pool_blocks_found)}
+            toolTip={"One block is approximately equivalent to 0.60 XMR"}
             loading={isLoading}
           />
           <Card

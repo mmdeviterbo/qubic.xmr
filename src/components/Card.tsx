@@ -1,10 +1,12 @@
 import { FC } from "react";
+import Tooltip from "./Tooltip";
 
 interface CardProps {
   label: string;
   value: string;
   subValue?: string;
   loading: boolean;
+  toolTip?: string;
   customClass?: string;
 }
 
@@ -13,13 +15,17 @@ const Card: FC<CardProps> = ({
   value,
   subValue = "",
   loading,
+  toolTip,
   customClass = "",
 }) => {
   return (
-    <div
-      className={`${customClass} flex flex-col gap-8 rounded-12 px-24 py-16 ${loading ? "animate-pulse bg-gray-800 h-22" : "border-1 border-primary-60 bg-primary-70"}`}
+    <div className={`${customClass} flex flex-col gap-8 rounded-12 px-24 py-16 ${loading ? "animate-pulse bg-gray-800 h-22" : "border-1 border-primary-60 bg-primary-70"}`}
     >
-      <p className="font-space text-14 text-gray-50">{label}</p>
+      <div className="flex items-center gap-2">
+        <span className="font-space text-14 text-gray-50">{label}</span>
+        {toolTip && <Tooltip content={toolTip} />}
+      </div>
+
       <div className="flex items-center">
         <p className="font-space text-18 xs:text-24 sm:text-22">
           {loading ? "" : value}

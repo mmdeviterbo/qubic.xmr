@@ -14,9 +14,9 @@ const QubicLogo: FC<QubicLogoProps> = ({ showTitle }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="cursor-pointer"
-      onClick={e => {
+      onClick={(e) => {
         e.preventDefault();
-         window.open(EXPLORER_QUBIC_URL, '_blank', 'noopener,noreferrer');
+        window.open(EXPLORER_QUBIC_URL, "_blank", "noopener,noreferrer");
       }}
     >
       <path

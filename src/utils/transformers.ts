@@ -6,11 +6,9 @@ export const formatPoolHashrateSubValue = (
   network_hashrate: number,
 ) => {
   let percentage: string | number = (pool_hashrate / network_hashrate) * 100;
-
-  if (isNaN(percentage)) {
+  if (isNaN(percentage) || percentage === 0) {
     return "";
   }
-
   const wholeNumberPercentage = Math.trunc(percentage);
   const threeDecimalPercentage = Number(percentage.toFixed(3));
   if (threeDecimalPercentage === 0) {
@@ -24,11 +22,11 @@ export const formatPoolHashrateSubValue = (
 };
 
 export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
-  if (!isNaN(pool_blocks_found) && pool_blocks_found > 0) {
-    const totalXMR = blockToXMRConversion * pool_blocks_found;
-    return `≈${totalXMR.toFixed(2)} ${moneroTicker}`;
+  if (isNaN(pool_blocks_found) || pool_blocks_found <= 0) {
+    return "";
   }
-  return "";
+  const totalXMR = blockToXMRConversion * pool_blocks_found;
+  return `≈${totalXMR.toFixed(2)} ${moneroTicker}`;
 };
 
 export const formatLatestBlockFound = (last_block_found: number) => {

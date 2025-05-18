@@ -69,8 +69,6 @@ html {
     line-height: 1.25;
 }
 
-
-
 .text-gray-50 {
     --tw-text-opacity: 1;
     color: rgb(128 139 155 / var(--tw-text-opacity));
@@ -86,6 +84,14 @@ html {
 
 .font-space {
    font-family: Space Grotesk, sans-serif;
+}
+
+.tooltip {
+  @apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  @apply visible z-50;
 }
 
 @media (min-width: 560px) {
