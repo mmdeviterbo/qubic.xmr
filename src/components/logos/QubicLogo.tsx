@@ -1,4 +1,5 @@
-import { FC } from "react";
+import { EXPLORER_QUBIC_URL } from "@/utils/constants";
+import { FC, Fragment } from "react";
 
 interface QubicLogoProps {
   showTitle: boolean;
@@ -7,11 +8,16 @@ interface QubicLogoProps {
 const QubicLogo: FC<QubicLogoProps> = ({ showTitle }) => {
   return (
     <svg
-      width="180"
+      width="95"
       height="26"
-      viewBox="0 0 180 26"
+      viewBox="0 0 95 26"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="cursor-pointer"
+      onClick={e => {
+        e.preventDefault();
+         window.open(EXPLORER_QUBIC_URL, '_blank', 'noopener,noreferrer');
+      }}
     >
       <path
         d="M5.25 2H0.75C0.335786 2 0 2.33579 0 2.75V19.25C0 19.6642 0.335786 20 0.75 20H5.25C5.66421 20 6 19.6642 6 19.25V2.75C6 2.33579 5.66421 2 5.25 2Z"
