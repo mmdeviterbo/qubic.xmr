@@ -74,7 +74,7 @@ const MiningStats: NextPage = () => {
             )}
             loading={isLoading}
           />
-          {isValidPositiveNumber(highest_pool_hashrate) && (
+          {/* {isValidPositiveNumber(highest_pool_hashrate) && (
             <Card
               label={"Peak Pool Hashrate"}
               value={formatLargeInteger(highest_pool_hashrate)}
@@ -83,9 +83,9 @@ const MiningStats: NextPage = () => {
               }
               loading={isLoading}
             />
-          )}
+          )} */}
           <Card
-            label={"Pool Blocks Found"}
+            label={"Blocks Found"}
             value={pool_blocks_found?.toLocaleString()}
             subValue={formatPoolBlocksFoundSubValue(pool_blocks_found)}
             toolTip={"One block is approximately equivalent to 0.60 XMR"}
@@ -102,22 +102,20 @@ const MiningStats: NextPage = () => {
             loading={isLoading}
           />
 
-          <Card
-            label={"Monero Network Hashrate"}
-            value={formatLargeInteger(monero_network_hashrate)}
-            loading={isLoading}
-            customClass="mt-6"
-          />
-          <Card
-            label={"Monero Network Height"}
-            value={formatLargeInteger(monero_network_height)}
-            loading={isLoading}
-          />
-          <Card
-            label={"Monero Network Difficulty"}
-            value={formatLargeInteger(monero_network_difficulty)}
-            loading={isLoading}
-          />
+          <div className="mt-4 flex gap-4">
+            <Card
+              label={"Monero Network Hashrate"}
+              value={formatLargeInteger(monero_network_hashrate)}
+              loading={isLoading}
+              customClass="w-1/2"
+            />
+            <Card
+              label={"Monero Network Difficulty"}
+              value={monero_network_difficulty.toLocaleString()}
+              loading={isLoading}
+              customClass="w-1/2"
+            />
+          </div>
 
           <div className="flex mt-4 gap-4 text-gray-50 text-xs">
             <Link href={QUBIC_XMR_STATS_URL}>Live data</Link>
