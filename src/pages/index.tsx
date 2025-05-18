@@ -73,7 +73,9 @@ const MiningStats: NextPage = () => {
               monero_network_hashrate,
             )}
             loading={isLoading}
-            toolTip={"Percentage of pool hashrate over Monero's network hashrate"}
+            toolTip={
+              "Percentage of pool hashrate over Monero's network hashrate"
+            }
           />
           <Card
             label={"Blocks Found"}
@@ -104,7 +106,9 @@ const MiningStats: NextPage = () => {
             loading={isLoading}
           />
           <div className="flex mt-4 gap-4 text-gray-50 text-xs">
-            <Link href={QUBIC_XMR_STATS_URL.replace("/stats", "")}>Live data</Link>
+            <Link href={QUBIC_XMR_STATS_URL.replace("/stats", "")}>
+              Live data
+            </Link>
           </div>
         </main>
       </div>
