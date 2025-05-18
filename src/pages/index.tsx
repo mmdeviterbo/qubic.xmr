@@ -92,22 +92,17 @@ const MiningStats: NextPage = () => {
             value={connected_miners.toLocaleString()}
             loading={isLoading}
           />
-
-          <div className="mt-4 flex gap-4">
-            <Card
-              label={"Monero Network Hashrate"}
-              value={formatLargeInteger(monero_network_hashrate)}
-              loading={isLoading}
-              customClass="w-1/2"
-            />
-            <Card
-              label={"Monero Network Difficulty"}
-              value={monero_network_difficulty.toLocaleString()}
-              loading={isLoading}
-              customClass="w-1/2"
-            />
-          </div>
-
+          <Card
+            label={"Monero Network Hashrate"}
+            value={formatLargeInteger(monero_network_hashrate)}
+            loading={isLoading}
+            customClass="mt-4"
+          />
+          <Card
+            label={"Monero Network Difficulty"}
+            value={monero_network_difficulty.toLocaleString()}
+            loading={isLoading}
+          />
           <div className="flex mt-4 gap-4 text-gray-50 text-xs">
             <Link href={QUBIC_XMR_STATS_URL.replace("/stats", "")}>Live data</Link>
           </div>
