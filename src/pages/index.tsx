@@ -16,12 +16,13 @@ import {
   formatPoolBlocksFoundSubValue,
   formatPoolHashrateSubValue,
 } from "@/utils/transformers";
-import { formatLargeInteger } from "@/utils/numbers";
+import { formatLargeInteger, isValidPositiveNumber } from "@/utils/numbers";
 
 const MiningStats: NextPage = () => {
   const [miningStats, setMiningStats] = useState<MiningStats>();
 
   const {
+    highest_pool_hashrate = 0,
     pool_hashrate = 0,
     pool_blocks_found = 0,
     connected_miners = 0,
@@ -33,6 +34,8 @@ const MiningStats: NextPage = () => {
 
   const fetchMiningStats = async () => {
     let stats = (await axios.get("/api")).data;
+
+    console.log("stats: ", stats);
     setMiningStats(stats);
   };
 
@@ -73,6 +76,16 @@ const MiningStats: NextPage = () => {
             )}
             loading={isLoading}
           />
+          {isValidPositiveNumber(highest_pool_hashrate) && (
+            <Card
+              label={"Peak Pool Hashrate"}
+              value={formatLargeInteger(highest_pool_hashrate)}
+              toolTip={
+                "Recorded highest hashrate starting May 18, 2025 6:15AM UTC"
+              }
+              loading={isLoading}
+            />
+          )}
           <Card
             label={"Pool Blocks Found"}
             value={pool_blocks_found?.toLocaleString()}
@@ -91,9 +104,6 @@ const MiningStats: NextPage = () => {
             loading={isLoading}
           />
 
-          {/* <div className="text-white mt-2 h-8 w-8">
-            <MoneroLogo />
-          </div> */}
           <Card
             label={"Monero Network Hashrate"}
             value={formatLargeInteger(monero_network_hashrate)}
