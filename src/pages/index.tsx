@@ -109,7 +109,7 @@ const MiningStats: NextPage = () => {
           </div>
 
           <div className="flex mt-4 gap-4 text-gray-50 text-xs">
-            <Link href={QUBIC_XMR_STATS_URL}>Live data</Link>
+            <Link href={QUBIC_XMR_STATS_URL.replace("/stats", "")}>Live data</Link>
           </div>
         </main>
       </div>
