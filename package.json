@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "format": "sh ./src/scripts/format.sh",
     "build": "next build",
+    "postinstall": "prisma generate --no-engine",
     "start": "next start",
     "lint": "next lint"
   },
