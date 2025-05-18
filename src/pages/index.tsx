@@ -73,17 +73,8 @@ const MiningStats: NextPage = () => {
               monero_network_hashrate,
             )}
             loading={isLoading}
+            toolTip={"Percentage of pool hasharate over Monero's network hashrate"}
           />
-          {/* {isValidPositiveNumber(highest_pool_hashrate) && (
-            <Card
-              label={"Peak Pool Hashrate"}
-              value={formatLargeInteger(highest_pool_hashrate)}
-              toolTip={
-                "Recorded highest hashrate starting May 18, 2025 6:15AM UTC"
-              }
-              loading={isLoading}
-            />
-          )} */}
           <Card
             label={"Blocks Found"}
             value={pool_blocks_found?.toLocaleString()}
