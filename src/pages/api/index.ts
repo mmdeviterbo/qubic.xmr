@@ -1,15 +1,13 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import axios from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
+import axios from "axios";
 
-type Data = {
-  name: string;
-};
+import { MiningStats } from "@/types/MiningStats";
+import { QUBIC_XMR_STATS_URL } from "@/utils/constants";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>,
+  res: NextApiResponse<MiningStats>,
 ) {
-  let stats = (await axios.get('https://xmr-stats.qubic.org/stats')).data;
+  let stats = (await axios.get(QUBIC_XMR_STATS_URL)).data;
   res.status(200).json(stats);
 }

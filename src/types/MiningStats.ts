@@ -1,0 +1,20 @@
+export type MiningStats = {
+  pool_hashrate: number;
+  round_hashes: number;
+  network_hashrate: number;
+  network_difficulty: number;
+  network_height: number;
+  last_template_fetched: number;
+  last_block_found: number;
+  pool_blocks_found: number;
+  payment_threshold: number;
+  pool_fee: number;
+  pool_port: number;
+  pool_ssl_port: number;
+  allow_self_select: number;
+  connected_miners: number;
+  miner_hashrate: number;
+  miner_hashrate_stats: [number, number, number, number, number, number];
+  miner_balance: number;
+  worker_count: number;
+};
