@@ -12,7 +12,7 @@ async function getAllMoneroMinersStats() {
   try {
     const dateNow = new Date();
 
-    let minuteToGetIndex =
+    const minuteToGetIndex =
       validMinutes.findIndex(
         (validMinute) => validMinute > dateNow.getMinutes(),
       ) - 1;
@@ -37,9 +37,9 @@ async function getAllMoneroMinersStats() {
     }
 
     const response = await Promise.any(apis);
-    const pools: any[] = response.data.data;
+    const pools: Record<string, number | string>[] = response.data.data;
     return pools;
-  } catch (error) {
+  } catch (e) {
     return [];
   }
 }
@@ -51,10 +51,10 @@ export default async function getQubicPoolHashrateAverages(
   try {
     const pools = await getAllMoneroMinersStats();
     const qubicStatsUrl = QUBIC_XMR_STATS_URL.replace("/stats", "");
-    const qubicPool = pools.find((p) => p.url === qubicStatsUrl);
+    const qubicPool = pools.find((p) => p.url === qubicStatsUrl)!;
     const response = {
-      hashrate_average_7d: qubicPool.hashrate_average_7d,
-      hashrate_average_1h: qubicPool.hashrate_average_1h,
+      hashrate_average_7d: qubicPool.hashrate_average_7d as number,
+      hashrate_average_1h: qubicPool.hashrate_average_1h as number,
     };
     res.status(200).json(response);
   } catch (e) {

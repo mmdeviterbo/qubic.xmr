@@ -37,14 +37,14 @@ const MiningStats: NextPage = () => {
     miningAverageStats ?? {};
 
   const fetchMiningStats = async () => {
-    let response = await axios.get("/api/qubic-xmr-stats");
+    const response = await axios.get("/api/qubic-xmr-stats");
     if (response.status === 200) {
       setMiningStats(response.data);
     }
   };
 
   const fetchMiningAverages = async () => {
-    let response = await axios.get("/api/qubic-xmr-hashrate-averages");
+    const response = await axios.get("/api/qubic-xmr-hashrate-averages");
     if (response.status === 200) {
       setMiningAverageStats(response.data);
     }
