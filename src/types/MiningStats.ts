@@ -19,3 +19,8 @@ export type MiningStats = {
   miner_balance: number;
   worker_count: number;
 };
+
+export interface MiningAverageStats {
+  hashrate_average_1h: number;
+  hashrate_average_7d: number;
+}

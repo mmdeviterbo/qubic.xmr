@@ -10,7 +10,3 @@ export const formatLargeInteger = (value: number) => {
   }
   return value?.toLocaleString().concat(" H/s");
 };
-
-export const isValidPositiveNumber = (value: number) => {
-  return !isNaN(value) && value > 0;
-};

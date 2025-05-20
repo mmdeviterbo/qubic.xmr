@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { blockToXMRConversion, moneroTicker } from "./constants";
+import datetimeDifference, { DateTimeDifference } from "datetime-difference";
 
 export const formatPoolHashrateSubValue = (
   pool_hashrate: number,
@@ -18,7 +19,7 @@ export const formatPoolHashrateSubValue = (
   } else {
     percentage = percentage.toFixed(3);
   }
-  return `≈${percentage}%`;
+  return `≈ ${percentage}%`;
 };
 
 export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
@@ -26,12 +27,26 @@ export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
     return "";
   }
   const totalXMR = blockToXMRConversion * pool_blocks_found;
-  return `≈${totalXMR.toFixed(2)} ${moneroTicker}`;
+  return `≈ ${totalXMR.toFixed(2)} ${moneroTicker}`;
 };
 
 export const formatLatestBlockFound = (last_block_found: number) => {
   const latestBlockFound = Number(`${last_block_found}000`);
   return last_block_found
-    ? dayjs(new Date(latestBlockFound)).format("MMM D, YYYY h:mA")
+    ? dayjs(new Date(latestBlockFound)).format("MMM D, YYYY")
     : "";
+};
+
+export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
+  const latestBlockFound = Number(`${last_block_found}000`);
+
+  const difference = datetimeDifference(new Date(latestBlockFound), new Date());
+
+  const formattedDifference = (
+    Object.keys(difference) as unknown as (keyof DateTimeDifference)[]
+  )
+    .filter((k) => !!difference[k])
+    .map((k) => `${difference[k]} ${k}`)[0];
+
+  return `≈ ${formattedDifference} ago`;
 };

@@ -9,45 +9,73 @@ import axios from "axios";
 import QubicLogo from "@/components/logos/QubicLogo";
 import Card from "@/components/Card";
 
-import type { MiningStats } from "@/types/MiningStats";
+import type { MiningAverageStats, MiningStats } from "@/types/MiningStats";
 import { QUBIC_XMR_STATS_URL } from "@/utils/constants";
 import {
   formatLatestBlockFound,
+  formatLatestBlockFoundSubValue,
   formatPoolBlocksFoundSubValue,
   formatPoolHashrateSubValue,
 } from "@/utils/transformers";
-import { formatLargeInteger, isValidPositiveNumber } from "@/utils/numbers";
+import { formatLargeInteger } from "@/utils/numbers";
 
 const MiningStats: NextPage = () => {
   const [miningStats, setMiningStats] = useState<MiningStats>();
+  const [miningAverageStats, setMiningAverageStats] =
+    useState<MiningAverageStats>();
 
   const {
-    highest_pool_hashrate = 0,
     pool_hashrate = 0,
     pool_blocks_found = 0,
     connected_miners = 0,
     last_block_found = 0,
     network_hashrate: monero_network_hashrate = 0,
-    network_height: monero_network_height = 0,
     network_difficulty: monero_network_difficulty = 0,
   } = miningStats ?? {};
 
+  const { hashrate_average_1h = 0, hashrate_average_7d = 0 } =
+    miningAverageStats ?? {};
+
   const fetchMiningStats = async () => {
-    let stats = (await axios.get("/api")).data;
-    setMiningStats(stats);
+    let response = await axios.get("/api/qubic-xmr-stats");
+    if (response.status === 200) {
+      setMiningStats(response.data);
+    }
+  };
+
+  const fetchMiningAverages = async () => {
+    let response = await axios.get("/api/qubic-xmr-hashrate-averages");
+    if (response.status === 200) {
+      setMiningAverageStats(response.data);
+    }
   };
 
   useEffect(() => {
-    const intervalInSeconds = 1000 * 5;
     void fetchMiningStats();
+
+    const intervalInSeconds = 1000 * 5;
     setInterval(() => {
       void fetchMiningStats();
     }, intervalInSeconds);
   }, []);
 
-  const isLoading = useMemo(
+  useEffect(() => {
+    void fetchMiningAverages();
+
+    const intervalInSeconds = 1000 * 119;
+    setInterval(() => {
+      void fetchMiningAverages();
+    }, intervalInSeconds);
+  }, []);
+
+  const isLoadingStats = useMemo(
     () => !Object.keys(miningStats ?? {}).length,
     [miningStats],
+  );
+
+  const isLoadingAverageStats = useMemo(
+    () => !Object.keys(miningAverageStats ?? {}).length,
+    [miningAverageStats],
   );
 
   return (
@@ -66,46 +94,62 @@ const MiningStats: NextPage = () => {
           </div>
 
           <Card
-            label={"Pool Hashrate"}
+            label={"Hashrate"}
             value={formatLargeInteger(pool_hashrate)}
             subValue={formatPoolHashrateSubValue(
               pool_hashrate,
               monero_network_hashrate,
             )}
-            loading={isLoading}
+            loading={isLoadingStats}
             toolTip={
               "Percentage of pool hashrate over Monero's network hashrate"
             }
           />
+          <div className="flex gap-16">
+            <Card
+              label={"Avg 1H Hashrate"}
+              value={formatLargeInteger(hashrate_average_1h)}
+              loading={isLoadingAverageStats}
+              customClass="w-1/2"
+            />
+            <Card
+              label={"Avg 7D Hashrate"}
+              value={formatLargeInteger(hashrate_average_7d)}
+              loading={isLoadingAverageStats}
+              customClass="w-1/2"
+            />
+          </div>
+
           <Card
             label={"Blocks Found"}
             value={pool_blocks_found?.toLocaleString()}
             subValue={formatPoolBlocksFoundSubValue(pool_blocks_found)}
             toolTip={"One block is approximately equivalent to 0.60 XMR"}
-            loading={isLoading}
+            loading={isLoadingStats}
           />
           <Card
             label={"Last Block Found"}
             value={formatLatestBlockFound(last_block_found)}
-            loading={isLoading}
+            loading={isLoadingStats}
+            subValue={formatLatestBlockFoundSubValue(last_block_found)}
           />
           <Card
             label={"Connected Miners"}
             value={connected_miners.toLocaleString()}
-            loading={isLoading}
+            loading={isLoadingStats}
           />
           <Card
             label={"Monero Network Hashrate"}
             value={formatLargeInteger(monero_network_hashrate)}
-            loading={isLoading}
+            loading={isLoadingStats}
             customClass="mt-4"
           />
           <Card
             label={"Monero Network Difficulty"}
             value={monero_network_difficulty.toLocaleString()}
-            loading={isLoading}
+            loading={isLoadingStats}
           />
-          <div className="flex mt-4 gap-4 text-gray-50 text-xs">
+          <div className="flex mt-4 gap-4 text-gray-50 text-xs underline">
             <Link href={QUBIC_XMR_STATS_URL.replace("/stats", "")}>
               Live data
             </Link>

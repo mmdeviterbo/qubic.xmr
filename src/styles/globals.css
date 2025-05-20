@@ -69,6 +69,11 @@ html {
     line-height: 1.25;
 }
 
+.text-lg {
+    font-size: 2rem;
+    line-height: 1.25;
+}
+
 .text-gray-50 {
     --tw-text-opacity: 1;
     color: rgb(128 139 155 / var(--tw-text-opacity));
