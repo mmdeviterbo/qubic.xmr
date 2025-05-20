@@ -25,7 +25,7 @@ async function getAllMoneroMinersStats() {
     }
 
     const apis = [];
-    for (let sec = 2; sec < 60; sec++) {
+    for (let sec = 0; sec <= 60; sec++) {
       dateNow.setMinutes(minute);
       dateNow.setSeconds(sec);
       dateNow.setMilliseconds(0);
