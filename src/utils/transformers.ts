@@ -42,11 +42,16 @@ export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
 
   const difference = datetimeDifference(new Date(latestBlockFound), new Date());
 
-  const formattedDifference = (
+  let formattedDifference = (
     Object.keys(difference) as unknown as (keyof DateTimeDifference)[]
   )
     .filter((k) => !!difference[k])
     .map((k) => `${difference[k]} ${k}`)[0];
+
+  formattedDifference =
+    Number(formattedDifference.split(" ")[0]) <= 1
+      ? formattedDifference.slice(0, -1)
+      : formattedDifference;
 
   return `≈ ${formattedDifference} ago`;
 };
