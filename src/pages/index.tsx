@@ -60,7 +60,9 @@ const MiningStats: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    void fetchMiningAverages();
+    void fetchMiningAverages().catch(() => {
+      void fetchMiningAverages();
+    });
 
     const intervalInSeconds = 1000 * 119;
     setInterval(() => {
