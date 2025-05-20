@@ -58,7 +58,6 @@ export default async function getQubicPoolHashrateAverages(
     };
     res.status(200).json(response);
   } catch (e) {
-    console.log("ERRRROORR");
     res.status(400);
   }
 }
