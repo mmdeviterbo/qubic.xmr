@@ -1,9 +1,10 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import Tooltip from "./Tooltip";
+import { Labels } from "@/utils/constants";
 
 interface CardProps {
   label: string;
-  value: string;
+  value: ReactNode;
   subValue?: string;
   loading: boolean;
   toolTip?: string;
@@ -28,11 +29,11 @@ const Card: FC<CardProps> = ({
       </div>
 
       <div className="flex items-center">
-        <p className="font-space text-18 xs:text-24 sm:text-22">
+        <p className="whitespace-nowrap font-space text-18 sm:text-22">
           {loading ? "" : value}
         </p>
         {subValue && (
-          <span className="ml-2 font-space text-gray-50 text-18">
+          <span className="ml-2 font-space text-gray-50">
             {loading ? "" : subValue}
           </span>
         )}

@@ -45,13 +45,13 @@ html {
 }
 
 .py-32 {
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .px-12 {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
 }
 
 .px-24 {
@@ -59,36 +59,21 @@ html {
   padding-right: 1.5rem;
 }
 
-.text-14 {
-  font-size: .875rem;
-  line-height: 1.25;
-}
-
-.text-18 {
-    font-size: 1.125rem;
-    line-height: 1.25;
-}
-
-.text-lg {
-    font-size: 2rem;
-    line-height: 1.25;
-}
-
 .text-gray-50 {
-    --tw-text-opacity: 1;
-    color: rgb(128 139 155 / var(--tw-text-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(128 139 155 / var(--tw-text-opacity));
 }
 
 .gap-8 {
-    gap: .5rem;
+  gap: .5rem;
 }
 
 .gap-16 {
-    gap: 1rem;
+  gap: 1rem;
 }
 
 .font-space {
-   font-family: Space Grotesk, sans-serif;
+  font-family: Space Grotesk, sans-serif;
 }
 
 .tooltip {
@@ -99,6 +84,16 @@ html {
   @apply visible z-50;
 }
 
+.text-14 {
+  font-size: .875rem;
+  line-height: 1.25;
+}
+
+.text-18 {
+  font-size: 1.125rem;
+  line-height: 1.25;
+}
+
 @media (min-width: 560px) {
   .sm\:text-22 {
     font-size: 1.375rem;
@@ -107,8 +102,8 @@ html {
 }
 
 @media (min-width: 375px) {
-    .xs\:text-24 {
-        font-size: 1.5rem;
-        line-height: 1.25;
-    }
+  .xs\:text-24 {
+      font-size: 1.5rem;
+      line-height: 1.25;
+  }
 }

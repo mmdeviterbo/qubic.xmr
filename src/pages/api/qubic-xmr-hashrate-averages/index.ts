@@ -2,20 +2,23 @@ import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
 import { MiningAverageStats } from "@/types/MiningStats";
-import { QUBIC_XMR_STATS_URL } from "@/utils/constants";
+import {
+  MONERO_MINING_POOLS_STATS_URL,
+  QUBIC_XMR_STATS_URL,
+} from "@/utils/constants";
 
 const validMinutes = [
   2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44, 47, 50, 53, 56, 59,
 ];
 
-async function getAllMoneroMinersStats() {
+async function getAllMoneroMinersStats(prevCount: number) {
   try {
     const dateNow = new Date();
 
     const minuteToGetIndex =
       validMinutes.findIndex(
         (validMinute) => validMinute > dateNow.getMinutes(),
-      ) - 1;
+      ) - prevCount;
     let minute = validMinutes[minuteToGetIndex];
 
     if (!minute) {
@@ -30,15 +33,10 @@ async function getAllMoneroMinersStats() {
       dateNow.setSeconds(sec);
       dateNow.setMilliseconds(0);
       const milliseconds = new Date(dateNow).getTime() / 1000;
-      const api = axios.get(
-        `https://data.miningpoolstats.stream/data/monero.js?t=${milliseconds}`,
-      );
+      const api = axios.get(MONERO_MINING_POOLS_STATS_URL(milliseconds));
       apis.push(api);
     }
-
-    const response = await Promise.any(apis);
-    const pools: Record<string, number | string>[] = response.data.data;
-    return pools;
+    return apis;
   } catch (e) {
     return [];
   }
@@ -49,7 +47,15 @@ export default async function getQubicPoolHashrateAverages(
   res: NextApiResponse<MiningAverageStats>,
 ) {
   try {
-    const pools = await getAllMoneroMinersStats();
+    const apisPrevCountByOne = await getAllMoneroMinersStats(1);
+    const apisPrevCountByTwo = await getAllMoneroMinersStats(2);
+
+    const responses = await Promise.any([
+      ...apisPrevCountByOne,
+      ...apisPrevCountByTwo,
+    ]);
+    const pools: Record<string, number | string>[] = responses.data.data;
+
     const qubicStatsUrl = QUBIC_XMR_STATS_URL.replace("/stats", "");
     const qubicPool = pools.find((p) => p.url === qubicStatsUrl)!;
     const response = {

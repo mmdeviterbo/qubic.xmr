@@ -10,7 +10,7 @@ import QubicLogo from "@/components/logos/QubicLogo";
 import Card from "@/components/Card";
 
 import type { MiningAverageStats, MiningStats } from "@/types/MiningStats";
-import { QUBIC_XMR_STATS_URL } from "@/utils/constants";
+import { Labels, QUBIC_XMR_STATS_URL } from "@/utils/constants";
 import {
   formatLatestBlockFound,
   formatLatestBlockFoundSubValue,
@@ -96,7 +96,7 @@ const MiningStats: NextPage = () => {
           </div>
 
           <Card
-            label={"Hashrate"}
+            label={Labels.HASHRATE}
             value={formatLargeInteger(pool_hashrate)}
             subValue={formatPoolHashrateSubValue(
               pool_hashrate,
@@ -109,13 +109,13 @@ const MiningStats: NextPage = () => {
           />
           <div className="flex gap-16">
             <Card
-              label={"Avg 1H Hashrate"}
+              label={Labels.AVG_1H_HASHRATE}
               value={formatLargeInteger(hashrate_average_1h)}
               loading={isLoadingAverageStats}
               customClass="w-1/2"
             />
             <Card
-              label={"Avg 7D Hashrate"}
+              label={Labels.AVG_7D_HASHRATE}
               value={formatLargeInteger(hashrate_average_7d)}
               loading={isLoadingAverageStats}
               customClass="w-1/2"
@@ -123,31 +123,31 @@ const MiningStats: NextPage = () => {
           </div>
 
           <Card
-            label={"Blocks Found"}
+            label={Labels.BLOCKS_FOUND}
             value={pool_blocks_found?.toLocaleString()}
             subValue={formatPoolBlocksFoundSubValue(pool_blocks_found)}
             toolTip={"One block is approximately equivalent to 0.60 XMR"}
             loading={isLoadingStats}
           />
           <Card
-            label={"Last Block Found"}
+            label={Labels.LAST_BLOCK_FOUND}
             value={formatLatestBlockFound(last_block_found)}
             loading={isLoadingStats}
             subValue={formatLatestBlockFoundSubValue(last_block_found)}
           />
           <Card
-            label={"Connected Miners"}
+            label={Labels.CONNECTED_MINERS}
             value={connected_miners.toLocaleString()}
             loading={isLoadingStats}
           />
           <Card
-            label={"Monero Network Hashrate"}
+            label={Labels.MONERO_NETWORK_HASHRATE}
             value={formatLargeInteger(monero_network_hashrate)}
             loading={isLoadingStats}
             customClass="mt-4"
           />
           <Card
-            label={"Monero Network Difficulty"}
+            label={Labels.MONERO_NETWORK_DIFFICULTY}
             value={monero_network_difficulty.toLocaleString()}
             loading={isLoadingStats}
           />
