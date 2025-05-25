@@ -1,5 +1,5 @@
+import { memo, type FC } from "react";
 import { EXPLORER_QUBIC_URL } from "@/utils/constants";
-import { FC, Fragment } from "react";
 
 interface QubicLogoProps {
   showTitle: boolean;
@@ -55,4 +55,4 @@ const QubicLogo: FC<QubicLogoProps> = ({ showTitle }) => {
   );
 };
 
-export default QubicLogo;
+export default memo<QubicLogoProps>(QubicLogo);

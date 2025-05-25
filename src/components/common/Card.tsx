@@ -1,6 +1,5 @@
-import { FC, ReactNode } from "react";
+import { memo, type FC, type ReactNode } from "react";
 import Tooltip from "./Tooltip";
-import { Labels } from "@/utils/constants";
 
 interface CardProps {
   label: string;
@@ -42,4 +41,4 @@ const Card: FC<CardProps> = ({
   );
 };
 
-export default Card;
+export default memo<CardProps>(Card);

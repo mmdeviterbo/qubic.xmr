@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { memo, type FC } from "react";
 
 interface TooltipProps {
   content: string;
@@ -34,4 +34,4 @@ const Tooltip: FC<TooltipProps> = ({ content }) => {
   );
 };
 
-export default Tooltip;
+export default memo<TooltipProps>(Tooltip);

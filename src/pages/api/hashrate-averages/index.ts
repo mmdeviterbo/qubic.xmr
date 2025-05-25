@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
-import { MiningAverageStats } from "@/types/MiningStats";
+import type { MiningAverages } from "@/types/MiningStats";
 import {
   MONERO_MINING_POOLS_STATS_URL,
   QUBIC_XMR_STATS_URL,
@@ -28,7 +28,7 @@ async function getAllMoneroMinersStats(prevCount: number) {
     }
 
     const apis = [];
-    for (let sec = 0; sec <= 60; sec++) {
+    for (let sec = 5; sec <= 40; sec++) {
       dateNow.setMinutes(minute);
       dateNow.setSeconds(sec);
       dateNow.setMilliseconds(0);
@@ -38,13 +38,13 @@ async function getAllMoneroMinersStats(prevCount: number) {
     }
     return apis;
   } catch (e) {
-    return [];
+    return null;
   }
 }
 
-export default async function getQubicPoolHashrateAverages(
+export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<MiningAverageStats>,
+  res: NextApiResponse<MiningAverages>,
 ) {
   try {
     const apisPrevCountByOne = await getAllMoneroMinersStats(1);
@@ -54,10 +54,15 @@ export default async function getQubicPoolHashrateAverages(
       ...apisPrevCountByOne,
       ...apisPrevCountByTwo,
     ]);
-    const pools: Record<string, number | string>[] = responses.data.data;
+    const pools: Record<string, number | string>[] = responses?.data?.data;
 
     const qubicStatsUrl = QUBIC_XMR_STATS_URL.replace("/stats", "");
-    const qubicPool = pools.find((p) => p.url === qubicStatsUrl)!;
+    const qubicPool = pools?.find((p) => p.url === qubicStatsUrl);
+
+    if (!qubicPool) {
+      throw new Error();
+    }
+
     const response = {
       hashrate_average_7d: qubicPool.hashrate_average_7d as number,
       hashrate_average_1h: qubicPool.hashrate_average_1h as number,

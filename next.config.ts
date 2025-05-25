@@ -73,7 +73,7 @@ const securityHeaders = [
   },
   {
     key: "Access-Control-Allow-Origin",
-    value: "https://qubic-xmr.vercel.app/, http://localhost:3000/", // Set your origin
+    value: "https://qubic-xmr.vercel.app/"
   },
   {
     key: "Access-Control-Allow-Methods",
@@ -86,18 +86,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactStrictMode: true,
-  // Default headers
-  async headers() {
-    return [
-      {
-        // Apply secure headers to all routes by default
-        source: "/api/:path*",
-        headers: securityHeaders,
-      },
-    ];
-  },
 };
 
 export default nextConfig;

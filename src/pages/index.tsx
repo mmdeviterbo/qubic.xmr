@@ -1,15 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
-import { NextPage } from "next";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import type { NextPage } from "next";
 
-import Link from "next/link";
 import Head from "next/head";
 import axios from "axios";
 
-import QubicLogo from "@/components/logos/QubicLogo";
-import Card from "@/components/Card";
+import QubicLogo from "@/components/common/logos/QubicLogo";
+import Card from "@/components/common/Card";
 
-import type { MiningAverageStats, MiningStats } from "@/types/MiningStats";
-import { Labels, QUBIC_XMR_STATS_URL } from "@/utils/constants";
+import type { MiningAverages, MiningStats } from "@/types/MiningStats";
+import { Labels } from "@/utils/constants";
 import {
   formatLatestBlockFound,
   formatLatestBlockFoundSubValue,
@@ -17,11 +16,15 @@ import {
   formatPoolHashrateSubValue,
 } from "@/utils/transformers";
 import { formatLargeInteger } from "@/utils/numbers";
+import Footer from "@/components/footer/Footer";
 
-const MiningStats: NextPage = () => {
-  const [miningStats, setMiningStats] = useState<MiningStats>();
+const Main: NextPage<{
+  miningStats?: MiningStats;
+  hashrateAverages?: MiningAverages;
+}> = ({ miningStats: _miningStats, hashrateAverages: _hashrateAverages }) => {
+  const [miningStats, setMiningStats] = useState<MiningStats>(_miningStats);
   const [miningAverageStats, setMiningAverageStats] =
-    useState<MiningAverageStats>();
+    useState<MiningAverages>(_hashrateAverages);
 
   const {
     pool_hashrate = 0,
@@ -35,38 +38,36 @@ const MiningStats: NextPage = () => {
   const { hashrate_average_1h = 0, hashrate_average_7d = 0 } =
     miningAverageStats ?? {};
 
-  const fetchMiningStats = async () => {
-    const response = await axios.get("/api/qubic-xmr-stats");
-    if (response.status === 200) {
+  const fetchMiningStats = useCallback(async () => {
+    const response = await axios.get("/api/mining-stats");
+    if (response?.status === 200) {
       setMiningStats(response.data);
     }
-  };
+  }, []);
 
-  const fetchMiningAverages = async () => {
-    const response = await axios.get("/api/qubic-xmr-hashrate-averages");
-    if (response.status === 200) {
+  const fetchMiningAverages = useCallback(async () => {
+    const response = await axios.get("/api/hashrate-averages");
+    if (response?.status === 200) {
       setMiningAverageStats(response.data);
     }
-  };
-
-  useEffect(() => {
-    void fetchMiningStats();
-
-    const intervalInSeconds = 1000 * 5;
-    setInterval(() => {
-      void fetchMiningStats();
-    }, intervalInSeconds);
   }, []);
 
   useEffect(() => {
-    void fetchMiningAverages().catch(() => {
-      void fetchMiningAverages();
-    });
+    if (!_miningStats) {
+      void fetchMiningStats();
+    }
+    setInterval(() => {
+      void fetchMiningStats();
+    }, 5000); //5sec
+  }, []);
 
-    const intervalInSeconds = 1000 * 119;
+  useEffect(() => {
+    if (!_hashrateAverages) {
+      void fetchMiningAverages();
+    }
     setInterval(() => {
       void fetchMiningAverages();
-    }, intervalInSeconds);
+    }, 119000); //1min 59sec
   }, []);
 
   const isLoadingStats = useMemo(
@@ -165,15 +166,37 @@ const MiningStats: NextPage = () => {
             value={monero_network_difficulty.toLocaleString()}
             loading={isLoadingStats}
           />
-          <div className="flex mt-4 gap-4 text-gray-50 text-xs underline">
-            <Link href={QUBIC_XMR_STATS_URL.replace("/stats", "")}>
-              Live data
-            </Link>
-          </div>
+
+          <Footer />
         </main>
       </div>
     </>
   );
 };
 
-export default MiningStats;
+export const getServerSideProps = async () => {
+  const props = {
+    miningStats: null,
+    hashrateAverages: null,
+  };
+
+  try {
+    const baseUrl = process.env.BASE_URL;
+    const miningStatsResponse = await axios.get(`${baseUrl}/api/mining-stats`);
+    const hashrateAveragesResponse = await axios.get(
+      `${baseUrl}/api/hashrate-averages`,
+    );
+
+    if (miningStatsResponse.status === 200) {
+      props.miningStats = miningStatsResponse.data;
+    }
+    if (miningStatsResponse.status === 200) {
+      props.hashrateAverages = hashrateAveragesResponse.data;
+    }
+    return { props };
+  } catch (e) {
+    return { props };
+  }
+};
+
+export default Main;

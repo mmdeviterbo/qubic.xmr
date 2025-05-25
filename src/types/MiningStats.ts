@@ -18,9 +18,13 @@ export type MiningStats = {
   miner_hashrate_stats: [number, number, number, number, number, number];
   miner_balance: number;
   worker_count: number;
+  mined_block_info: {
+    last_20_mined_blocks: number[];
+    last_update: number;
+  };
 };
 
-export interface MiningAverageStats {
+export type MiningAverages = {
   hashrate_average_1h: number;
   hashrate_average_7d: number;
-}
+};

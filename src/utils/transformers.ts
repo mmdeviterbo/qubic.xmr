@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import { blockToXMRConversion, moneroTicker } from "./constants";
-import datetimeDifference, { DateTimeDifference } from "datetime-difference";
+import datetimeDifference, {
+  type DateTimeDifference,
+} from "datetime-difference";
 
 export const formatPoolHashrateSubValue = (
   pool_hashrate: number,
