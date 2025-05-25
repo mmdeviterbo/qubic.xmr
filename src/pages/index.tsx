@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import { NextPage } from "next";
-import { Analytics } from "@vercel/analytics/next";
 
 import Link from "next/link";
 import Head from "next/head";
@@ -80,10 +79,17 @@ const MiningStats: NextPage = () => {
     [miningAverageStats],
   );
 
+  const isValidHashrateAverage1h = useMemo(
+    () => hashrate_average_1h >= 0,
+    [hashrate_average_1h],
+  );
+  const isValidHashrateAverage7d = useMemo(
+    () => hashrate_average_7d >= 0,
+    [hashrate_average_7d],
+  );
+
   return (
     <>
-      <Analytics />
-
       <Head>
         <link rel="icon" href="/qubic.svg" sizes="any" type="image/svg+xml" />
         <title>Qubic-XMR Live</title>
@@ -110,15 +116,23 @@ const MiningStats: NextPage = () => {
           <div className="flex gap-16">
             <Card
               label={Labels.AVG_1H_HASHRATE}
-              value={formatLargeInteger(hashrate_average_1h)}
+              value={
+                isValidHashrateAverage1h
+                  ? formatLargeInteger(hashrate_average_1h)
+                  : "-"
+              }
               loading={isLoadingAverageStats}
-              customClass="w-1/2"
+              customClass={"w-1/2"}
             />
             <Card
               label={Labels.AVG_7D_HASHRATE}
-              value={formatLargeInteger(hashrate_average_7d)}
+              value={
+                isValidHashrateAverage7d
+                  ? formatLargeInteger(hashrate_average_7d)
+                  : "-"
+              }
               loading={isLoadingAverageStats}
-              customClass="w-1/2"
+              customClass={"w-1/2"}
             />
           </div>
 
