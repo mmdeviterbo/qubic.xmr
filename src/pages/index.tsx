@@ -58,7 +58,7 @@ const Main: NextPage<{
     }
     setInterval(() => {
       void fetchMiningStats();
-    }, 5000); //5sec
+    }, 8000); //8sec
   }, []);
 
   useEffect(() => {
