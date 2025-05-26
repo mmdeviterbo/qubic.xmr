@@ -7,7 +7,7 @@ import axios from "axios";
 import QubicLogo from "@/components/common/logos/QubicLogo";
 import Card from "@/components/common/Card";
 
-import type { MiningAverages, MiningStats } from "@/types/MiningStats";
+import type { MiningStats } from "@/types/MiningStats";
 import { Labels } from "@/utils/constants";
 import {
   formatLatestBlockFound,
@@ -20,24 +20,20 @@ import { formatLargeInteger } from "@/utils/numbers";
 import Footer from "@/components/footer/Footer";
 
 const Main: NextPage<{
-  miningStats?: MiningStats;
-  hashrateAverages?: MiningAverages;
-}> = ({ miningStats: _miningStats, hashrateAverages: _hashrateAverages }) => {
-  const [miningStats, setMiningStats] = useState<MiningStats>(_miningStats);
-  const [miningAverageStats, setMiningAverageStats] =
-    useState<MiningAverages>(_hashrateAverages);
+  miningStatsProps?: MiningStats;
+}> = ({ miningStatsProps }) => {
+  const [miningStats, setMiningStats] = useState<MiningStats>(miningStatsProps);
 
   const {
     pool_hashrate,
     pool_blocks_found,
     connected_miners,
     last_block_found,
+    hashrate_average_1h,
+    hashrate_average_7d,
     network_hashrate: monero_network_hashrate,
     network_difficulty: monero_network_difficulty,
   } = miningStats ?? {};
-
-  const { hashrate_average_1h = 0, hashrate_average_7d = 0 } =
-    miningAverageStats ?? {};
 
   const fetchMiningStats = useCallback(async () => {
     const response = await axios.get("/api/mining-stats");
@@ -46,39 +42,18 @@ const Main: NextPage<{
     }
   }, []);
 
-  const fetchMiningAverages = useCallback(async () => {
-    const response = await axios.get("/api/hashrate-averages");
-    if (response?.status === 200) {
-      setMiningAverageStats(response.data);
-    }
-  }, []);
-
   useEffect(() => {
-    if (!_miningStats) {
+    if (!miningStatsProps) {
       void fetchMiningStats();
     }
     setInterval(() => {
       void fetchMiningStats();
-    }, 8000); //8sec
-  }, []);
-
-  useEffect(() => {
-    if (!_hashrateAverages) {
-      void fetchMiningAverages();
-    }
-    setInterval(() => {
-      void fetchMiningAverages();
-    }, 119000); //1min 59sec
+    }, 10000); //10sec
   }, []);
 
   const isLoadingStats = useMemo(
     () => !Object.keys(miningStats ?? {}).length,
     [miningStats],
-  );
-
-  const isLoadingAverageStats = useMemo(
-    () => !Object.keys(miningAverageStats ?? {}).length,
-    [miningAverageStats],
   );
 
   return (
@@ -110,13 +85,13 @@ const Main: NextPage<{
             <Card
               label={Labels.AVG_1H_HASHRATE}
               value={formatLargeInteger(hashrate_average_1h)}
-              loading={isLoadingAverageStats}
+              loading={isLoadingStats}
               customClass={"w-1/2"}
             />
             <Card
               label={Labels.AVG_7D_HASHRATE}
               value={formatLargeInteger(hashrate_average_7d)}
-              loading={isLoadingAverageStats}
+              loading={isLoadingStats}
               customClass={"w-1/2"}
             />
           </div>
@@ -171,27 +146,15 @@ const Main: NextPage<{
 };
 
 export const getServerSideProps = async () => {
-  const props = {
-    miningStats: null,
-    hashrateAverages: null,
-  };
-
   try {
     const baseUrl = process.env.BASE_URL;
     const miningStatsResponse = await axios.get(`${baseUrl}/api/mining-stats`);
-    const hashrateAveragesResponse = await axios.get(
-      `${baseUrl}/api/hashrate-averages`,
-    );
-
     if (miningStatsResponse.status === 200) {
-      props.miningStats = miningStatsResponse.data;
+      return { props: { miningStatsProps: miningStatsResponse?.data } };
     }
-    if (miningStatsResponse.status === 200) {
-      props.hashrateAverages = hashrateAveragesResponse.data;
-    }
-    return { props };
+    return { props: {} };
   } catch (e) {
-    return { props };
+    return { props: {} };
   }
 };
 

@@ -22,9 +22,6 @@ export type MiningStats = {
     last_20_mined_blocks: number[];
     last_update: number;
   };
-};
-
-export type MiningAverages = {
   hashrate_average_1h: number;
   hashrate_average_7d: number;
 };
