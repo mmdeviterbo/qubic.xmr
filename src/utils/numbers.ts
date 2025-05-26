@@ -1,4 +1,10 @@
+import { isValidValue } from "./transformers";
+
 export const formatLargeInteger = (value: number) => {
+  if (!isValidValue(value)) {
+    return "-";
+  }
+
   if (value >= 1000000000) {
     return (value / 1000000000).toFixed(2).replace(/\.0$/, "") + " GH/s";
   }

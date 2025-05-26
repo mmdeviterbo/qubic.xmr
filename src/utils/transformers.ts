@@ -9,7 +9,7 @@ export const formatPoolHashrateSubValue = (
   network_hashrate: number,
 ) => {
   let percentage: string | number = (pool_hashrate / network_hashrate) * 100;
-  if (isNaN(percentage) || percentage === 0) {
+  if (!isValidValue(percentage) || percentage === 0) {
     return "";
   }
   const wholeNumberPercentage = Math.trunc(percentage);
@@ -25,7 +25,7 @@ export const formatPoolHashrateSubValue = (
 };
 
 export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
-  if (isNaN(pool_blocks_found) || pool_blocks_found <= 0) {
+  if (!isValidValue(pool_blocks_found)) {
     return "";
   }
   const totalXMR = blockToXMRConversion * pool_blocks_found;
@@ -33,6 +33,10 @@ export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
 };
 
 export const formatLatestBlockFound = (last_block_found: number) => {
+  if (!isValidValue(last_block_found)) {
+    return "-";
+  }
+
   const latestBlockFound = Number(`${last_block_found}000`);
   return last_block_found
     ? dayjs(new Date(latestBlockFound)).format("MMM D, YYYY")
@@ -40,6 +44,10 @@ export const formatLatestBlockFound = (last_block_found: number) => {
 };
 
 export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
+  if (!isValidValue(last_block_found)) {
+    return "";
+  }
+
   const latestBlockFound = Number(`${last_block_found}000`);
 
   const difference = datetimeDifference(new Date(latestBlockFound), new Date());
@@ -56,4 +64,8 @@ export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
       : formattedDifference;
 
   return `≈ ${formattedDifference} ago`;
+};
+
+export const isValidValue = (value: number) => {
+  return !isNaN(value) && value >= 0;
 };

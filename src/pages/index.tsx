@@ -14,6 +14,7 @@ import {
   formatLatestBlockFoundSubValue,
   formatPoolBlocksFoundSubValue,
   formatPoolHashrateSubValue,
+  isValidValue,
 } from "@/utils/transformers";
 import { formatLargeInteger } from "@/utils/numbers";
 import Footer from "@/components/footer/Footer";
@@ -27,12 +28,12 @@ const Main: NextPage<{
     useState<MiningAverages>(_hashrateAverages);
 
   const {
-    pool_hashrate = 0,
-    pool_blocks_found = 0,
-    connected_miners = 0,
-    last_block_found = 0,
-    network_hashrate: monero_network_hashrate = 0,
-    network_difficulty: monero_network_difficulty = 0,
+    pool_hashrate,
+    pool_blocks_found,
+    connected_miners,
+    last_block_found,
+    network_hashrate: monero_network_hashrate,
+    network_difficulty: monero_network_difficulty,
   } = miningStats ?? {};
 
   const { hashrate_average_1h = 0, hashrate_average_7d = 0 } =
@@ -80,15 +81,6 @@ const Main: NextPage<{
     [miningAverageStats],
   );
 
-  const isValidHashrateAverage1h = useMemo(
-    () => hashrate_average_1h >= 0,
-    [hashrate_average_1h],
-  );
-  const isValidHashrateAverage7d = useMemo(
-    () => hashrate_average_7d >= 0,
-    [hashrate_average_7d],
-  );
-
   return (
     <>
       <Head>
@@ -117,21 +109,13 @@ const Main: NextPage<{
           <div className="flex gap-16">
             <Card
               label={Labels.AVG_1H_HASHRATE}
-              value={
-                isValidHashrateAverage1h
-                  ? formatLargeInteger(hashrate_average_1h)
-                  : "-"
-              }
+              value={formatLargeInteger(hashrate_average_1h)}
               loading={isLoadingAverageStats}
               customClass={"w-1/2"}
             />
             <Card
               label={Labels.AVG_7D_HASHRATE}
-              value={
-                isValidHashrateAverage7d
-                  ? formatLargeInteger(hashrate_average_7d)
-                  : "-"
-              }
+              value={formatLargeInteger(hashrate_average_7d)}
               loading={isLoadingAverageStats}
               customClass={"w-1/2"}
             />
@@ -139,7 +123,11 @@ const Main: NextPage<{
 
           <Card
             label={Labels.BLOCKS_FOUND}
-            value={pool_blocks_found?.toLocaleString()}
+            value={
+              isValidValue(pool_blocks_found)
+                ? pool_blocks_found?.toLocaleString()
+                : "-"
+            }
             subValue={formatPoolBlocksFoundSubValue(pool_blocks_found)}
             toolTip={"One block is approximately equivalent to 0.60 XMR"}
             loading={isLoadingStats}
@@ -152,7 +140,11 @@ const Main: NextPage<{
           />
           <Card
             label={Labels.CONNECTED_MINERS}
-            value={connected_miners.toLocaleString()}
+            value={
+              isValidValue(connected_miners)
+                ? connected_miners?.toLocaleString()
+                : "-"
+            }
             loading={isLoadingStats}
           />
           <Card
@@ -163,7 +155,11 @@ const Main: NextPage<{
           />
           <Card
             label={Labels.MONERO_NETWORK_DIFFICULTY}
-            value={monero_network_difficulty.toLocaleString()}
+            value={
+              isValidValue(monero_network_difficulty)
+                ? monero_network_difficulty.toLocaleString()
+                : "-"
+            }
             loading={isLoadingStats}
           />
 
