@@ -25,10 +25,7 @@ async function getMiningAverages() {
       throw new Error();
     }
 
-    return {
-      hashrate_average_7d: qubicPool.hashrate_average_7d as number,
-      hashrate_average_1h: qubicPool.hashrate_average_1h as number,
-    };
+    return { hashrate_average_7d: qubicPool.hashrate_average_7d as number };
   } catch (e) {
     return null;
   }
@@ -44,7 +41,6 @@ export default async function handler(
 
     const averages = await getMiningAverages();
     if (averages) {
-      newMiningStats.hashrate_average_1h = averages.hashrate_average_1h;
       newMiningStats.hashrate_average_7d = averages.hashrate_average_7d;
     }
 

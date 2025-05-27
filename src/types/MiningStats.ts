@@ -24,4 +24,7 @@ export type MiningStats = {
   };
   hashrate_average_1h: number;
   hashrate_average_7d: number;
+  daily_blocks_found: number;
+  epoch_blocks_found: number;
+  epoch: number;
 };

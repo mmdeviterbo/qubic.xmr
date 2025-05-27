@@ -16,3 +16,21 @@ export const formatLargeInteger = (value: number) => {
   }
   return value?.toLocaleString().concat(" H/s");
 };
+
+export const base64ToIntArray = (base64String: string) => {
+  const binaryString = atob(base64String);
+  const byteArray = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    byteArray[i] = binaryString.charCodeAt(i);
+  }
+  return byteArray;
+};
+
+// export const float64ToDecimalArray = (base64String: string) => {
+//   const binaryString = atob(base64String);
+//   const byteArray = new Float64Array(binaryString.length);
+//   for (let i = 0; i < binaryString.length; i++) {
+//     byteArray[i] = binaryString.charCodeAt(i);
+//   }
+//   return byteArray;
+// };
