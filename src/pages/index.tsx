@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Analytics } from '@vercel/analytics/next';
 import type { NextPage } from "next";
 
 import Head from "next/head";
 import axios from "axios";
-
+ 
 import QubicLogo from "@/components/common/logos/QubicLogo";
 import Card from "@/components/common/Card";
 
@@ -80,6 +81,8 @@ const Main: NextPage<{
 
   return (
     <>
+      <Analytics />
+
       <Head>
         <link rel="icon" href="/qubic.svg" sizes="any" type="image/svg+xml" />
         <title>Qubic-XMR Live</title>
