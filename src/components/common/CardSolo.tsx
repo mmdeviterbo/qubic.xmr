@@ -24,7 +24,7 @@ const Card: FC<CardProps> = ({
     >
       <div className="flex items-center gap-2">
         <span className="font-space text-14 text-gray-50">{label}</span>
-        {toolTip && <Tooltip content={toolTip} />}
+        {toolTip && <Tooltip content={toolTip} leftPosition={false} />}
       </div>
 
       <div className="flex flex-col items-center justify-center h-full">

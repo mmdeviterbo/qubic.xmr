@@ -2,16 +2,17 @@ import { memo, type FC } from "react";
 
 interface TooltipProps {
   content: string;
+  leftPosition?: boolean;
 }
 
-const Tooltip: FC<TooltipProps> = ({ content }) => {
+const Tooltip: FC<TooltipProps> = ({ content, leftPosition = true }) => {
   return (
     <div className="has-tooltip relative">
       <div
-        className="w-64 break-normal tooltip rounded shadow-lg p-2 m-2 bg-gray-700 text-xs rounded-12"
+        className="w-48 break-normal tooltip rounded shadow-lg p-2 m-2 bg-gray-700 text-xs rounded-12"
         style={{
-          left: "-3rem",
-          bottom: "105%",
+          ...(leftPosition ? { left: "-10rem" } : { right: "-10rem" }),
+          bottom: "50%",
         }}
       >
         {content}

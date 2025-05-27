@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from "@vercel/analytics/next";
 import type { NextPage } from "next";
 
 import Head from "next/head";
 import axios from "axios";
- 
 import QubicLogo from "@/components/common/logos/QubicLogo";
 import Card from "@/components/common/Card";
 
@@ -132,10 +131,10 @@ const Main: NextPage<{
               subValue={formatPoolBlocksFoundSubValue(pool_blocks_found)}
               toolTip={"One block is approximately equivalent to 0.60 XMR"}
               loading={isLoadingStats}
-              customClass={"w-1/2"}
+              customClass="w-1/2"
             />
 
-            <div className="flex flex-col w-1/2 gap-16 ">
+            <div className="flex flex-col gap-16 w-1/2">
               <Card
                 label={Labels.DAILY_BLOCKS_FOUND}
                 value={
@@ -145,7 +144,6 @@ const Main: NextPage<{
                 }
                 toolTip={"Daily blocks found reset at 12:00 UTC"}
                 loading={isLoadingStats}
-                // customClass={"w-full"}
               />
               <Card
                 label={Labels.EPOCH_BLOCKS_FOUND.replace(
@@ -161,10 +159,10 @@ const Main: NextPage<{
                   "Blocks found per epoch reset every Wednesday at 12:00 UTC"
                 }
                 loading={isLoadingStats}
-                // customClass={"w-full"}
               />
             </div>
           </div>
+
           <Card
             label={Labels.LAST_BLOCK_FOUND}
             value={formatLatestBlockFound(last_block_found)}
