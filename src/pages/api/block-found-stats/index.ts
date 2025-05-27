@@ -94,8 +94,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  console.log(getPreviousEpochDateUTC());
-
   try {
     const data = await axios.post(QUBIC_XMR_FULL_HISTORY_ON_RENDER_URL, {
       output: "graph.figure",
