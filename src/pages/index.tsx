@@ -125,6 +125,7 @@ const Main: NextPage<{
           />
           <div className="relative w-full flex gap-16">
             <CardSolo
+              index={0}
               label={Labels.PEAK_HASHRATE}
               value={isLoadingHistory ? "" : formatLargeInteger(max_hashrate)}
               subValue={

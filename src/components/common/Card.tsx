@@ -54,7 +54,7 @@ const Card: FC<CardProps> = ({
           {loading ? "" : value}
         </p>
         {subValue && (
-          <span className="ml-2 font-space text-gray-50">
+          <span className="ml-2 font-space text-sm text-gray-50">
             {loading ? "" : subValue}
           </span>
         )}

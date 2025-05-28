@@ -2,6 +2,7 @@ import { memo, type FC, type ReactNode } from "react";
 import Tooltip from "./Tooltip";
 
 interface CardProps {
+  index?: number;
   label: string;
   value: ReactNode;
   subValue?: string;
@@ -11,6 +12,7 @@ interface CardProps {
 }
 
 const Card: FC<CardProps> = ({
+  index,
   label,
   value,
   subValue = "",
@@ -28,10 +30,14 @@ const Card: FC<CardProps> = ({
       </div>
 
       <div className={`flex flex-col items-center justify-center h-full`}>
-        <p className="whitespace-nowrap font-space text-2xl sm:text-3xl grid place-items-center">
+        <p
+          className={`font-space ${index === 0 ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl"} grid place-items-center`}
+        >
           {loading ? "" : value}
         </p>
-        <p className="font-space text-gray-50">{loading ? "" : subValue}</p>
+        <p className="font-space text-base text-gray-50">
+          {loading ? "" : subValue}
+        </p>
       </div>
     </div>
   );
