@@ -43,6 +43,9 @@ export const formatLatestBlockFound = (last_block_found: number) => {
     : "";
 };
 
+export const formatPeakHashrateDate = (date: string) =>
+  dayjs(new Date(date)).format("MMM D, YYYY");
+
 export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
   if (!isValidValue(last_block_found)) {
     return "";

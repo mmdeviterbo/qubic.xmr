@@ -12,6 +12,7 @@ import { Labels } from "@/utils/constants";
 import {
   formatLatestBlockFound,
   formatLatestBlockFoundSubValue,
+  formatPeakHashrateDate,
   formatPoolBlocksFoundSubValue,
   formatPoolHashrateSubValue,
   isValidValue,
@@ -33,6 +34,8 @@ const Main: NextPage<{
         | "epoch_blocks_found"
         | "epoch"
         | "hashrate_average_1h"
+        | "max_hashrate"
+        | "max_hashrate_last_update"
       >
     >(miningStatsProps);
 
@@ -46,8 +49,14 @@ const Main: NextPage<{
     network_difficulty: monero_network_difficulty,
   } = miningStats ?? {};
 
-  const { daily_blocks_found, epoch_blocks_found, epoch, hashrate_average_1h } =
-    blockFoundStats;
+  const {
+    daily_blocks_found,
+    epoch_blocks_found,
+    epoch,
+    hashrate_average_1h,
+    max_hashrate,
+    max_hashrate_last_update,
+  } = blockFoundStats;
 
   const fetchBlocksFoundStats = useCallback(async () => {
     const response = await axios.get("/api/block-found-stats");
@@ -111,19 +120,27 @@ const Main: NextPage<{
               "Percentage of pool hashrate over Monero's network hashrate"
             }
           />
-          <div className="flex gap-16">
-            <Card
-              label={Labels.AVG_1H_HASHRATE}
-              value={formatLargeInteger(hashrate_average_1h)}
+          <div className="relative w-full flex gap-16">
+            <CardSolo
+              label={Labels.PEAK_HASHRATE}
+              value={formatLargeInteger(max_hashrate)}
+              subValue={formatPeakHashrateDate(max_hashrate_last_update)}
               loading={isLoadingStats}
-              customClass={"w-1/2"}
+              customClass="w-1/2"
             />
-            <Card
-              label={Labels.AVG_7D_HASHRATE}
-              value={formatLargeInteger(hashrate_average_7d)}
-              loading={isLoadingStats}
-              customClass={"w-1/2"}
-            />
+
+            <div className="flex flex-col gap-16 w-1/2">
+              <Card
+                label={Labels.AVG_1H_HASHRATE}
+                value={formatLargeInteger(hashrate_average_1h)}
+                loading={isLoadingStats}
+              />
+              <Card
+                label={Labels.AVG_7D_HASHRATE}
+                value={formatLargeInteger(hashrate_average_7d)}
+                loading={isLoadingStats}
+              />
+            </div>
           </div>
 
           <div className="relative w-full flex gap-16">
@@ -169,7 +186,7 @@ const Main: NextPage<{
             </div>
           </div>
 
-          <Card
+          {/* <Card
             label={Labels.LAST_BLOCK_FOUND}
             value={formatLatestBlockFound(last_block_found)}
             loading={isLoadingStats}
@@ -183,7 +200,7 @@ const Main: NextPage<{
                 : "-"
             }
             loading={isLoadingStats}
-          />
+          /> */}
           <Card
             label={Labels.MONERO_NETWORK_HASHRATE}
             value={formatLargeInteger(monero_network_hashrate)}

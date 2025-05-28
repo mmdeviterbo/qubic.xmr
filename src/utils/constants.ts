@@ -19,6 +19,7 @@ export const blockToXMRConversion = 0.6; //approximate
 
 export const enum Labels {
   HASHRATE = "Hashrate",
+  PEAK_HASHRATE = "Peak Hashrate",
   AVG_1H_HASHRATE = "Avg 1H Hashrate",
   AVG_7D_HASHRATE = "Avg 7D Hashrate",
   BLOCKS_FOUND = "Blocks Found",

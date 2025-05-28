@@ -3,7 +3,11 @@ import axios from "axios";
 
 import type { MiningStats } from "@/types/MiningStats";
 import { QUBIC_XMR_FULL_HISTORY_ON_RENDER_URL } from "@/utils/constants";
-import { base64ToIntArray, float64ToDecimalArray } from "@/utils/numbers";
+import {
+  base64ToIntArray,
+  float64ToDecimalArray,
+  indexOfMax,
+} from "@/utils/numbers";
 
 const getPrevious1159AMUTC = (): Date => {
   const now = new Date();
@@ -100,6 +104,8 @@ export default async function handler(
       | "epoch"
       | "epoch_blocks_found"
       | "daily_blocks_found"
+      | "max_hashrate"
+      | "max_hashrate_last_update"
     >
   >,
 ) {
@@ -142,15 +148,36 @@ export default async function handler(
     // one hour hashrate average
     const oneHrAveragesDates = data?.data?.response?.graph?.figure?.data[2]
       ?.x as string[];
-    const oneHrAverage = float64ToDecimalArray(
+    const oneHrAverages = float64ToDecimalArray(
       data?.data?.response?.graph?.figure?.data[2]?.y?.bdata as string,
     );
+    const hashrate_average_1h =
+      oneHrAverages?.length > 0
+        ? oneHrAverages[oneHrAverages.length - 1] * 1000000
+        : -1;
+
+    // one hour hashrate average
+    const maxHashratesDates = data?.data?.response?.graph?.figure?.data[0]
+      ?.x as string[];
+    const maxHashrates = float64ToDecimalArray(
+      data?.data?.response?.graph?.figure?.data[0]?.y?.bdata as string,
+    );
+
+    const maxHashrateIndex = indexOfMax(maxHashrates);
+    let max_hashrate = -1,
+      max_hashrate_last_update = "";
+    if (maxHashrateIndex != -1) {
+      max_hashrate = maxHashrates[maxHashrateIndex] * 1000000;
+      max_hashrate_last_update = maxHashratesDates[maxHashrateIndex];
+    }
 
     res.status(200).json({
       daily_blocks_found,
       epoch_blocks_found,
       epoch: qubicLiveData?.epoch,
-      hashrate_average_1h: oneHrAverage,
+      hashrate_average_1h,
+      max_hashrate,
+      max_hashrate_last_update,
     });
   } catch (e) {
     res.status(400).json({} as MiningStats);

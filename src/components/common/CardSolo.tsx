@@ -27,13 +27,11 @@ const Card: FC<CardProps> = ({
         {toolTip && <Tooltip content={toolTip} leftPosition={false} />}
       </div>
 
-      <div className="flex flex-col items-center justify-center h-full">
-        <p className="whitespace-nowrap font-space text-5xl grid place-items-center">
+      <div className={`flex flex-col items-center justify-center h-full`}>
+        <p className="whitespace-nowrap font-space text-2xl sm:text-3xl grid place-items-center">
           {loading ? "" : value}
         </p>
-        <p className="mt-2 font-space text-gray-50">
-          {loading ? "" : subValue}
-        </p>
+        <p className="font-space text-gray-50">{loading ? "" : subValue}</p>
       </div>
     </div>
   );

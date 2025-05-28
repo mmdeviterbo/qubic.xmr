@@ -26,7 +26,7 @@ export const base64ToIntArray = (base64String: string) => {
   return byteArray;
 };
 
-export const float64ToDecimalArray = (base64String: string): number => {
+export const float64ToDecimalArray = (base64String: string): number[] => {
   try {
     const decodedBase64String = atob(base64String);
     const len = decodedBase64String.length;
@@ -43,10 +43,19 @@ export const float64ToDecimalArray = (base64String: string): number => {
     for (let i = 0; i < buffer.byteLength; i += 8) {
       result.push(view.getFloat64(i, true));
     }
-
-    // convert to million
-    return result[result.length - 1] * 1000000;
+    return result;
   } catch (error) {
-    return -1;
+    return [];
   }
+};
+
+export const indexOfMax = (arr: number[]) => {
+  if (arr?.length === 0) {
+    return -1; // Handle empty array case
+  }
+  return arr?.reduce(
+    (maxIndex, currentValue, currentIndex, array) =>
+      currentValue > array[maxIndex] ? currentIndex : maxIndex,
+    0,
+  );
 };
