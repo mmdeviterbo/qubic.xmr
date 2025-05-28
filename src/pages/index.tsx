@@ -92,8 +92,6 @@ const Main: NextPage<{
   const isLoadingStats = useMemo(() => isEmpty(miningStats), [miningStats]);
   const isLoadingHistory = useMemo(() => isEmpty(history), [history]);
 
-  console.log(history);
-
   return (
     <>
       <Analytics />
@@ -223,7 +221,7 @@ export const getServerSideProps = async () => {
     const baseUrl = process.env.BASE_URL;
     const blockFoundStatsResponse = await axios.get(
       `${baseUrl}/api/calculated-stats`,
-      { timeout: 10000 },
+      { timeout: 12000 },
     );
 
     const miningStatsResponse = await axios.get<MiningStats>(
@@ -244,7 +242,6 @@ export const getServerSideProps = async () => {
 
     return { props: { miningStatsProps } };
   } catch (e) {
-    console.log("main index: ", e);
     return { props: {} };
   }
 };

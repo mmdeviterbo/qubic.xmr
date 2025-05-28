@@ -27,7 +27,6 @@ async function getMiningAverages() {
 
     return { hashrate_average_7d: qubicPool.hashrate_average_7d as number };
   } catch (e) {
-    console.log(e, "/api/mining-stats", e);
     return null;
   }
 }
