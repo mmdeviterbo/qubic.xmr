@@ -13,6 +13,15 @@ interface CardProps {
   customClass?: string;
 }
 
+const AnimationPing: FC = () => {
+  return (
+    <span className="relative flex size-2">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+      <span className="relative inline-flex size-2 rounded-full bg-sky-200"></span>
+    </span>
+  );
+};
+
 const Card: FC<CardProps> = ({
   index,
   label,
@@ -31,7 +40,13 @@ const Card: FC<CardProps> = ({
 
       <div className="flex items-center gap-2">
         <span className="font-space text-14 text-gray-50">{label}</span>
-        {toolTip && <Tooltip content={toolTip} leftPosition={toolTipLeftPosition}/>}
+        {index === 0 ? (
+          <AnimationPing />
+        ) : (
+          toolTip && (
+            <Tooltip content={toolTip} leftPosition={toolTipLeftPosition} />
+          )
+        )}
       </div>
 
       <div className="flex items-center">
