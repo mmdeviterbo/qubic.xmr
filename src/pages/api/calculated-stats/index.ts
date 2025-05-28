@@ -99,8 +99,8 @@ const getMaxHashrateHistory = (
   return maxBy(optimizedHistory, (i) => Number(i.pool_hashrate));
 };
 
-const parseCSV = (stream) => {
-  return new Promise<any[]>((resolve, reject) => {
+const parseCSV = async(stream) => {
+  return await new Promise<any[]>((resolve, reject) => {
     let parsedData = [];
     Papa.parse(stream, {
       header: true,
