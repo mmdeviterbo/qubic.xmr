@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import type { NextPage } from "next";
+import isEmpty from "lodash/isEmpty";
 
 import Head from "next/head";
 import axios from "axios";
@@ -88,10 +89,8 @@ const Main: NextPage<{
     }, 90000); //90sec / 1.5min
   }, []);
 
-  const isLoadingStats = useMemo(
-    () => !Object.keys(miningStats ?? {}).length,
-    [miningStats],
-  );
+  const isLoadingStats = useMemo(() => isEmpty(miningStats), [miningStats]);
+  const isLoadingHistory = useMemo(() => isEmpty(history), [history]);
 
   console.log(history);
 
@@ -127,13 +126,13 @@ const Main: NextPage<{
           <div className="relative w-full flex gap-16">
             <CardSolo
               label={Labels.PEAK_HASHRATE}
-              value={formatLargeInteger(max_hashrate)}
+              value={isLoadingHistory ? "" : formatLargeInteger(max_hashrate)}
               subValue={
                 max_hashrate_last_update
                   ? formatPeakHashrateDate(max_hashrate_last_update)
                   : ""
               }
-              loading={isLoadingStats}
+              loading={isLoadingHistory}
               customClass="w-1/2"
             />
 
@@ -141,7 +140,7 @@ const Main: NextPage<{
               <Card
                 label={Labels.AVG_1H_HASHRATE}
                 value={formatLargeInteger(hashrate_average_1h)}
-                loading={isLoadingStats}
+                loading={isLoadingHistory}
               />
               <Card
                 label={Labels.AVG_7D_HASHRATE}
@@ -175,12 +174,12 @@ const Main: NextPage<{
                 }
                 toolTip={"Daily blocks found reset at 12:00 UTC"}
                 subValue={formatLatestBlockFoundSubValue(last_block_found)}
-                loading={isLoadingStats}
+                loading={isLoadingHistory}
               />
               <Card
                 label={Labels.EPOCH_BLOCKS_FOUND.replace(
                   "<number>",
-                  epoch?.toString(),
+                  isLoadingHistory ? "" : epoch?.toString(),
                 )}
                 value={
                   isValidValue(epoch_blocks_found)
@@ -190,7 +189,7 @@ const Main: NextPage<{
                 toolTip={
                   "Blocks found per epoch reset every Wednesday at 12:00 UTC"
                 }
-                loading={isLoadingStats}
+                loading={isLoadingHistory}
               />
             </div>
           </div>
