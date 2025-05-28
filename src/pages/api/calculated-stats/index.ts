@@ -171,6 +171,7 @@ export default async function handler(
       max_hashrate_last_update,
     });
   } catch (e) {
-    res.status(400).json({} as MiningStats);
+    console.log(e, "/api/calculated-stats", e)
+    res.status(400);
   }
 }

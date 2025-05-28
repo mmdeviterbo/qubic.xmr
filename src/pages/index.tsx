@@ -80,9 +80,9 @@ const Main: NextPage<{
   }, []);
 
   useEffect(() => {
-    if (!daily_blocks_found) {
+    if (!hashrate_average_1h) {
+      void fetchQubicMiningHistory();
     }
-
     setInterval(() => {
       void fetchQubicMiningHistory();
     }, 90000); //90sec / 1.5min
@@ -92,6 +92,8 @@ const Main: NextPage<{
     () => !Object.keys(miningStats ?? {}).length,
     [miningStats],
   );
+
+  console.log(history)
 
   return (
     <>
@@ -126,7 +128,7 @@ const Main: NextPage<{
             <CardSolo
               label={Labels.PEAK_HASHRATE}
               value={formatLargeInteger(max_hashrate)}
-              subValue={formatPeakHashrateDate(max_hashrate_last_update)}
+              subValue={max_hashrate_last_update ? formatPeakHashrateDate(max_hashrate_last_update) : ""}
               loading={isLoadingStats}
               customClass="w-1/2"
             />
@@ -217,6 +219,7 @@ export const getServerSideProps = async () => {
     const baseUrl = process.env.BASE_URL;
     const blockFoundStatsResponse = await axios.get(
       `${baseUrl}/api/calculated-stats`,
+      { timeout: 10000 }
     );
 
     const miningStatsResponse = await axios.get<MiningStats>(
@@ -237,7 +240,7 @@ export const getServerSideProps = async () => {
 
     return { props: { miningStatsProps } };
   } catch (e) {
-    console.log(e);
+    console.log("main index: ", e);
     return { props: {} };
   }
 };
