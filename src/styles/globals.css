@@ -94,6 +94,32 @@ html {
   line-height: 1.25;
 }
 
+img#cfb-token {
+  -webkit-user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  
+  /* zoom effect */
+  transition: transform .2s;
+  transform-origin: 100% 100%;
+
+  /* shiny effect */
+  mask: linear-gradient(-60deg, #000 30%, #0005, #000 70%) right/350% 100%;
+  animation: shimmer 2.5s infinite;
+}
+
+img#cfb-token:hover {
+  transform: scale(1.05);
+}
+
+@keyframes shimmer {
+  100% {
+    mask-position: left
+  }
+}
+
 @media (min-width: 560px) {
   .sm\:text-22 {
     font-size: 1.375rem;

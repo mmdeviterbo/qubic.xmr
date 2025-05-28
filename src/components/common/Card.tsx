@@ -1,7 +1,9 @@
 import { memo, type FC, type ReactNode } from "react";
 import Tooltip from "./Tooltip";
+import CfbToken from "./sponsor/cfb/CfbToken";
 
 interface CardProps {
+  index?: number;
   label: string;
   value: ReactNode;
   subValue?: string;
@@ -11,6 +13,7 @@ interface CardProps {
 }
 
 const Card: FC<CardProps> = ({
+  index,
   label,
   value,
   subValue = "",
@@ -20,8 +23,10 @@ const Card: FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`${customClass} flex flex-col gap-8 rounded-12 px-24 py-16 ${loading ? "animate-pulse bg-gray-800 h-22" : "border-1 border-primary-60 bg-primary-70"}`}
+      className={`${customClass} relative flex flex-col gap-8 rounded-12 px-24 py-16 ${loading ? "animate-pulse bg-gray-800 h-22" : "border-1 border-primary-60 bg-primary-70"}`}
     >
+      {index === 0 && <CfbToken />}
+
       <div className="flex items-center gap-2">
         <span className="font-space text-14 text-gray-50">{label}</span>
         {toolTip && <Tooltip content={toolTip} />}

@@ -94,6 +94,7 @@ const Main: NextPage<{
           </div>
 
           <Card
+            index={0}
             label={Labels.HASHRATE}
             value={formatLargeInteger(pool_hashrate)}
             subValue={formatPoolHashrateSubValue(
