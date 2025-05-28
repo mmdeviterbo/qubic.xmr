@@ -7,6 +7,7 @@
   --desktop-header-height: 47px;
   --desktop-footer-height: 104px;
   --desktop-container-height: calc(100vh - var(--desktop-header-height) - var(--desktop-footer-height));
+  -webkit-touch-callout: none;
 }
 
 * {

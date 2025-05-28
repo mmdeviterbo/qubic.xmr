@@ -32,6 +32,7 @@ const CfbToken = () => {
         src="/CFB_XMR.png"
         width={width}
         height={height}
+        draggable={false}
       />
     </div>
   );
