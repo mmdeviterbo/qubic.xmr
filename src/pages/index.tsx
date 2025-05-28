@@ -171,7 +171,7 @@ const Main: NextPage<{
               <Card
                 label={Labels.EPOCH_BLOCKS_FOUND.replace(
                   "<number>",
-                  epoch.toString(),
+                  epoch?.toString(),
                 )}
                 value={
                   isValidValue(epoch_blocks_found)
