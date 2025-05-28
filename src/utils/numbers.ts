@@ -14,7 +14,7 @@ export const formatLargeInteger = (value: number) => {
   if (value >= 1000) {
     return (value / 1000).toFixed(2).replace(/\.0$/, "") + " KH/s";
   }
-  return value?.toLocaleString().concat(" H/s");
+  return value?.toFixed(2).toLocaleString().concat(" H/s");
 };
 
 export const base64ToIntArray = (base64String: string) => {
@@ -26,11 +26,25 @@ export const base64ToIntArray = (base64String: string) => {
   return byteArray;
 };
 
-// export const float64ToDecimalArray = (base64String: string) => {
-//   const binaryString = atob(base64String);
-//   const byteArray = new Float64Array(binaryString.length);
-//   for (let i = 0; i < binaryString.length; i++) {
-//     byteArray[i] = binaryString.charCodeAt(i);
-//   }
-//   return byteArray;
-// };
+export const float64ToDecimalArray = (base64String: string): number => {
+  try {
+    const decodedBase64String = atob(base64String);
+    const len = decodedBase64String.length;
+    const buffer = new ArrayBuffer(len);
+    const uint8 = new Uint8Array(buffer);
+
+    for (let i = 0; i < len; i++) {
+      uint8[i] = decodedBase64String.charCodeAt(i);
+    }
+
+    const view = new DataView(buffer);
+    const result: number[] = [];
+
+    for (let i = 0; i < buffer.byteLength; i += 8) {
+      result.push(view.getFloat64(i, true));
+    }
+    return result[result.length - 1];
+  } catch (error) {
+    return -1;
+  }
+};

@@ -28,7 +28,13 @@ const Main: NextPage<{
 
   const [blockFoundStats, setBlockFoundStats] =
     useState<
-      Pick<MiningStats, "daily_blocks_found" | "epoch_blocks_found" | "epoch">
+      Pick<
+        MiningStats,
+        | "daily_blocks_found"
+        | "epoch_blocks_found"
+        | "epoch"
+        | "hashrate_average_1h"
+      >
     >(miningStatsProps);
 
   const {
@@ -36,13 +42,13 @@ const Main: NextPage<{
     pool_blocks_found,
     connected_miners,
     last_block_found,
-    hashrate_average_1h,
     hashrate_average_7d,
     network_hashrate: monero_network_hashrate,
     network_difficulty: monero_network_difficulty,
   } = miningStats ?? {};
 
-  const { daily_blocks_found, epoch_blocks_found, epoch } = blockFoundStats;
+  const { daily_blocks_found, epoch_blocks_found, epoch, hashrate_average_1h } =
+    blockFoundStats;
 
   const fetchBlocksFoundStats = useCallback(async () => {
     const response = await axios.get("/api/block-found-stats");

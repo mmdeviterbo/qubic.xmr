@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
+import type { MiningStats } from "@/types/MiningStats";
 import { QUBIC_XMR_FULL_HISTORY_ON_RENDER_URL } from "@/utils/constants";
-import { base64ToIntArray } from "@/utils/numbers";
+import { base64ToIntArray, float64ToDecimalArray } from "@/utils/numbers";
 
 const getPrevious1159AMUTC = (): Date => {
   const now = new Date();
@@ -92,7 +93,15 @@ const getBlocksFoundByStartDate = (
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse<
+    Pick<
+      MiningStats,
+      | "hashrate_average_1h"
+      | "epoch"
+      | "epoch_blocks_found"
+      | "daily_blocks_found"
+    >
+  >,
 ) {
   try {
     const data = await axios.post(QUBIC_XMR_FULL_HISTORY_ON_RENDER_URL, {
@@ -130,29 +139,21 @@ export default async function handler(
       await axios.get("https://rpc.qubic.org/v1/latest-stats")
     )?.data?.data;
 
-    // const oneHrAveragesDates = data?.data?.response?.graph?.figure?.data[2]?.x as string[];
-
-    // const oneHrAverages = float64ToDecimalArray(
-    //   data?.data?.response?.graph?.figure?.data[2]?.y?.bdata as string,
-    // );
-
-    // console.log(new Float64Array(data?.data?.response?.graph?.figure?.data[2]?.y?.bdata))
-
-    // let index = oneHrAverages.length - 1;
-    // // while(index >= oneHrAverages.length - 1) {
-    // //   console.log(oneHrAverages[index], new Date(oneHrAveragesDates[index]))
-    // //   index = index - 1;
-    // // }
-
-    // // return oneHrAverages[oneHrAverages.length - 1];
+    // one hour hashrate average
+    const oneHrAveragesDates = data?.data?.response?.graph?.figure?.data[2]
+      ?.x as string[];
+    const oneHrAverage = float64ToDecimalArray(
+      data?.data?.response?.graph?.figure?.data[2]?.y?.bdata as string,
+    );
 
     res.status(200).json({
       daily_blocks_found,
       epoch_blocks_found,
       epoch: qubicLiveData?.epoch,
+      hashrate_average_1h: oneHrAverage,
     });
   } catch (e) {
-    res.status(400).json({});
+    res.status(400).json({} as MiningStats);
   }
 }
 
