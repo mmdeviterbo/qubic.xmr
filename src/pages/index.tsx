@@ -10,7 +10,6 @@ import Card from "@/components/common/Card";
 import type { MiningStats } from "@/types/MiningStats";
 import { Labels } from "@/utils/constants";
 import {
-  formatLatestBlockFound,
   formatLatestBlockFoundSubValue,
   formatPeakHashrateDate,
   formatPoolBlocksFoundSubValue,
@@ -42,7 +41,6 @@ const Main: NextPage<{
   const {
     pool_hashrate,
     pool_blocks_found,
-    connected_miners,
     last_block_found,
     hashrate_average_7d,
     network_hashrate: monero_network_hashrate,
@@ -56,10 +54,10 @@ const Main: NextPage<{
     hashrate_average_1h,
     max_hashrate,
     max_hashrate_last_update,
-  } = blockFoundStats;
+  } = blockFoundStats ?? {};
 
-  const fetchBlocksFoundStats = useCallback(async () => {
-    const response = await axios.get("/api/block-found-stats");
+  const fetchQubicMiningHistory = useCallback(async () => {
+    const response = await axios.get("/api/calculated-stats");
     if (response?.status === 200) {
       setBlockFoundStats(response.data);
     }
@@ -83,8 +81,8 @@ const Main: NextPage<{
 
   useEffect(() => {
     setInterval(() => {
-      void fetchBlocksFoundStats();
-    }, 60000); //60sec / 1min
+      void fetchQubicMiningHistory();
+    }, 90000); //90sec / 1.5min
   }, []);
 
   const isLoadingStats = useMemo(
@@ -119,6 +117,7 @@ const Main: NextPage<{
             toolTip={
               "Percentage of pool hashrate over Monero's network hashrate"
             }
+            toolTipLeftPosition={false}
           />
           <div className="relative w-full flex gap-16">
             <CardSolo
@@ -166,6 +165,7 @@ const Main: NextPage<{
                     : "-"
                 }
                 toolTip={"Daily blocks found reset at 12:00 UTC"}
+                subValue={formatLatestBlockFoundSubValue(last_block_found)}
                 loading={isLoadingStats}
               />
               <Card
@@ -186,21 +186,6 @@ const Main: NextPage<{
             </div>
           </div>
 
-          {/* <Card
-            label={Labels.LAST_BLOCK_FOUND}
-            value={formatLatestBlockFound(last_block_found)}
-            loading={isLoadingStats}
-            subValue={formatLatestBlockFoundSubValue(last_block_found)}
-          />
-          <Card
-            label={Labels.CONNECTED_MINERS}
-            value={
-              isValidValue(connected_miners)
-                ? connected_miners?.toLocaleString()
-                : "-"
-            }
-            loading={isLoadingStats}
-          /> */}
           <Card
             label={Labels.MONERO_NETWORK_HASHRATE}
             value={formatLargeInteger(monero_network_hashrate)}
@@ -228,8 +213,9 @@ export const getServerSideProps = async () => {
   try {
     const baseUrl = process.env.BASE_URL;
     const blockFoundStatsResponse = await axios.get(
-      `${baseUrl}/api/block-found-stats`,
+      `${baseUrl}/api/calculated-stats`,
     );
+
     const miningStatsResponse = await axios.get<MiningStats>(
       `${baseUrl}/api/mining-stats`,
     );

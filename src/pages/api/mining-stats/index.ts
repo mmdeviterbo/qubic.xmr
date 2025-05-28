@@ -3,7 +3,7 @@ import axios from "axios";
 
 import type { MiningStats } from "@/types/MiningStats";
 import {
-  MONERO_MINING_BLOCK_FOUND_URL,
+  MONERO_MINING_LATEST_BLOCK_FOUND_URL,
   MONERO_MINING_POOLS_STATS_URL,
   QUBIC_XMR_STATS_URL,
 } from "@/utils/constants";
@@ -11,7 +11,7 @@ import {
 async function getMiningAverages() {
   try {
     const latestBlockFoundTime: number = (
-      await axios.get(MONERO_MINING_BLOCK_FOUND_URL())
+      await axios.get(MONERO_MINING_LATEST_BLOCK_FOUND_URL())
     )?.data;
 
     const pools: Record<string, number | string>[] = (

@@ -30,3 +30,23 @@ export type MiningStats = {
   epoch_blocks_found: number;
   epoch: number;
 };
+
+export interface QubicMiningHistory {
+  timestamp: string; //utc already
+  pool_hashrate: `${number}`;
+  network_hashrate: `${number}`;
+  pool_blocks_found: `${number}`;
+  timestamp_hour: string; //utc hour already
+  close: `${number}`;
+  qubic_usdt: `${number}`;
+  qubic_epoch: `${number}`;
+
+  // timestamp: '2025-05-28 09:18:42',
+  // pool_hashrate: '1039550',
+  // network_hashrate: '5341422420',
+  // pool_blocks_found: '73',
+  // timestamp_hour: '2025-05-28 09:00:00',
+  // close: '345.89',
+  // qubic_usdt: '1.5003e-06',
+  // qubic_epoch: '162'
+}

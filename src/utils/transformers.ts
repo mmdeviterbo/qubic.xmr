@@ -32,19 +32,49 @@ export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
   return `≈ ${totalXMR.toFixed(2)} ${moneroTicker}`;
 };
 
-export const formatLatestBlockFound = (last_block_found: number) => {
-  if (!isValidValue(last_block_found)) {
-    return "-";
-  }
-
-  const latestBlockFound = Number(`${last_block_found}000`);
-  return last_block_found
-    ? dayjs(new Date(latestBlockFound)).format("MMM D, YYYY")
-    : "";
-};
-
 export const formatPeakHashrateDate = (date: string) =>
   dayjs(new Date(date)).format("MMM D, YYYY");
+
+export const getTimeUnitShortVersion = (time: string) => {
+  const formatSingularOrPlural =  Number(time.split(" ")[0]) <= 1 ? time.slice(0, -1) : time;
+  
+  const units = [
+    {
+      long: "year",
+      short: "yr"
+    },
+    {
+      long: "month",
+      short: "mo"
+    },
+    {
+      long: "day",
+      short: "day"
+    },
+    {
+      long: "hour",
+      short: "hr"
+    },
+    {
+      long: "minute",
+      short: "min"
+    },
+    {
+      long: "second",
+      short: "s"
+    }
+  ];
+
+  let timeShortForm = formatSingularOrPlural;
+  for(const unit of units) {
+    console.log(timeShortForm, unit.long)
+    if(timeShortForm.includes(unit.long)) {
+      timeShortForm = timeShortForm.replace(unit.long, unit.short);
+      break;
+    }
+  }
+  return timeShortForm;
+}
 
 export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
   if (!isValidValue(last_block_found)) {
@@ -61,12 +91,7 @@ export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
     .filter((k) => !!difference[k])
     .map((k) => `${difference[k]} ${k}`)[0];
 
-  formattedDifference =
-    Number(formattedDifference.split(" ")[0]) <= 1
-      ? formattedDifference.slice(0, -1)
-      : formattedDifference;
-
-  return `≈ ${formattedDifference} ago`;
+  return `≈ ${getTimeUnitShortVersion(formattedDifference)} ago`;
 };
 
 export const isValidValue = (value: number) => {

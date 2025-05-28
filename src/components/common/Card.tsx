@@ -9,6 +9,7 @@ interface CardProps {
   subValue?: string;
   loading: boolean;
   toolTip?: string;
+  toolTipLeftPosition?: boolean;
   customClass?: string;
 }
 
@@ -19,6 +20,7 @@ const Card: FC<CardProps> = ({
   subValue = "",
   loading,
   toolTip,
+  toolTipLeftPosition = true,
   customClass = "",
 }) => {
   return (
@@ -29,7 +31,7 @@ const Card: FC<CardProps> = ({
 
       <div className="flex items-center gap-2">
         <span className="font-space text-14 text-gray-50">{label}</span>
-        {toolTip && <Tooltip content={toolTip} />}
+        {toolTip && <Tooltip content={toolTip} leftPosition={toolTipLeftPosition}/>}
       </div>
 
       <div className="flex items-center">
