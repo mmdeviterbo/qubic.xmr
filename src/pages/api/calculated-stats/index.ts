@@ -99,7 +99,7 @@ const getMaxHashrateHistory = (
   return maxBy(optimizedHistory, (i) => Number(i.pool_hashrate));
 };
 
-const parseCSV = async(stream) => {
+const parseCSV = async (stream) => {
   return await new Promise<any[]>((resolve, reject) => {
     let parsedData = [];
     Papa.parse(stream, {
@@ -120,6 +120,7 @@ const parseCSV = async(stream) => {
 export const getMiningHistory = async () => {
   const res = await axios.get(QUBIC_SOLO_MINING_HISTORY, {
     responseType: "stream",
+    timeout: 10000,
   });
   const historyResponse: QubicMiningHistory[] = await parseCSV(res?.data);
   return historyResponse;
@@ -141,6 +142,7 @@ export default async function handler(
 ) {
   try {
     const history = await getMiningHistory();
+    console.log("history.length: ", history.length, history.at(-1));
 
     const epoch = Number(history.at(-1).qubic_epoch);
 
@@ -172,6 +174,3 @@ export default async function handler(
     res.status(400).json({} as MiningStats);
   }
 }
-
-//now = 1748271372
-//00:00UTC = 1748271372

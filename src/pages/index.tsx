@@ -25,7 +25,7 @@ const Main: NextPage<{
 }> = ({ miningStatsProps }) => {
   const [miningStats, setMiningStats] = useState<MiningStats>(miningStatsProps);
 
-  const [blockFoundStats, setBlockFoundStats] =
+  const [history, setHistory] =
     useState<
       Pick<
         MiningStats,
@@ -54,12 +54,12 @@ const Main: NextPage<{
     hashrate_average_1h,
     max_hashrate,
     max_hashrate_last_update,
-  } = blockFoundStats ?? {};
+  } = history ?? {};
 
   const fetchQubicMiningHistory = useCallback(async () => {
     const response = await axios.get("/api/calculated-stats");
     if (response?.status === 200) {
-      setBlockFoundStats(response.data);
+      setHistory(response.data);
     }
   }, []);
 
@@ -80,6 +80,9 @@ const Main: NextPage<{
   }, []);
 
   useEffect(() => {
+    if (!daily_blocks_found) {
+    }
+
     setInterval(() => {
       void fetchQubicMiningHistory();
     }, 90000); //90sec / 1.5min
@@ -234,6 +237,7 @@ export const getServerSideProps = async () => {
 
     return { props: { miningStatsProps } };
   } catch (e) {
+    console.log(e);
     return { props: {} };
   }
 };
