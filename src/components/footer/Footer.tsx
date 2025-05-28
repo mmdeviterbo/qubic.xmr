@@ -11,8 +11,9 @@ const Footer: FC = () => {
   }, []);
 
   return (
-    <div className="flex mt-4 gap-4 text-gray-50 text-xs underline">
+    <div className="flex mt-4 gap-2 text-gray-50 text-xs underline">
       <Link href={QUBIC_XMR_STATS_URL.replace("/stats", "")}>Live data</Link>
+      <span>|</span>
       <Link href={""} onClick={openMultipleTabs}>
         Dive Deeper
       </Link>
