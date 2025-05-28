@@ -171,7 +171,7 @@ export default async function handler(
       max_hashrate_last_update,
     });
   } catch (e) {
-    console.log(e, "/api/calculated-stats", e)
+    console.log(e, "/api/calculated-stats", e);
     res.status(400);
   }
 }

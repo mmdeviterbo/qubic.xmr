@@ -93,7 +93,7 @@ const Main: NextPage<{
     [miningStats],
   );
 
-  console.log(history)
+  console.log(history);
 
   return (
     <>
@@ -128,7 +128,11 @@ const Main: NextPage<{
             <CardSolo
               label={Labels.PEAK_HASHRATE}
               value={formatLargeInteger(max_hashrate)}
-              subValue={max_hashrate_last_update ? formatPeakHashrateDate(max_hashrate_last_update) : ""}
+              subValue={
+                max_hashrate_last_update
+                  ? formatPeakHashrateDate(max_hashrate_last_update)
+                  : ""
+              }
               loading={isLoadingStats}
               customClass="w-1/2"
             />
@@ -219,7 +223,7 @@ export const getServerSideProps = async () => {
     const baseUrl = process.env.BASE_URL;
     const blockFoundStatsResponse = await axios.get(
       `${baseUrl}/api/calculated-stats`,
-      { timeout: 10000 }
+      { timeout: 10000 },
     );
 
     const miningStatsResponse = await axios.get<MiningStats>(
