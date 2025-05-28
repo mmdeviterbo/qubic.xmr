@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 
 import type { MiningStats } from "@/types/MiningStats";
-import { QUBIC_XMR_FULL_HISTORY_ON_RENDER_URL } from "@/utils/constants";
+import { MONERO_BLOCK_INFO, QUBIC_XMR_FULL_HISTORY_ON_RENDER_URL, QUBIC_XMR_STATS_URL } from "@/utils/constants";
 import {
   base64ToIntArray,
   float64ToDecimalArray,
@@ -67,7 +67,7 @@ const getPreviousEpochDateUTC = () => {
   return target;
 };
 
-const getBlocksFoundByStartDate = (
+export const getBlocksFoundByStartDate = (
   startDateUTC: Date,
   utcDatesOfBlocksFound: string[], //string of UTC dates same indexing on 'blockIntegers'
   blockIntegers: Uint8Array<ArrayBuffer>, //current total blocks as of the based on the current timestamp,
@@ -94,6 +94,45 @@ const getBlocksFoundByStartDate = (
   }
   return totalDailyBlocks;
 };
+
+const getBlocksFoundByQubicMoneroStats = async(): Promise<number> => {
+  let totalDailyBlocks = 0;
+
+  try {
+    const qubicMoneroStats = await axios.get<MiningStats>(QUBIC_XMR_STATS_URL);
+    if(qubicMoneroStats.status !== 200) {
+      return -1;
+    }
+  
+    const apis = []
+
+    const blocks = (qubicMoneroStats?.data?.mined_block_info?.last_20_mined_blocks as number[]).reverse();
+    for(const block of blocks) {
+      const api = axios.get(`${MONERO_BLOCK_INFO(block)}`);
+      apis.push(api);
+    }
+
+    const previous1159AMUTC = getPrevious1159AMUTC();
+
+    const blocksInfo = await Promise.all(apis);
+    blocksInfo.forEach((blockInfo, index) => {
+      const blockDateUTC = new Date((blockInfo?.data?.data?.timestamp_utc as string).concat("Z"));
+      if(index === 0 && blockDateUTC > previous1159AMUTC) {
+        return -1;
+      }
+      if(blockDateUTC >= previous1159AMUTC) {
+        totalDailyBlocks = totalDailyBlocks + 1;
+      }
+    })
+    return totalDailyBlocks;
+  } catch (error) {
+    return -1;
+  }
+}
+
+const findInQubicXmrRenderData = (data, name: string) => {
+  return data?.data?.response?.graph?.figure?.data.find(d => d.name === name);
+}
 
 export default async function handler(
   req: NextApiRequest,
@@ -129,11 +168,17 @@ export default async function handler(
     const blockIntegers = base64ToIntArray(
       data?.data?.response?.graph?.figure?.data[3]?.y?.bdata as string,
     );
-    const daily_blocks_found = getBlocksFoundByStartDate(
-      getPrevious1159AMUTC(),
-      utcDatesOfBlocksFound,
-      blockIntegers,
-    );
+
+
+    let daily_blocks_found = 0;
+    daily_blocks_found = await getBlocksFoundByQubicMoneroStats();
+    if(daily_blocks_found === -1) {
+      daily_blocks_found = getBlocksFoundByStartDate(
+        getPrevious1159AMUTC(),
+        utcDatesOfBlocksFound,
+        blockIntegers,
+      );
+    }
 
     const epoch_blocks_found = getBlocksFoundByStartDate(
       getPreviousEpochDateUTC(),
@@ -146,27 +191,23 @@ export default async function handler(
     )?.data?.data;
 
     // one hour hashrate average
-    const oneHrAveragesDates = data?.data?.response?.graph?.figure?.data[2]
-      ?.x as string[];
-    const oneHrAverages = float64ToDecimalArray(
-      data?.data?.response?.graph?.figure?.data[2]?.y?.bdata as string,
-    );
+    const oneHrAverageData = findInQubicXmrRenderData(data, "1 h Avg");
+    // const oneHrAveragesDates = oneHrAverageData?.x as string[];
+    const oneHrAverages = float64ToDecimalArray(oneHrAverageData?.y?.bdata as string);
     const hashrate_average_1h =
       oneHrAverages?.length > 0
         ? oneHrAverages[oneHrAverages.length - 1] * 1000000
         : -1;
 
-    // one hour hashrate average
-    const maxHashratesDates = data?.data?.response?.graph?.figure?.data[0]
-      ?.x as string[];
-    const maxHashrates = float64ToDecimalArray(
-      data?.data?.response?.graph?.figure?.data[0]?.y?.bdata as string,
-    );
+    // max hashrate average
+    const maxHashrateData = findInQubicXmrRenderData(data, "Max 20 s");
+    const maxHashratesDates = maxHashrateData?.x as string[];
+    const maxHashrates = float64ToDecimalArray(maxHashrateData?.y?.bdata as string);
 
     const maxHashrateIndex = indexOfMax(maxHashrates);
     let max_hashrate = -1,
       max_hashrate_last_update = "";
-    if (maxHashrateIndex != -1) {
+    if (maxHashrateIndex !== -1) {
       max_hashrate = maxHashrates[maxHashrateIndex] * 1000000;
       max_hashrate_last_update = maxHashratesDates[maxHashrateIndex];
     }

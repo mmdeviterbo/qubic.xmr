@@ -11,6 +11,9 @@ export const MONERO_MINING_POOLS_STATS_URL = (seconds: number) =>
 export const MONERO_MINING_POOLS_BLOCKS_URL = (seconds: number) =>
   `https://data.${MONERO_MINING_POOLS_STATS_BASE_URL}/data/blocks/monero.js?t=${seconds}`;
 
+export const MONERO_BLOCK_INFO = (block: number) => `https://moneroexplorer.org/api/search/${block}`;
+
+
 export const QUBIC_XMR_FULL_HISTORY_ON_RENDER_URL =
   "https://qubicxmr.onrender.com/_dash-update-component";
 
