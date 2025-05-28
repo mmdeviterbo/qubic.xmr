@@ -172,7 +172,11 @@ const Main: NextPage<{
                     : "-"
                 }
                 toolTip={"Daily blocks found reset at 12:00 UTC"}
-                subValue={daily_blocks_found > 0 ? formatLatestBlockFoundSubValue(last_block_found) : ""}
+                subValue={
+                  daily_blocks_found > 0
+                    ? formatLatestBlockFoundSubValue(last_block_found)
+                    : ""
+                }
                 loading={isLoadingHistory}
               />
               <Card
