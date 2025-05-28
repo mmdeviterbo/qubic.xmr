@@ -18,7 +18,6 @@ import {
 } from "@/utils/transformers";
 import { formatLargeInteger } from "@/utils/numbers";
 import Footer from "@/components/footer/Footer";
-import CardDual from "@/components/common/CardSolo";
 import CardSolo from "@/components/common/CardSolo";
 
 const Main: NextPage<{
