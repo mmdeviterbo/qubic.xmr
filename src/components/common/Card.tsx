@@ -11,13 +11,20 @@ interface CardProps {
   toolTip?: string;
   toolTipLeftPosition?: boolean;
   customClass?: string;
+  properties?: {
+    isOnline?: boolean;
+  };
 }
 
-const AnimationPing: FC = () => {
+const AnimationPing: FC<{ isOnline?: boolean }> = ({ isOnline }) => {
   return (
     <span className="relative flex size-2">
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-      <span className="relative inline-flex size-2 rounded-full bg-sky-200"></span>
+      {isOnline && (
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75" />
+      )}
+      <span
+        className={`relative inline-flex size-2 rounded-full ${isOnline ? "bg-sky-200" : "bg-red-500"}`}
+      />
     </span>
   );
 };
@@ -31,6 +38,7 @@ const Card: FC<CardProps> = ({
   toolTip,
   toolTipLeftPosition = true,
   customClass = "",
+  properties,
 }) => {
   return (
     <div
@@ -41,7 +49,7 @@ const Card: FC<CardProps> = ({
       <div className="flex items-center gap-2">
         <span className="font-space text-14 text-gray-50">{label}</span>
         {index === 0 ? (
-          <AnimationPing />
+          <AnimationPing isOnline={properties?.isOnline} />
         ) : (
           toolTip && (
             <Tooltip content={toolTip} leftPosition={toolTipLeftPosition} />

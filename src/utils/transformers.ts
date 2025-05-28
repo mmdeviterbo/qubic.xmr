@@ -25,7 +25,7 @@ export const formatPoolHashrateSubValue = (
 };
 
 export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
-  if (!isValidValue(pool_blocks_found)) {
+  if (!isValidValue(pool_blocks_found, false)) {
     return "";
   }
   const totalXMR = blockToXMRConversion * pool_blocks_found;
@@ -94,6 +94,6 @@ export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
   return `≈ ${getTimeUnitShortVersion(formattedDifference)} ago`;
 };
 
-export const isValidValue = (value: number) => {
-  return !isNaN(value) && value >= 0;
+export const isValidValue = (value: number, isZeroAllowed = true) => {
+  return !isNaN(value) && (isZeroAllowed ? value >= 0 : value > 0);
 };

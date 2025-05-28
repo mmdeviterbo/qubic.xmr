@@ -44,6 +44,7 @@ const Main: NextPage<{
     pool_blocks_found,
     last_block_found,
     hashrate_average_7d,
+    connected_miners,
     network_hashrate: monero_network_hashrate,
     network_difficulty: monero_network_difficulty,
   } = miningStats ?? {};
@@ -120,6 +121,9 @@ const Main: NextPage<{
               "Percentage of pool hashrate over Monero's network hashrate"
             }
             toolTipLeftPosition={false}
+            properties={{
+              isOnline: connected_miners > 0 && pool_blocks_found > 0,
+            }}
           />
           <div className="relative w-full flex gap-16">
             <CardSolo
@@ -153,7 +157,7 @@ const Main: NextPage<{
             <CardSolo
               label={Labels.BLOCKS_FOUND}
               value={
-                isValidValue(pool_blocks_found)
+                isValidValue(pool_blocks_found, false)
                   ? pool_blocks_found?.toLocaleString()
                   : "-"
               }

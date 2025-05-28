@@ -14,5 +14,8 @@ export const formatLargeInteger = (value: number) => {
   if (value >= 1000) {
     return (value / 1000).toFixed(2).replace(/\.0$/, "") + " KH/s";
   }
+  if (value === 0) {
+    return value;
+  }
   return value?.toFixed(2).toLocaleString().concat(" H/s");
 };
