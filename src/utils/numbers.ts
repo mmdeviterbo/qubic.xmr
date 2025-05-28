@@ -43,7 +43,9 @@ export const float64ToDecimalArray = (base64String: string): number => {
     for (let i = 0; i < buffer.byteLength; i += 8) {
       result.push(view.getFloat64(i, true));
     }
-    return result[result.length - 1];
+
+    // convert to million
+    return result[result.length - 1] * 1000000;
   } catch (error) {
     return -1;
   }
