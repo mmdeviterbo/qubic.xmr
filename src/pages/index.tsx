@@ -182,7 +182,7 @@ const Main: NextPage<{
               <Card
                 label={Labels.EPOCH_BLOCKS_FOUND.replace(
                   "<number>",
-                  isLoadingHistory ? "" : epoch?.toString(),
+                  isLoadingHistory || epoch <= 0 ? "" : epoch?.toString(),
                 )}
                 value={
                   isValidValue(epoch_blocks_found)
