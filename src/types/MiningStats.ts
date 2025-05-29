@@ -1,5 +1,4 @@
 export type MiningStats = {
-  highest_pool_hashrate: number;
   pool_hashrate: number;
   round_hashes: number;
   network_hashrate: number;
@@ -56,7 +55,6 @@ export type CalculatedMiningStats = Pick<
   | "daily_blocks_found"
   | "epoch_blocks_found"
   | "epoch"
-  | "hashrate_average_1h"
   | "max_hashrate"
   | "max_hashrate_last_update"
 >;

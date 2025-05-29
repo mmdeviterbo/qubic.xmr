@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import Papa from "papaparse";
-import meanBy from "lodash/meanBy";
+// import meanBy from "lodash/meanBy";
 import maxBy from "lodash/maxBy";
+
+import CHECKPOINTS from "@/utils/checkpoints.json";
 
 import type {
   CalculatedMiningStats,
@@ -36,19 +38,23 @@ export const getBlocksFoundByStartDate = (
   return totalDailyBlocks;
 };
 
-const getOneHourHashrateAverage = (history: QubicMiningHistory[]): number => {
-  const maxLength = history.length;
-  const oneHrItems = history.slice(maxLength - 600 - 1);
-  return meanBy(oneHrItems, (i) => Number(i.pool_hashrate));
-};
+// const getOneHourHashrateAverage = (history: QubicMiningHistory[]): number => {
+//   const maxLength = history.length;
+//   const oneHrItems = history.slice(maxLength - 600 - 1);
+//   return meanBy(oneHrItems, (i) => Number(i.pool_hashrate));
+// };
 
 const getMaxHashrateHistory = (
   history: QubicMiningHistory[],
 ): QubicMiningHistory => {
-  const latest_max_hashrate_index = 220473;
-  // const max_hashrate = history[latest_max_hashrate_index];
-  // console.log(history.length - 1);
-  const optimizedHistory = history.slice(latest_max_hashrate_index);
+  const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
+  const latestMaxHashrateIndex =
+    CHECKPOINTS.MAX_HASHRATE.latestMaxHashrateIndex;
+
+  const maxHashrateHistory = history[latestMaxHashrateIndex];
+  const optimizedHistory = history.slice(latestIndex);
+  optimizedHistory.push(maxHashrateHistory);
+
   return maxBy(optimizedHistory, (i) => Number(i.pool_hashrate));
 };
 
@@ -88,8 +94,6 @@ export default async function handler(
 
     const epoch = Number(history.at(-1).qubic_epoch);
 
-    const hashrate_average_1h = getOneHourHashrateAverage(history);
-
     const maxHashrateHistory = getMaxHashrateHistory(history);
     const max_hashrate = Number(maxHashrateHistory?.pool_hashrate);
     const max_hashrate_last_update = maxHashrateHistory?.timestamp;
@@ -108,7 +112,6 @@ export default async function handler(
       daily_blocks_found,
       epoch_blocks_found,
       epoch,
-      hashrate_average_1h,
       max_hashrate,
       max_hashrate_last_update,
     });

@@ -25,7 +25,10 @@ async function getMiningAverages() {
       throw new Error();
     }
 
-    return { hashrate_average_7d: qubicPool.hashrate_average_7d as number };
+    return {
+      hashrate_average_7d: qubicPool.hashrate_average_7d as number,
+      hashrate_average_1h: qubicPool.hashrate_average_1h as number,
+    };
   } catch (e) {
     return null;
   }
@@ -36,12 +39,15 @@ export default async function handler(
   res: NextApiResponse<MiningStats>,
 ) {
   try {
-    const newMiningStats: MiningStats = (await axios.get(QUBIC_XMR_STATS_URL))
+    let newMiningStats: MiningStats = (await axios.get(QUBIC_XMR_STATS_URL))
       .data;
 
     const averages = await getMiningAverages();
     if (averages) {
-      newMiningStats.hashrate_average_7d = averages.hashrate_average_7d;
+      newMiningStats = {
+        ...newMiningStats,
+        ...(averages ? averages : {}),
+      };
     }
 
     res.status(200).json(newMiningStats);

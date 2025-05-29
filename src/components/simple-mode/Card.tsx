@@ -1,6 +1,6 @@
 import { memo, type FC, type ReactNode } from "react";
-import Tooltip from "./Tooltip";
-import CfbToken from "./sponsor/cfb/CfbToken";
+import Tooltip from "@/components/common/Tooltip";
+import CfbToken from "@/components/common/sponsor/cfb/CfbToken";
 
 interface CardProps {
   index?: number;

@@ -2,8 +2,8 @@ import { FC, useMemo } from "react";
 import isEmpty from "lodash/isEmpty";
 
 import QubicLogo from "../common/logos/QubicLogo";
-import Card from "../common/Card";
-import CardSolo from "../common/CardSolo";
+import Card from "./Card";
+import CardSolo from "./CardSolo";
 import Footer from "../footer/Footer";
 
 import { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
@@ -30,6 +30,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
     pool_hashrate,
     pool_blocks_found,
     last_block_found,
+    hashrate_average_1h,
     hashrate_average_7d,
     connected_miners,
     network_hashrate: monero_network_hashrate,
@@ -40,7 +41,6 @@ const SimpleMode: FC<SimpleModeProps> = ({
     daily_blocks_found,
     epoch_blocks_found,
     epoch,
-    hashrate_average_1h,
     max_hashrate,
     max_hashrate_last_update,
   } = calculatedMiningStats ?? {};

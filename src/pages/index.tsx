@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import type { NextPage } from "next";
 
@@ -31,18 +31,12 @@ const Main: NextPage<{
   }, []);
 
   useEffect(() => {
-    if (!miningStatsProps) {
-      void fetchMiningStats();
-    }
     setInterval(() => {
       void fetchMiningStats();
     }, 10000); //10sec
   }, []);
 
   useEffect(() => {
-    if (!calculatedMiningStats?.hashrate_average_1h) {
-      void fetchCalculatedMiningStats();
-    }
     setInterval(() => {
       void fetchCalculatedMiningStats();
     }, 90000); //90sec / 1.5min

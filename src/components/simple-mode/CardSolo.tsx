@@ -1,5 +1,5 @@
 import { memo, type FC, type ReactNode } from "react";
-import Tooltip from "./Tooltip";
+import Tooltip from "../common/Tooltip";
 
 interface CardProps {
   index?: number;

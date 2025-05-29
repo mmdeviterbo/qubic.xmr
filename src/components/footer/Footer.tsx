@@ -15,7 +15,7 @@ const Footer: FC = () => {
       <Link href={QUBIC_XMR_STATS_URL.replace("/stats", "")}>Live data</Link>
       <span>|</span>
       <Link href={""} onClick={openMultipleTabs}>
-        Dive Deeper
+        Detailed Insights
       </Link>
     </div>
   );
