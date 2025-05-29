@@ -6,7 +6,7 @@ import Head from "next/head";
 import axios from "axios";
 
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
-import SimpleMode from "@/components/SimpleMode";
+import SimpleMode from "@/components/simple-mode/SimpleMode";
 
 const Main: NextPage<{
   miningStatsProps?: MiningStats;

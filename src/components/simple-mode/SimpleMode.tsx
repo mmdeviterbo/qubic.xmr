@@ -1,10 +1,10 @@
 import { FC, useMemo } from "react";
 import isEmpty from "lodash/isEmpty";
 
-import QubicLogo from "./common/logos/QubicLogo";
-import Card from "./common/Card";
-import CardSolo from "./common/CardSolo";
-import Footer from "./footer/Footer";
+import QubicLogo from "../common/logos/QubicLogo";
+import Card from "../common/Card";
+import CardSolo from "../common/CardSolo";
+import Footer from "../footer/Footer";
 
 import { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import { Labels } from "@/utils/constants";
