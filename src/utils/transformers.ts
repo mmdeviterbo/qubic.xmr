@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { isValidValue } from "./numbers";
 import { blockToXMRConversion, moneroTicker } from "./constants";
 import datetimeDifference, {
   type DateTimeDifference,
@@ -92,8 +93,4 @@ export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
     .map((k) => `${difference[k]} ${k}`)[0];
 
   return `≈ ${getTimeUnitShortVersion(formattedDifference)} ago`;
-};
-
-export const isValidValue = (value: number, isZeroAllowed = true) => {
-  return !isNaN(value) && (isZeroAllowed ? value >= 0 : value > 0);
 };

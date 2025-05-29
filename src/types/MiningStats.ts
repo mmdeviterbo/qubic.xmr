@@ -50,3 +50,13 @@ export interface QubicMiningHistory {
   // qubic_usdt: '1.5003e-06',
   // qubic_epoch: '162'
 }
+
+export type CalculatedMiningStats = Pick<
+  MiningStats,
+  | "daily_blocks_found"
+  | "epoch_blocks_found"
+  | "epoch"
+  | "hashrate_average_1h"
+  | "max_hashrate"
+  | "max_hashrate_last_update"
+>;

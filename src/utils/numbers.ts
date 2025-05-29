@@ -1,5 +1,3 @@
-import { isValidValue } from "./transformers";
-
 export const formatLargeInteger = (value: number) => {
   if (!isValidValue(value)) {
     return "-";
@@ -18,4 +16,8 @@ export const formatLargeInteger = (value: number) => {
     return value;
   }
   return value?.toFixed(2).toLocaleString().concat(" H/s");
+};
+
+export const isValidValue = (value: number, isZeroAllowed = true) => {
+  return !isNaN(value) && (isZeroAllowed ? value >= 0 : value > 0);
 };
