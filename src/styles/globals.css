@@ -133,4 +133,8 @@ img#cfb-token:hover {
       font-size: 1.5rem;
       line-height: 1.25;
   }
+  .xs\:text-14 {
+    font-size: .875rem;
+    line-height: 1.25;
+  }
 }

@@ -1,4 +1,4 @@
-import { FC, useMemo } from "react";
+import { FC, useLayoutEffect, useMemo, useState } from "react";
 import isEmpty from "lodash/isEmpty";
 
 import QubicLogo from "../common/logos/QubicLogo";
@@ -45,14 +45,24 @@ const SimpleMode: FC<SimpleModeProps> = ({
     max_hashrate_last_update,
   } = calculatedMiningStats ?? {};
 
+  const [isXs, setIsXs] = useState(false);
+
   const isLoadingStats = useMemo(() => isEmpty(miningStats), [miningStats]);
   const isLoadingCalculatedStats = useMemo(
     () => isEmpty(calculatedMiningStats),
     [calculatedMiningStats],
   );
 
+  useLayoutEffect(() => {
+    function handleResize() {
+      setIsXs(window.innerWidth < 375);
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <main className="w-full flex flex-col gap-16 lg:w-1/3 px-12 py-32">
+    <main className="w-full flex flex-col gap-16 lg:w-2/3 xl:w-1/3 px-12 py-32">
       <div className="md:mb-2">
         <QubicLogo showTitle={true} />
       </div>
@@ -118,7 +128,9 @@ const SimpleMode: FC<SimpleModeProps> = ({
 
         <div className="flex flex-col gap-16 w-1/2">
           <Card
-            label={Labels.DAILY_BLOCKS_FOUND}
+            label={
+              isXs ? Labels.DAILY_BLOCKS_FOUND_SHORT : Labels.DAILY_BLOCKS_FOUND
+            }
             value={
               isValidValue(daily_blocks_found)
                 ? daily_blocks_found?.toLocaleString()
@@ -133,7 +145,10 @@ const SimpleMode: FC<SimpleModeProps> = ({
             loading={isLoadingCalculatedStats}
           />
           <Card
-            label={Labels.EPOCH_BLOCKS_FOUND.replace(
+            label={(isXs
+              ? Labels.EPOCH_BLOCKS_FOUND_SHORT
+              : Labels.EPOCH_BLOCKS_FOUND
+            ).replace(
               "<number>",
               isLoadingCalculatedStats || epoch <= 0 ? "" : epoch?.toString(),
             )}

@@ -13,7 +13,6 @@ import AdvancedMode from "@/components/advanced-mode/AdvancedMode";
 const Main: NextPage<{
   miningStatsProps?: MiningStats;
 }> = ({ miningStatsProps }) => {
-
   const [mode, setMode] = useState<MODE>(MODE.SIMPLE);
   const [miningStats, setMiningStats] = useState<MiningStats>(miningStatsProps);
   const [calculatedMiningStats, setCalculatedMiningStats] =
@@ -55,11 +54,14 @@ const Main: NextPage<{
       </Head>
 
       <div className="md:mt-4 flex justify-center">
-        {mode === MODE.SIMPLE ? <SimpleMode
-          miningStats={miningStats}
-          calculatedMiningStats={calculatedMiningStats}
-        /> :
-        <AdvancedMode />}
+        {mode === MODE.SIMPLE ? (
+          <SimpleMode
+            miningStats={miningStats}
+            calculatedMiningStats={calculatedMiningStats}
+          />
+        ) : (
+          <AdvancedMode />
+        )}
       </div>
     </>
   );

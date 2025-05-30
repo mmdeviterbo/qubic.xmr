@@ -58,7 +58,9 @@ const Card: FC<CardProps> = ({
       </div>
 
       <div className="flex items-center">
-        <p className="whitespace-nowrap font-space text-18 sm:text-22">
+        <p
+          className={`whitespace-nowrap font-space ${index !== 0 ? "text-14" : ""} xs:text-18 sm:text-22`}
+        >
           {loading ? "" : value}
         </p>
         {subValue && (

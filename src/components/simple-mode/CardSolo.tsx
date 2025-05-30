@@ -29,9 +29,11 @@ const Card: FC<CardProps> = ({
         {toolTip && <Tooltip content={toolTip} leftPosition={false} />}
       </div>
 
-      <div className={`flex flex-col items-center justify-center h-full`}>
+      <div
+        className={`flex flex-col text-center items-center justify-center h-full`}
+      >
         <p
-          className={`font-space ${index === 0 ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl"} grid place-items-center`}
+          className={`font-space ${index === 0 ? "text-lg xs:text-xl sm:text-2xl" : "text-xl xs:text-2xl sm:text-3xl"} grid place-items-center`}
         >
           {loading ? "" : value}
         </p>

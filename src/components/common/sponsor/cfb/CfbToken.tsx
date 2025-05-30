@@ -2,18 +2,27 @@ import { memo, useLayoutEffect, useState } from "react";
 import Image from "next/image";
 
 const CfbToken = () => {
-  const [height, setHeight] = useState(110);
-  const [width, setWidth] = useState(110);
+  const [height, setHeight] = useState(130);
+  const [width, setWidth] = useState(130);
 
   useLayoutEffect(() => {
     function handleResize() {
       const windowWidth = window.innerWidth;
-      if (windowWidth >= 560) {
-        setWidth(110);
-        setHeight(110);
+      if (windowWidth >= 1024) {
+        setWidth(130);
+        setHeight(130);
+      } else if (windowWidth >= 768) {
+        setWidth(120);
+        setHeight(120);
+      } else if (windowWidth >= 560) {
+        setWidth(100);
+        setHeight(100);
+      } else if (windowWidth >= 375) {
+        setWidth(90);
+        setHeight(90);
       } else {
-        setWidth(85);
-        setHeight(85);
+        setWidth(80);
+        setHeight(80);
       }
     }
     window.addEventListener("resize", handleResize);

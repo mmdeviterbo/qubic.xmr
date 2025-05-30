@@ -1,4 +1,4 @@
 export enum MODE {
   SIMPLE,
-  ADVANCED
-} 
+  ADVANCED,
+}
