@@ -2,7 +2,6 @@ import { memo, useLayoutEffect, useState } from "react";
 import Image from "next/image";
 
 const CfbToken = () => {
-  const [height, setHeight] = useState(130);
   const [width, setWidth] = useState(130);
 
   useLayoutEffect(() => {
@@ -10,19 +9,14 @@ const CfbToken = () => {
       const windowWidth = window.innerWidth;
       if (windowWidth >= 1024) {
         setWidth(130);
-        setHeight(130);
       } else if (windowWidth >= 768) {
         setWidth(120);
-        setHeight(120);
       } else if (windowWidth >= 560) {
-        setWidth(100);
-        setHeight(100);
+        setWidth(110);
       } else if (windowWidth >= 375) {
-        setWidth(90);
-        setHeight(90);
+        setWidth(100);
       } else {
-        setWidth(80);
-        setHeight(80);
+        setWidth(90);
       }
     }
     handleResize();
@@ -41,7 +35,7 @@ const CfbToken = () => {
         alt="CFB Token"
         src="/CFB_XMR.png"
         width={width}
-        height={height}
+        height={width}
         draggable={false}
       />
     </div>
