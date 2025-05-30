@@ -7,12 +7,15 @@ import axios from "axios";
 
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import SimpleMode from "@/components/simple-mode/SimpleMode";
+import { MODE } from "@/types/views";
+import AdvancedMode from "@/components/advanced-mode/AdvancedMode";
 
 const Main: NextPage<{
   miningStatsProps?: MiningStats;
 }> = ({ miningStatsProps }) => {
-  const [miningStats, setMiningStats] = useState<MiningStats>(miningStatsProps);
 
+  const [mode, setMode] = useState<MODE>(MODE.SIMPLE);
+  const [miningStats, setMiningStats] = useState<MiningStats>(miningStatsProps);
   const [calculatedMiningStats, setCalculatedMiningStats] =
     useState<CalculatedMiningStats>(miningStatsProps);
 
@@ -52,10 +55,11 @@ const Main: NextPage<{
       </Head>
 
       <div className="md:mt-4 flex justify-center">
-        <SimpleMode
+        {mode === MODE.SIMPLE ? <SimpleMode
           miningStats={miningStats}
           calculatedMiningStats={calculatedMiningStats}
-        />
+        /> :
+        <AdvancedMode />}
       </div>
     </>
   );
