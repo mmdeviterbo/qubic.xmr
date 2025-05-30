@@ -56,7 +56,6 @@ const Main: NextPage<{
         <title>Qubic-XMR Live</title>
       </Head>
 
-
       <div className="md:mt-4 flex justify-center">
         {mode === MODE.SIMPLE ? (
           <SimpleMode

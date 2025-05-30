@@ -1,6 +1,6 @@
+import { useEffect } from "react";
 import { isValidValue } from "@/utils/numbers";
 import confetti from "canvas-confetti";
-import { useEffect, useMemo } from "react";
 
 export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
   const isPoolBlockFoundValid = (pool_blocks_found?: number) => {
