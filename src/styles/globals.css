@@ -107,7 +107,7 @@ img#cfb-token {
   transform-origin: 100% 100%;
 
   /* shiny effect */
-  mask: linear-gradient(-60deg, #000 30%, #0005, #000 70%) right/350% 100%;
+  mask: linear-gradient(-60deg, #ffffff 60%, rgba(177, 177, 177, 0.85), #bdbdbd 70%) right/500% 100%;
   animation: shimmer 2.5s infinite;
 }
 
