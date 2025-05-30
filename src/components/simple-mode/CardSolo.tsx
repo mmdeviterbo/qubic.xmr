@@ -42,9 +42,9 @@ const Card: FC<CardProps> = ({
         >
           {loading ? "" : value}
         </p>
-        <p className="font-space text-base text-gray-50">
+        <div className="font-space text-base text-gray-50">
           {loading ? "" : subValue}
-        </p>
+        </div>
       </div>
     </div>
   );

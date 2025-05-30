@@ -43,8 +43,15 @@ export const formatPeakHashrateDateDifference = (
     "≈",
     "",
   );
-  const epochFound = isValidValue(epoch, false) ? `Epoch ${epoch}` : "";
-  return [epochFound, "|", timeDifference];
+
+  const arrString = [];
+  if (timeDifference) {
+    arrString.push(timeDifference);
+  }
+  if (isValidValue(epoch, false)) {
+    arrString.push("|", `Epoch ${epoch}`);
+  }
+  return arrString?.reverse();
 };
 
 export const getTimeUnitShortVersion = (time: string) => {

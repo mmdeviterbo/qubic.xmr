@@ -95,10 +95,9 @@ export default async function handler(
     const epoch = Number(history.at(-1).qubic_epoch);
 
     const maxHashrateHistory = getMaxHashrateHistory(history);
-
-    const max_hashrate = Number(maxHashrateHistory?.pool_hashrate);
-    const max_hashrate_last_update = maxHashrateHistory?.timestamp;
-    const max_hashrate_last_epoch = Number(maxHashrateHistory?.qubic_epoch);
+    const max_hashrate = Number(maxHashrateHistory.pool_hashrate);
+    const max_hashrate_last_update = maxHashrateHistory.timestamp;
+    const max_hashrate_last_epoch = Number(maxHashrateHistory.qubic_epoch);
 
     const epoch_blocks_found = getBlocksFoundByStartDate(
       getPreviousEpochDateUTC(),
