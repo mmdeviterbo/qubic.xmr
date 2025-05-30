@@ -15,7 +15,7 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
   };
 
   const showConfetti = () => {
-    const canvas = document.querySelector("canvas.confetti");
+    const canvas = document?.querySelector("canvas.confetti");
     const myConfetti = confetti.create(canvas, {
       resize: true,
       useWorker: true,
@@ -28,7 +28,7 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
   };
 
   useEffect(() => {
-    if (document.visibilityState !== "visible") {
+    if (document?.visibilityState !== "visible") {
       return;
     }
 
