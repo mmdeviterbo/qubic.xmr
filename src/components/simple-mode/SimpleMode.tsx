@@ -1,4 +1,4 @@
-import { FC, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { FC, useLayoutEffect, useMemo, useState } from "react";
 import isEmpty from "lodash/isEmpty";
 
 import QubicLogo from "../common/logos/QubicLogo";
@@ -7,6 +7,8 @@ import CardSolo from "./CardSolo";
 import Footer from "../footer/Footer";
 
 import { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
+
+import { useConfettiBlocksFound } from "@/hooks/useConfettiBlocksFound";
 import { Labels } from "@/utils/constants";
 import {
   formatLargeInteger,
@@ -64,6 +66,8 @@ const SimpleMode: FC<SimpleModeProps> = ({
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useConfettiBlocksFound(pool_blocks_found);
 
   return (
     <main className="w-full flex flex-col gap-16 lg:w-2/3 xl:w-1/3 px-12 py-32">

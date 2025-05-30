@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { isValidValue } from "@/utils/numbers";
 import confetti from "canvas-confetti";
+import useIsViewing from "./useIsViewing";
 
 export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
+  const isViewing = useIsViewing();
+
   const isPoolBlockFoundValid = (pool_blocks_found?: number) => {
     if (!isValidValue(pool_blocks_found, false)) {
       return false;
@@ -28,7 +31,7 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
   };
 
   useEffect(() => {
-    if (document?.visibilityState !== "visible") {
+    if (!isViewing) {
       return;
     }
 
@@ -53,5 +56,5 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
         clearInterval(confettiInterval);
       }, 9000);
     } catch (e) {}
-  }, [pool_blocks_found]);
+  }, [pool_blocks_found, isViewing]);
 };

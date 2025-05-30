@@ -9,7 +9,6 @@ import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import SimpleMode from "@/components/simple-mode/SimpleMode";
 import { MODE } from "@/types/views";
 import AdvancedMode from "@/components/advanced-mode/AdvancedMode";
-import { useConfettiBlocksFound } from "@/hooks/useConfettiBlocksFound";
 
 const Main: NextPage<{
   miningStatsProps?: MiningStats;
@@ -44,8 +43,6 @@ const Main: NextPage<{
       void fetchCalculatedMiningStats();
     }, 90000); //90sec / 1.5min
   }, []);
-
-  useConfettiBlocksFound(miningStats?.pool_blocks_found);
 
   return (
     <>
