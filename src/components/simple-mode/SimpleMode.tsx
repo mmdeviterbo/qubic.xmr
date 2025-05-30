@@ -46,6 +46,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
     epoch,
     max_hashrate,
     max_hashrate_last_update,
+    max_hashrate_last_epoch,
   } = calculatedMiningStats ?? {};
 
   const [isXs, setIsXs] = useState(false);
@@ -93,9 +94,20 @@ const SimpleMode: FC<SimpleModeProps> = ({
             isLoadingCalculatedStats ? "" : formatLargeInteger(max_hashrate)
           }
           subValue={
-            max_hashrate_last_update
-              ? formatPeakHashrateDateDifference(max_hashrate_last_update)
-              : ""
+            max_hashrate_last_update ? (
+              <div className="flex flex-col sm:flex-row items-center justify-center flex-wrap gap-0 sm:gap-2 text-14 sm:text-16 md:text-base">
+                {formatPeakHashrateDateDifference(
+                  max_hashrate_last_update,
+                  max_hashrate_last_epoch,
+                )?.map((v, i) => (
+                  <p key={i} className={`${i === 1 ? "hidden sm:block" : ""}`}>
+                    {v}
+                  </p>
+                ))}
+              </div>
+            ) : (
+              ""
+            )
           }
           loading={isLoadingCalculatedStats}
           customClass="w-1/2"

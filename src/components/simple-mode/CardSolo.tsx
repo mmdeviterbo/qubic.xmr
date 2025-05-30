@@ -5,7 +5,7 @@ interface CardProps {
   index?: number;
   label: string;
   value: ReactNode;
-  subValue?: string;
+  subValue?: ReactNode;
   loading: boolean;
   toolTip?: string;
   customClass?: string;
@@ -19,7 +19,7 @@ const Card: FC<CardProps> = ({
   index,
   label,
   value,
-  subValue = "",
+  subValue = null,
   loading,
   toolTip,
   customClass = "",

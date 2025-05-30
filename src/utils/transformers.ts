@@ -33,9 +33,18 @@ export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
   return `≈ ${totalXMR.toFixed(2)} ${moneroTicker}`;
 };
 
-export const formatPeakHashrateDateDifference = (date: string) => {
+export const formatPeakHashrateDateDifference = (
+  date: string,
+  epoch?: number,
+) => {
   const dateInt = new Date(`${date}Z`).getTime() / 1000;
-  return formatLatestBlockFoundSubValue(dateInt);
+
+  const timeDifference = formatLatestBlockFoundSubValue(dateInt)?.replace(
+    "≈",
+    "",
+  );
+  const epochFound = isValidValue(epoch, false) ? `Epoch ${epoch}` : "";
+  return [epochFound, "|", timeDifference];
 };
 
 export const getTimeUnitShortVersion = (time: string) => {

@@ -25,6 +25,7 @@ export type MiningStats = {
   hashrate_average_7d: number;
   max_hashrate: number;
   max_hashrate_last_update: string;
+  max_hashrate_last_epoch: number;
   daily_blocks_found: number;
   epoch_blocks_found: number;
   epoch: number;
@@ -57,4 +58,5 @@ export type CalculatedMiningStats = Pick<
   | "epoch"
   | "max_hashrate"
   | "max_hashrate_last_update"
+  | "max_hashrate_last_epoch"
 >;
