@@ -7,12 +7,12 @@ interface TooltipProps {
 
 const Tooltip: FC<TooltipProps> = ({ content, leftPosition = true }) => {
   return (
-    <div className="has-tooltip relative">
+    <div className="has-tooltip relative" style={{ zIndex: 100 }}>
       <div
         className="w-48 break-normal tooltip rounded shadow-lg p-2 m-2 bg-gray-700 text-xs rounded-12"
         style={{
           ...(leftPosition ? { left: "-10rem" } : { right: "-10rem" }),
-          bottom: "50%",
+          bottom: "75%",
         }}
       >
         {content}

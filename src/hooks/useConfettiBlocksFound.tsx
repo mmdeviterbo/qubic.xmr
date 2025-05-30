@@ -51,7 +51,7 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
       const confettiInterval = setInterval(showConfetti, 1000);
       setTimeout(() => {
         clearInterval(confettiInterval);
-      }, 6000);
+      }, 8000);
     } catch (e) {}
   }, [pool_blocks_found]);
 };

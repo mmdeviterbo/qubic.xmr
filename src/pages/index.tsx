@@ -56,7 +56,6 @@ const Main: NextPage<{
         <title>Qubic-XMR Live</title>
       </Head>
 
-      <canvas className="confetti absolute top-0 left-0 z-50 h-full w-full" />
 
       <div className="md:mt-4 flex justify-center">
         {mode === MODE.SIMPLE ? (
@@ -68,6 +67,8 @@ const Main: NextPage<{
           <AdvancedMode />
         )}
       </div>
+
+      <canvas className="confetti absolute top-0 left-0 z-50 h-full w-full" />
     </>
   );
 };

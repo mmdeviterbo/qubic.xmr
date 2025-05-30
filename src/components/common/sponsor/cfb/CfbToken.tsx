@@ -25,6 +25,7 @@ const CfbToken = () => {
         setHeight(80);
       }
     }
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
