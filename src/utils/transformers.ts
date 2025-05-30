@@ -81,7 +81,7 @@ export const getTimeUnitShortVersion = (time: string) => {
     },
     {
       long: "second",
-      short: "s",
+      short: "sec",
     },
   ];
 
