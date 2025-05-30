@@ -25,7 +25,7 @@ const CfbToken = () => {
   }, []);
 
   return (
-    <div className="absolute bottom-0 right-4">
+    <div className="absolute bottom-0 right-4" style={{ zIndex: 100 }}>
       <Image
         id="cfb-token"
         onClick={() =>

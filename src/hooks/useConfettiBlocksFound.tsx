@@ -21,9 +21,9 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
       useWorker: true,
     });
     myConfetti({
-      scalar: 2,
-      particleCount: 50,
-      spread: 200,
+      scalar: 2.25,
+      particleCount: 75,
+      spread: 300,
     });
   };
 
@@ -51,7 +51,7 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
       const confettiInterval = setInterval(showConfetti, 1000);
       setTimeout(() => {
         clearInterval(confettiInterval);
-      }, 8000);
+      }, 9000);
     } catch (e) {}
   }, [pool_blocks_found]);
 };

@@ -38,6 +38,6 @@ export const isWarningBounceForPoolBlocksFounds = (
   }
   return (
     nearestCeiling - pool_blocks_found <= 5 &&
-    pool_blocks_found <= nearestCeiling
+    nearestCeiling - pool_blocks_found >= 1
   );
 };
