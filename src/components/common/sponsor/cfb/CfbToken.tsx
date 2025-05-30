@@ -42,6 +42,7 @@ const CfbToken = () => {
         width={width}
         height={height}
         draggable={false}
+        priority={true}
       />
     </div>
   );
