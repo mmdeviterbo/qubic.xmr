@@ -15,7 +15,7 @@ import {
 import { isValidValue } from "@/utils/numbers";
 import {
   formatLatestBlockFoundSubValue,
-  formatPeakHashrateDate,
+  formatPeakHashrateDateDifference,
   formatPoolBlocksFoundSubValue,
   formatPoolHashrateSubValue,
 } from "@/utils/transformers";
@@ -94,7 +94,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
           }
           subValue={
             max_hashrate_last_update
-              ? formatPeakHashrateDate(max_hashrate_last_update)
+              ? formatPeakHashrateDateDifference(max_hashrate_last_update)
               : ""
           }
           loading={isLoadingCalculatedStats}

@@ -33,8 +33,10 @@ export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
   return `≈ ${totalXMR.toFixed(2)} ${moneroTicker}`;
 };
 
-export const formatPeakHashrateDate = (date: string) =>
-  dayjs(new Date(date)).format("MMM D, YYYY");
+export const formatPeakHashrateDateDifference = (date: string) => {
+  const dateInt = new Date(`${date}Z`).getTime() / 1000;
+  return formatLatestBlockFoundSubValue(dateInt);
+};
 
 export const getTimeUnitShortVersion = (time: string) => {
   const formatSingularOrPlural =
@@ -78,7 +80,7 @@ export const getTimeUnitShortVersion = (time: string) => {
 };
 
 export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
-  if (!isValidValue(last_block_found)) {
+  if (!isValidValue(last_block_found, false)) {
     return "";
   }
 
