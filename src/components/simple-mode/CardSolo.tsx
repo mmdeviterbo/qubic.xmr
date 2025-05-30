@@ -1,4 +1,4 @@
-import { memo, type FC, type ReactNode } from "react";
+import { memo, useEffect, type FC, type ReactNode } from "react";
 import Tooltip from "../common/Tooltip";
 
 interface CardProps {
@@ -9,6 +9,10 @@ interface CardProps {
   loading: boolean;
   toolTip?: string;
   customClass?: string;
+  properties?: {
+    bounce?: boolean;
+    confetti?: boolean;
+  };
 }
 
 const Card: FC<CardProps> = ({
@@ -19,6 +23,7 @@ const Card: FC<CardProps> = ({
   loading,
   toolTip,
   customClass = "",
+  properties,
 }) => {
   return (
     <div
@@ -33,7 +38,7 @@ const Card: FC<CardProps> = ({
         className={`flex flex-col text-center items-center justify-center h-full`}
       >
         <p
-          className={`font-space ${index === 0 ? "text-lg xs:text-xl sm:text-2xl" : "text-xl xs:text-2xl sm:text-3xl"} grid place-items-center`}
+          className={`${properties?.bounce ? "animate-bounce" : ""} font-space ${index === 0 ? "text-lg xs:text-xl sm:text-2xl" : "text-xl xs:text-2xl sm:text-3xl"} grid place-items-center`}
         >
           {loading ? "" : value}
         </p>

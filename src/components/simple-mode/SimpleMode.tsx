@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useMemo, useState } from "react";
+import { FC, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import isEmpty from "lodash/isEmpty";
 
 import QubicLogo from "../common/logos/QubicLogo";
@@ -8,7 +8,10 @@ import Footer from "../footer/Footer";
 
 import { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import { Labels } from "@/utils/constants";
-import { formatLargeInteger } from "@/utils/numbers";
+import {
+  formatLargeInteger,
+  isWarningBounceForPoolBlocksFounds,
+} from "@/utils/numbers";
 import { isValidValue } from "@/utils/numbers";
 import {
   formatLatestBlockFoundSubValue,
@@ -124,6 +127,9 @@ const SimpleMode: FC<SimpleModeProps> = ({
           toolTip={"One block is approximately equivalent to 0.60 XMR"}
           loading={isLoadingStats}
           customClass="w-1/2"
+          properties={{
+            bounce: isWarningBounceForPoolBlocksFounds(pool_blocks_found),
+          }}
         />
 
         <div className="flex flex-col gap-16 w-1/2">

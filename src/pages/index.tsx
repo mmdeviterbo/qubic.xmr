@@ -9,6 +9,7 @@ import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import SimpleMode from "@/components/simple-mode/SimpleMode";
 import { MODE } from "@/types/views";
 import AdvancedMode from "@/components/advanced-mode/AdvancedMode";
+import { useConfettiBlocksFound } from "@/hooks/useConfettiBlocksFound";
 
 const Main: NextPage<{
   miningStatsProps?: MiningStats;
@@ -44,6 +45,8 @@ const Main: NextPage<{
     }, 90000); //90sec / 1.5min
   }, []);
 
+  useConfettiBlocksFound(miningStats?.pool_blocks_found);
+
   return (
     <>
       <Analytics />
@@ -52,6 +55,8 @@ const Main: NextPage<{
         <link rel="icon" href="/qubic.svg" sizes="any" type="image/svg+xml" />
         <title>Qubic-XMR Live</title>
       </Head>
+
+      <canvas className="confetti absolute top-0 left-0 z-50 h-full w-full" />
 
       <div className="md:mt-4 flex justify-center">
         {mode === MODE.SIMPLE ? (

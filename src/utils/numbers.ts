@@ -21,3 +21,23 @@ export const formatLargeInteger = (value: number) => {
 export const isValidValue = (value: number, isZeroAllowed = true) => {
   return !isNaN(value) && (isZeroAllowed ? value >= 0 : value > 0);
 };
+
+export const isWarningBounceForPoolBlocksFounds = (
+  pool_blocks_found?: number,
+) => {
+  if (!isValidValue(pool_blocks_found, false)) {
+    return;
+  }
+
+  let nearestCeiling = 0;
+
+  if (pool_blocks_found >= 1000) {
+    nearestCeiling = Math.ceil(pool_blocks_found / 1000) * 1000;
+  } else {
+    nearestCeiling = Math.ceil(pool_blocks_found / 100) * 100;
+  }
+  return (
+    nearestCeiling - pool_blocks_found <= 5 &&
+    pool_blocks_found <= nearestCeiling
+  );
+};
