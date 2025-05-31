@@ -67,7 +67,7 @@ export const CfbToken: FC = () => {
   
   return (
     <>
-      {<div id="cfb-token-container" className="absolute bottom-0 right-4" style={{ zIndex: 100 }}>
+      <div id="cfb-token-container" className="absolute bottom-0 right-4" style={{ zIndex: 100 }}>
         <Image
           id="cfb-token"
           onClick={() =>
@@ -80,7 +80,7 @@ export const CfbToken: FC = () => {
           height={width}
           draggable={false}
         />
-      </div>}
+      </div>
       <div id="super-monero-container" className="absolute bottom-70 right-4" style={{ zIndex: 100 }}>
         <Image
           id="super-monero-cfb-token"

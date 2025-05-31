@@ -1,6 +1,9 @@
-import { memo, type FC, type ReactNode } from "react";
+import { memo, useCallback, useLayoutEffect, useState, type FC, type ReactNode } from "react";
+import isUndefined from "lodash/isUndefined";
+
 import Tooltip from "@/components/common/Tooltip";
-import CfbToken from "@/components/common/sponsor/cfb/CfbToken";
+import { CfbToken, SuperCfbToken } from "@/components/common/sponsor/cfb/CfbToken";
+import { cfbTokenStorageId } from "@/utils/constants";
 
 interface CardProps {
   index?: number;
@@ -40,12 +43,24 @@ const Card: FC<CardProps> = ({
   customClass = "",
   properties,
 }) => {
+  const [isSuperCfb, setIsSuperCfb] = useState<boolean>();
+
+  useLayoutEffect(() => {
+    setIsSuperCfb(localStorage.getItem(cfbTokenStorageId) === "true");
+  }, [loading, index])
+
+  const displayCFBTokenWithDelay = useCallback(() => {
+    if(loading || index !== 0 || isUndefined(isSuperCfb)) {
+      return null;
+    }
+    return isSuperCfb ? <SuperCfbToken /> : <CfbToken />
+  }, [loading, isSuperCfb, index])
+
   return (
     <div
       className={`${customClass} relative flex flex-col gap-8 rounded-12 px-24 py-16 ${loading ? "animate-pulse bg-gray-800 h-22" : "border-1 border-primary-60 bg-primary-70"}`}
     >
-      {index === 0 && <CfbToken />}
-
+      {displayCFBTokenWithDelay()}
       <div className="flex items-center gap-2">
         <span className="font-space text-14 text-gray-50">{label}</span>
         {index === 0 ? (
