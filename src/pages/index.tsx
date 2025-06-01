@@ -17,8 +17,7 @@ import {
 
 const Main: NextPage<{
   miningStatsProps?: MiningStats;
-  calculatedMiningStatsProps?: CalculatedMiningStats;
-}> = ({ miningStatsProps, calculatedMiningStatsProps }) => {
+}> = ({ miningStatsProps }) => {
   const [mode, setMode] = useState<MODE>(MODE.SIMPLE);
 
   const {
@@ -35,7 +34,7 @@ const Main: NextPage<{
   );
 
   const {
-    data: calculatedMiningStats = calculatedMiningStatsProps,
+    data: calculatedMiningStats = miningStatsProps,
     isLoading: isLoadingCalculatedMiningStats,
   } = useSWR<CalculatedMiningStats>(
     CALCULATED_MINING_STATS_URL,
@@ -61,15 +60,8 @@ const Main: NextPage<{
             isLoadingMiningStats={
               isEmpty(miningStatsProps) && isLoadingMiningStats
             }
-            calculatedMiningStats={
-              isLoadingCalculatedMiningStats
-                ? calculatedMiningStatsProps
-                : calculatedMiningStats
-            }
-            isLoadingCalculatedMiningStats={
-              isEmpty(calculatedMiningStatsProps) &&
-              isLoadingCalculatedMiningStats
-            }
+            calculatedMiningStats={calculatedMiningStats}
+            isLoadingCalculatedMiningStats={isLoadingCalculatedMiningStats}
           />
         ) : (
           <AdvancedMode />
@@ -85,12 +77,6 @@ export const getServerSideProps = async () => {
   try {
     const baseUrl = process.env.BASE_URL;
 
-    const calculatedMiningStatsResponse =
-      await axios.get<CalculatedMiningStats>(
-        `${baseUrl}/api/calculated-stats`,
-        { timeout: 12000 },
-      );
-
     const miningStatsResponse = await axios.get<MiningStats>(
       `${baseUrl}/api/mining-stats`,
     );
@@ -100,12 +86,7 @@ export const getServerSideProps = async () => {
       miningStatsProps = miningStatsResponse?.data;
     }
 
-    let calculatedMiningStats: CalculatedMiningStats;
-    if (calculatedMiningStatsResponse.status === 200) {
-      calculatedMiningStats = calculatedMiningStatsResponse?.data;
-    }
-
-    return { props: { miningStatsProps, calculatedMiningStats } };
+    return { props: { miningStatsProps } };
   } catch (e) {
     return { props: {} };
   }
