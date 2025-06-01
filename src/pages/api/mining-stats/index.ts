@@ -50,9 +50,9 @@ export default async function handler(
       };
     }
 
-    res.setHeader("Cache-Control", "public, max-age=10, s-maxage=10");
-    res.setHeader("CDN-Cache-Control", "max-age=10");
-    res.setHeader("Vercel-CDN-Cache-Control", "max-age=10");
+    res.setHeader("Cache-Control", "public, max-age=20, s-maxage=20");
+    res.setHeader("CDN-Cache-Control", "max-age=20");
+    res.setHeader("Vercel-CDN-Cache-Control", "max-age=20");
 
     res.status(200).json(newMiningStats);
   } catch (error) {
