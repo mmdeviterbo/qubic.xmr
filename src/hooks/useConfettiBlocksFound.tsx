@@ -5,7 +5,7 @@ import confetti from "canvas-confetti";
 
 import { isValidValue } from "@/utils/numbers";
 import useIsViewing from "./useIsViewing";
-import { cfbTokenStorageId } from "@/utils/constants";
+// import { cfbTokenStorageId } from "@/utils/constants";
 
 export const flipCFBImage = () => {
   setTimeout(() => {
@@ -14,7 +14,7 @@ export const flipCFBImage = () => {
       duration: 1.25,
       ease: "bounce.out",
     });
-    localStorage.setItem(cfbTokenStorageId, "true");
+    // localStorage.setItem(cfbTokenStorageId, "true");
     setTimeout(() => {
       gsap.fromTo(
         "#super-monero-container",
@@ -52,12 +52,12 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
     });
   };
 
-  useEffect(() => {
-    const cfbTokenItem = localStorage.getItem(cfbTokenStorageId);
-    if (pool_blocks_found > 100 && cfbTokenItem !== "true") {
-      localStorage.setItem(cfbTokenStorageId, "true");
-    }
-  }, [pool_blocks_found]);
+  // useEffect(() => {
+  //   const cfbTokenItem = localStorage.getItem(cfbTokenStorageId);
+  //   if (pool_blocks_found > 100 && cfbTokenItem !== "true") {
+  //     localStorage.setItem(cfbTokenStorageId, "true");
+  //   }
+  // }, [pool_blocks_found]);
 
   useEffect(() => {
     if (!isViewing) {

@@ -1,17 +1,15 @@
-import { FC, useLayoutEffect, useMemo, useState } from "react";
-
-import isUndefined from "lodash/isUndefined";
+import { type FC } from "react";
 
 import QubicLogo from "../common/logos/QubicLogo";
 import Card from "./Card";
 import CardSolo from "./CardSolo";
 import Footer from "../footer/Footer";
-import { CfbToken, SuperCfbToken } from "../common/sponsor/cfb/CfbToken";
+import { SuperCfbToken } from "../common/sponsor/cfb/CfbToken";
 
 import { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 
 import { useConfettiBlocksFound } from "@/hooks/useConfettiBlocksFound";
-import { cfbTokenStorageId, Labels } from "@/utils/constants";
+import { Labels } from "@/utils/constants";
 import {
   formatLargeInteger,
   isWarningBounceForPoolBlocksFounds,
@@ -58,22 +56,22 @@ const SimpleMode: FC<SimpleModeProps> = ({
     max_hashrate_last_epoch,
   } = calculatedMiningStats ?? {};
 
-  const [isSuperCfb, setIsSuperCfb] = useState<boolean>();
+  // const [isSuperCfb, setIsSuperCfb] = useState<boolean>();
+
+  // useLayoutEffect(() => {
+  //   setIsSuperCfb(localStorage.getItem(cfbTokenStorageId) === "true");
+  // }, [isLoadingMiningStats]);
+
+  // const customCFBToken = useMemo(() => {
+  //   if (isLoadingMiningStats || isUndefined(isSuperCfb)) {
+  //     return null;
+  //   }
+  //   return isSuperCfb ? <SuperCfbToken /> : <CfbToken />;
+  // }, [isLoadingMiningStats, isSuperCfb]);
 
   const { isXs } = useBreakpoints();
 
   useConfettiBlocksFound(pool_blocks_found);
-
-  useLayoutEffect(() => {
-    setIsSuperCfb(localStorage.getItem(cfbTokenStorageId) === "true");
-  }, [isLoadingMiningStats]);
-
-  const customCFBToken = useMemo(() => {
-    if (isLoadingMiningStats || isUndefined(isSuperCfb)) {
-      return null;
-    }
-    return isSuperCfb ? <SuperCfbToken /> : <CfbToken />;
-  }, [isLoadingMiningStats, isSuperCfb]);
 
   return (
     <main className="w-full flex flex-col gap-16 lg:w-2/3 xl:w-1/3 px-12 py-32">
@@ -94,7 +92,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
         toolTipLeftPosition={false}
         properties={{
           isOnline: connected_miners > 0 && pool_blocks_found > 0,
-          cfbToken: customCFBToken,
+          cfbToken: <SuperCfbToken showFire={pool_hashrate >= max_hashrate} />,
         }}
       />
       <div className="relative w-full flex gap-16">

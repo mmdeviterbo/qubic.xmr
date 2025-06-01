@@ -14,7 +14,7 @@ export const QUBIC_SOLO_MINING_HISTORY =
 export const moneroTicker = "XMR";
 export const blockToXMRConversion = 0.6;
 
-export const cfbTokenStorageId = "cfb-image";
+// export const cfbTokenStorageId = "cfb-image";
 
 export const enum Labels {
   HASHRATE = "Hashrate",
