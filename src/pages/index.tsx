@@ -17,7 +17,8 @@ import {
 
 const Main: NextPage<{
   miningStatsProps?: MiningStats;
-}> = ({ miningStatsProps }) => {
+  calculatedMiningStatsProps?: CalculatedMiningStats;
+}> = ({ miningStatsProps, calculatedMiningStatsProps }) => {
   const [mode, setMode] = useState<MODE>(MODE.SIMPLE);
 
   const {
@@ -28,19 +29,20 @@ const Main: NextPage<{
     async () => (await fetch(MINING_STATS_URL)).json(),
     {
       refreshInterval: 10000,
+      focusThrottleInterval: 10000,
       fallbackData: miningStatsProps,
     },
   );
 
   const {
-    data: calculatedMiningStats = miningStatsProps,
+    data: calculatedMiningStats = calculatedMiningStatsProps,
     isLoading: isLoadingCalculatedMiningStats,
   } = useSWR<CalculatedMiningStats>(
     CALCULATED_MINING_STATS_URL,
     async () => (await fetch(CALCULATED_MINING_STATS_URL)).json(),
     {
       refreshInterval: 90000,
-      focusThrottleInterval: 90000,
+      focusThrottleInterval: 30000,
       fallbackData: miningStatsProps,
     },
   );
@@ -55,12 +57,19 @@ const Main: NextPage<{
       <div className="md:mt-4 flex justify-center">
         {mode === MODE.SIMPLE ? (
           <SimpleMode
-            miningStats={isLoadingMiningStats ? miningStats : miningStatsProps}
+            miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}
             isLoadingMiningStats={
               isEmpty(miningStatsProps) && isLoadingMiningStats
             }
-            calculatedMiningStats={calculatedMiningStats}
-            isLoadingCalculatedMiningStats={isLoadingCalculatedMiningStats}
+            calculatedMiningStats={
+              isLoadingCalculatedMiningStats
+                ? calculatedMiningStatsProps
+                : calculatedMiningStats
+            }
+            isLoadingCalculatedMiningStats={
+              isEmpty(calculatedMiningStatsProps) &&
+              isLoadingCalculatedMiningStats
+            }
           />
         ) : (
           <AdvancedMode />
@@ -76,6 +85,12 @@ export const getServerSideProps = async () => {
   try {
     const baseUrl = process.env.BASE_URL;
 
+    const calculatedMiningStatsResponse =
+      await axios.get<CalculatedMiningStats>(
+        `${baseUrl}/api/calculated-stats`,
+        { timeout: 12000 },
+      );
+
     const miningStatsResponse = await axios.get<MiningStats>(
       `${baseUrl}/api/mining-stats`,
     );
@@ -85,7 +100,12 @@ export const getServerSideProps = async () => {
       miningStatsProps = miningStatsResponse?.data;
     }
 
-    return { props: { miningStatsProps } };
+    let calculatedMiningStats: CalculatedMiningStats;
+    if (calculatedMiningStatsResponse.status === 200) {
+      calculatedMiningStats = calculatedMiningStatsResponse?.data;
+    }
+
+    return { props: { miningStatsProps, calculatedMiningStats } };
   } catch (e) {
     return { props: {} };
   }

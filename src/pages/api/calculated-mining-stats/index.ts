@@ -109,6 +109,10 @@ export default async function handler(
       history,
     );
 
+    res.setHeader("Cache-Control", "public, max-age=30, s-maxage=30");
+    res.setHeader("CDN-Cache-Control", "max-age=30");
+    res.setHeader("Vercel-CDN-Cache-Control", "max-age=30");
+
     res.status(200).json({
       daily_blocks_found,
       epoch_blocks_found,
