@@ -57,7 +57,9 @@ const Card: FC<CardProps> = ({
       </div>
 
       {loading ? (
-        <div className="animate-pulse w-1/2 my-1 h-4 rounded-lg bg-gray-800" />
+        <div
+          className={`animate-pulse ${index === 0 ? "w-1/3" : "sm:w-1/2 w-2/3"} my-1 h-4 rounded-lg bg-gray-800`}
+        />
       ) : (
         <>
           <div className="flex items-center">

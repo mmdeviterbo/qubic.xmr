@@ -39,8 +39,12 @@ const Card: FC<CardProps> = ({
       >
         {loading ? (
           <>
-            <div className="animate-pulse w-2/3 h-6 rounded-lg bg-gray-800 mb-3" />
-            <div className="animate-pulse w-1/3 h-4 rounded-lg bg-gray-800" />
+            <div
+              className={`animate-pulse w-full sm:w-2/3 h-4 sm:h-6 rounded-lg bg-gray-800 mb-3`}
+            />
+            <div
+              className={`animate-pulse w-2/3 sm:w-1/3 h-4 rounded-lg bg-gray-800`}
+            />
           </>
         ) : (
           <>
