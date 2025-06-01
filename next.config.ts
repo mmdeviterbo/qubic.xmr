@@ -14,7 +14,6 @@ const PermissionsPolicy = [
   "autoplay=()",
   "camera=()",
   "display-capture=()",
-  "document-domain=()",
   "encrypted-media=()",
   "geolocation=()",
   "gyroscope=()",
