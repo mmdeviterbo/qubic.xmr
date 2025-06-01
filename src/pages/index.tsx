@@ -27,8 +27,8 @@ const Main: NextPage<{
     MINING_STATS_URL,
     async () => (await fetch(MINING_STATS_URL)).json(),
     {
-      refreshInterval: 10000,
-      focusThrottleInterval: 10000,
+      refreshInterval: 15000,
+      focusThrottleInterval: 15000,
       fallbackData: miningStatsProps,
     },
   );
