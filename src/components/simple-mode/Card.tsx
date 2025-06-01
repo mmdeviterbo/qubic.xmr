@@ -1,20 +1,6 @@
-import {
-  memo,
-  useLayoutEffect,
-  useMemo,
-  useState,
-  type FC,
-  type ReactNode,
-} from "react";
-import isUndefined from "lodash/isUndefined";
+import { memo, ReactElement, type FC, type ReactNode } from "react";
 
 import Tooltip from "@/components/common/Tooltip";
-import {
-  CfbToken,
-  SuperCfbToken,
-} from "@/components/common/sponsor/cfb/CfbToken";
-import { cfbTokenStorageId } from "@/utils/constants";
-
 interface CardProps {
   index?: number;
   label: string;
@@ -26,6 +12,7 @@ interface CardProps {
   customClass?: string;
   properties?: {
     isOnline?: boolean;
+    cfbToken: ReactElement;
   };
 }
 
@@ -53,24 +40,11 @@ const Card: FC<CardProps> = ({
   customClass = "",
   properties,
 }) => {
-  const [isSuperCfb, setIsSuperCfb] = useState<boolean>();
-
-  useLayoutEffect(() => {
-    setIsSuperCfb(localStorage.getItem(cfbTokenStorageId) === "true");
-  }, [loading]);
-
-  const customCFBToken = useMemo(() => {
-    if (loading || isUndefined(isSuperCfb)) {
-      return null;
-    }
-    return isSuperCfb ? <SuperCfbToken /> : <CfbToken />;
-  }, [loading, isSuperCfb]);
-
   return (
     <div
-      className={`${customClass} relative flex flex-col gap-8 rounded-12 px-24 py-16 ${loading ? "animate-pulse bg-gray-800 h-22" : "border-1 border-primary-60 bg-primary-70"}`}
+      className={`${customClass} relative flex flex-col gap-8 rounded-12 px-24 py-16 border-1 border-primary-60 bg-primary-70`}
     >
-      {index === 0 && customCFBToken}
+      {properties?.cfbToken}
       <div className="flex items-center gap-2">
         <span className="font-space text-14 text-gray-50">{label}</span>
         {index === 0 ? (
@@ -82,18 +56,24 @@ const Card: FC<CardProps> = ({
         )}
       </div>
 
-      <div className="flex items-center">
-        <p
-          className={`whitespace-nowrap font-space ${index !== 0 ? "text-16" : ""} xs:text-18 sm:text-22`}
-        >
-          {loading ? "" : value}
-        </p>
-        {subValue && (
-          <span className="ml-2 font-space text-sm text-gray-50">
-            {loading ? "" : subValue}
-          </span>
-        )}
-      </div>
+      {loading ? (
+        <div className="animate-pulse w-1/2 my-1 h-4 rounded-lg bg-gray-800" />
+      ) : (
+        <>
+          <div className="flex items-center">
+            <p
+              className={`whitespace-nowrap font-space ${index !== 0 ? "text-16" : ""} xs:text-18 sm:text-22`}
+            >
+              {loading ? "" : value}
+            </p>
+            {subValue && (
+              <span className="ml-2 font-space text-sm text-gray-50">
+                {loading ? "" : subValue}
+              </span>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

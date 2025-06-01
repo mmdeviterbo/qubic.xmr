@@ -1,14 +1,17 @@
-import { FC, useLayoutEffect, useState } from "react";
+import { FC, useLayoutEffect, useMemo, useState } from "react";
+
+import isUndefined from "lodash/isUndefined";
 
 import QubicLogo from "../common/logos/QubicLogo";
 import Card from "./Card";
 import CardSolo from "./CardSolo";
 import Footer from "../footer/Footer";
+import { CfbToken, SuperCfbToken } from "../common/sponsor/cfb/CfbToken";
 
 import { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 
 import { useConfettiBlocksFound } from "@/hooks/useConfettiBlocksFound";
-import { Labels } from "@/utils/constants";
+import { cfbTokenStorageId, Labels } from "@/utils/constants";
 import {
   formatLargeInteger,
   isWarningBounceForPoolBlocksFounds,
@@ -20,6 +23,7 @@ import {
   formatPoolBlocksFoundSubValue,
   formatPoolHashrateSubValue,
 } from "@/utils/transformers";
+import useBreakpoints from "@/hooks/useBreakpoints";
 
 interface SimpleModeProps {
   miningStats: MiningStats;
@@ -54,17 +58,22 @@ const SimpleMode: FC<SimpleModeProps> = ({
     max_hashrate_last_epoch,
   } = calculatedMiningStats ?? {};
 
-  const [isXs, setIsXs] = useState(false);
+  const [isSuperCfb, setIsSuperCfb] = useState<boolean>();
 
-  useLayoutEffect(() => {
-    function handleResize() {
-      setIsXs(window.innerWidth < 375);
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const { isXs } = useBreakpoints();
 
   useConfettiBlocksFound(pool_blocks_found);
+
+  useLayoutEffect(() => {
+    setIsSuperCfb(localStorage.getItem(cfbTokenStorageId) === "true");
+  }, [isLoadingMiningStats]);
+
+  const customCFBToken = useMemo(() => {
+    if (isLoadingMiningStats || isUndefined(isSuperCfb)) {
+      return null;
+    }
+    return isSuperCfb ? <SuperCfbToken /> : <CfbToken />;
+  }, [isLoadingMiningStats, isSuperCfb]);
 
   return (
     <main className="w-full flex flex-col gap-16 lg:w-2/3 xl:w-1/3 px-12 py-32">
@@ -85,6 +94,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
         toolTipLeftPosition={false}
         properties={{
           isOnline: connected_miners > 0 && pool_blocks_found > 0,
+          cfbToken: customCFBToken,
         }}
       />
       <div className="relative w-full flex gap-16">
