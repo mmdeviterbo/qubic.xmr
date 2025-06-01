@@ -47,6 +47,9 @@ export const getBlocksFoundByStartDate = (
 const getMaxHashrateHistory = (
   history: QubicMiningHistory[],
 ): QubicMiningHistory => {
+  // console.log("latestIndex: ", history.length - 1);
+  // console.log("latestMaxHashrateIndex: ", history.findIndex(i => Number(i.pool_hashrate) === 278285638));
+
   const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
   const latestMaxHashrateIndex =
     CHECKPOINTS.MAX_HASHRATE.latestMaxHashrateIndex;
