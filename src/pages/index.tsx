@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Analytics } from "@vercel/analytics/next";
 import type { NextPage } from "next";
 
 import Head from "next/head";
@@ -47,8 +46,6 @@ const Main: NextPage<{
 
   return (
     <>
-      <Analytics />
-
       <Head>
         <link rel="icon" href="/qubic.svg" sizes="any" type="image/svg+xml" />
         <title>Qubic-XMR Live</title>
