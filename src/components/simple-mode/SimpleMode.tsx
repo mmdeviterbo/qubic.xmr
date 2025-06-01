@@ -92,7 +92,15 @@ const SimpleMode: FC<SimpleModeProps> = ({
         toolTipLeftPosition={false}
         properties={{
           isOnline: connected_miners > 0 && pool_blocks_found > 0,
-          cfbToken: <SuperCfbToken showFire={pool_hashrate >= max_hashrate} />,
+          cfbToken: (
+            <SuperCfbToken
+              showFire={
+                isValidValue(pool_hashrate) && isValidValue(max_hashrate, false)
+                  ? pool_hashrate >= max_hashrate
+                  : false
+              }
+            />
+          ),
         }}
       />
       <div className="relative w-full flex gap-16">
