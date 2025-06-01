@@ -1,5 +1,4 @@
-import { FC, useLayoutEffect, useMemo, useState } from "react";
-import isEmpty from "lodash/isEmpty";
+import { FC, useLayoutEffect, useState } from "react";
 
 import QubicLogo from "../common/logos/QubicLogo";
 import Card from "./Card";
@@ -24,12 +23,16 @@ import {
 
 interface SimpleModeProps {
   miningStats: MiningStats;
+  isLoadingMiningStats: boolean;
   calculatedMiningStats: CalculatedMiningStats;
+  isLoadingCalculatedMiningStats: boolean;
 }
 
 const SimpleMode: FC<SimpleModeProps> = ({
   miningStats,
+  isLoadingMiningStats,
   calculatedMiningStats,
+  isLoadingCalculatedMiningStats,
 }) => {
   const {
     pool_hashrate,
@@ -52,12 +55,6 @@ const SimpleMode: FC<SimpleModeProps> = ({
   } = calculatedMiningStats ?? {};
 
   const [isXs, setIsXs] = useState(false);
-
-  const isLoadingStats = useMemo(() => isEmpty(miningStats), [miningStats]);
-  const isLoadingCalculatedStats = useMemo(
-    () => isEmpty(calculatedMiningStats),
-    [calculatedMiningStats],
-  );
 
   useLayoutEffect(() => {
     function handleResize() {
@@ -83,7 +80,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
           pool_hashrate,
           monero_network_hashrate,
         )}
-        loading={isLoadingStats}
+        loading={isLoadingMiningStats}
         toolTip={"Percentage of pool hashrate over Monero's network hashrate"}
         toolTipLeftPosition={false}
         properties={{
@@ -95,7 +92,9 @@ const SimpleMode: FC<SimpleModeProps> = ({
           index={0}
           label={Labels.PEAK_HASHRATE}
           value={
-            isLoadingCalculatedStats ? "" : formatLargeInteger(max_hashrate)
+            isLoadingCalculatedMiningStats
+              ? ""
+              : formatLargeInteger(max_hashrate)
           }
           subValue={
             max_hashrate_last_update ? (
@@ -113,7 +112,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
               ""
             )
           }
-          loading={isLoadingCalculatedStats}
+          loading={isLoadingCalculatedMiningStats}
           customClass="w-1/2"
         />
 
@@ -121,12 +120,12 @@ const SimpleMode: FC<SimpleModeProps> = ({
           <Card
             label={Labels.AVG_1H_HASHRATE}
             value={formatLargeInteger(hashrate_average_1h)}
-            loading={isLoadingCalculatedStats}
+            loading={isLoadingCalculatedMiningStats}
           />
           <Card
             label={Labels.AVG_7D_HASHRATE}
             value={formatLargeInteger(hashrate_average_7d)}
-            loading={isLoadingStats}
+            loading={isLoadingMiningStats}
           />
         </div>
       </div>
@@ -141,7 +140,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
           }
           subValue={formatPoolBlocksFoundSubValue(pool_blocks_found)}
           toolTip={"One block is approximately equivalent to 0.60 XMR"}
-          loading={isLoadingStats}
+          loading={isLoadingMiningStats}
           customClass="w-1/2"
           properties={{
             bounce: isWarningBounceForPoolBlocksFounds(pool_blocks_found),
@@ -164,7 +163,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
                 ? formatLatestBlockFoundSubValue(last_block_found)
                 : ""
             }
-            loading={isLoadingCalculatedStats}
+            loading={isLoadingCalculatedMiningStats}
           />
           <Card
             label={(isXs
@@ -172,7 +171,9 @@ const SimpleMode: FC<SimpleModeProps> = ({
               : Labels.EPOCH_BLOCKS_FOUND
             ).replace(
               "<number>",
-              isLoadingCalculatedStats || epoch <= 0 ? "" : epoch?.toString(),
+              isLoadingCalculatedMiningStats || epoch <= 0
+                ? ""
+                : epoch?.toString(),
             )}
             value={
               isValidValue(epoch_blocks_found)
@@ -182,7 +183,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
             toolTip={
               "Blocks found per epoch reset every Wednesday at 12:00 UTC"
             }
-            loading={isLoadingCalculatedStats}
+            loading={isLoadingCalculatedMiningStats}
           />
         </div>
       </div>
@@ -190,7 +191,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
       <Card
         label={Labels.MONERO_NETWORK_HASHRATE}
         value={formatLargeInteger(monero_network_hashrate)}
-        loading={isLoadingStats}
+        loading={isLoadingMiningStats}
         customClass="mt-4"
       />
       <Card
@@ -200,7 +201,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
             ? monero_network_difficulty.toLocaleString()
             : "-"
         }
-        loading={isLoadingStats}
+        loading={isLoadingMiningStats}
       />
       <Footer />
     </main>

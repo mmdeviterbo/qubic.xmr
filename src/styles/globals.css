@@ -95,7 +95,7 @@ html {
   line-height: 1.25;
 }
 
-img#cfb-token {
+img[id^=cfb-token] {
   -webkit-user-drag: none;
   user-select: none;
   -moz-user-select: none;
@@ -107,11 +107,11 @@ img#cfb-token {
   transform-origin: 100% 100%;
 
   /* shiny effect */
-  mask: linear-gradient(-60deg, #ffffff 60%, rgba(177, 177, 177, 0.85), #bdbdbd 70%) right/500% 100%;
+  mask: linear-gradient(-60deg, #ffffff 60%, rgba(177, 177, 177, 0.8), #bdbdbd 70%) right/500% 100%;
   animation: shimmer 2.5s infinite;
 }
 
-img#cfb-token:hover {
+img[id^=cfb-token]:hover {
   transform: scale(1.05);
 }
 

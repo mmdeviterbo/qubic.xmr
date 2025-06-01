@@ -12,9 +12,9 @@ export const QUBIC_SOLO_MINING_HISTORY =
   "http://66.179.92.83/data/qpool_V1.csv";
 
 export const moneroTicker = "XMR";
-export const blockToXMRConversion = 0.6; //approximate
+export const blockToXMRConversion = 0.6;
 
-export const cfbTokenStorageId = "cfb-image"
+export const cfbTokenStorageId = "cfb-image";
 
 export const enum Labels {
   HASHRATE = "Hashrate",
@@ -32,3 +32,7 @@ export const enum Labels {
   MONERO_NETWORK_HASHRATE = "Monero Network Hashrate",
   MONERO_NETWORK_DIFFICULTY = "Monero Network Difficulty",
 }
+
+//APIs
+export const MINING_STATS_URL = "/api/mining-stats";
+export const CALCULATED_MINING_STATS_URL = "/api/calculated-mining-stats";

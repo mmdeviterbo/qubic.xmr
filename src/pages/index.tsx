@@ -1,48 +1,49 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { Analytics } from "@vercel/analytics/next";
 import type { NextPage } from "next";
 
 import Head from "next/head";
 import axios from "axios";
+import isEmpty from "lodash/isEmpty";
 
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import SimpleMode from "@/components/simple-mode/SimpleMode";
 import { MODE } from "@/types/views";
 import AdvancedMode from "@/components/advanced-mode/AdvancedMode";
+import useSWR from "swr";
+import {
+  CALCULATED_MINING_STATS_URL,
+  MINING_STATS_URL,
+} from "@/utils/constants";
 
 const Main: NextPage<{
   miningStatsProps?: MiningStats;
 }> = ({ miningStatsProps }) => {
   const [mode, setMode] = useState<MODE>(MODE.SIMPLE);
-  const [miningStats, setMiningStats] = useState<MiningStats>(miningStatsProps);
-  const [calculatedMiningStats, setCalculatedMiningStats] =
-    useState<CalculatedMiningStats>(miningStatsProps);
 
-  const fetchCalculatedMiningStats = useCallback(async () => {
-    const response = await axios.get("/api/calculated-stats");
-    if (response?.status === 200) {
-      setCalculatedMiningStats(response.data);
-    }
-  }, []);
+  const {
+    data: miningStats = miningStatsProps,
+    isLoading: isLoadingMiningStats,
+  } = useSWR<MiningStats>(
+    MINING_STATS_URL,
+    async () => (await fetch(MINING_STATS_URL)).json(),
+    {
+      refreshInterval: 10000,
+      fallbackData: miningStatsProps,
+    },
+  );
 
-  const fetchMiningStats = useCallback(async () => {
-    const response = await axios.get("/api/mining-stats");
-    if (response?.status === 200) {
-      setMiningStats(response.data);
-    }
-  }, []);
-
-  useEffect(() => {
-    setInterval(() => {
-      void fetchMiningStats();
-    }, 10000); //10sec
-  }, []);
-
-  useEffect(() => {
-    setInterval(() => {
-      void fetchCalculatedMiningStats();
-    }, 90000); //90sec / 1.5min
-  }, []);
+  const {
+    data: calculatedMiningStats = miningStatsProps,
+    isLoading: isLoadingCalculatedMiningStats,
+  } = useSWR<CalculatedMiningStats>(
+    CALCULATED_MINING_STATS_URL,
+    async () => (await fetch(CALCULATED_MINING_STATS_URL)).json(),
+    {
+      refreshInterval: 90000,
+      fallbackData: miningStatsProps,
+    },
+  );
 
   return (
     <>
@@ -56,8 +57,12 @@ const Main: NextPage<{
       <div className="md:mt-4 flex justify-center">
         {mode === MODE.SIMPLE ? (
           <SimpleMode
-            miningStats={miningStats}
+            miningStats={isLoadingMiningStats ? miningStats : miningStatsProps}
+            isLoadingMiningStats={
+              isEmpty(miningStatsProps) && isLoadingMiningStats
+            }
             calculatedMiningStats={calculatedMiningStats}
+            isLoadingCalculatedMiningStats={isLoadingCalculatedMiningStats}
           />
         ) : (
           <AdvancedMode />
@@ -72,10 +77,6 @@ const Main: NextPage<{
 export const getServerSideProps = async () => {
   try {
     const baseUrl = process.env.BASE_URL;
-    const blockFoundStatsResponse = await axios.get(
-      `${baseUrl}/api/calculated-stats`,
-      { timeout: 12000 },
-    );
 
     const miningStatsResponse = await axios.get<MiningStats>(
       `${baseUrl}/api/mining-stats`,
@@ -84,13 +85,6 @@ export const getServerSideProps = async () => {
     let miningStatsProps: MiningStats;
     if (miningStatsResponse.status === 200) {
       miningStatsProps = miningStatsResponse?.data;
-    }
-
-    if (blockFoundStatsResponse.status === 200) {
-      miningStatsProps = {
-        ...miningStatsProps,
-        ...blockFoundStatsResponse?.data,
-      };
     }
 
     return { props: { miningStatsProps } };
