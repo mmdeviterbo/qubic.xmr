@@ -87,6 +87,9 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  images: {
+     minimumCacheTTL: 604800
+  },
   async headers() {
     return [
       {

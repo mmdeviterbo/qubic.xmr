@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useRef, useState } from "react";
+import { FC, useLayoutEffect, useState } from "react";
 import Image from "next/image";
 import Fire from "@/components/effects/Fire";
 
@@ -7,8 +7,6 @@ export const SuperCfbToken: FC<{ customClass?: string; showFire: boolean }> = ({
   showFire = false,
 }) => {
   const [width, setWidth] = useState(130);
-
-  const imgRef = useRef<HTMLImageElement>(null);
 
   useLayoutEffect(() => {
     function handleResize() {
@@ -38,7 +36,6 @@ export const SuperCfbToken: FC<{ customClass?: string; showFire: boolean }> = ({
         className={`absolute z-100 right-4 ${customClass}`}
       >
         <Image
-          ref={imgRef}
           id="cfb-token-100th-block"
           onClick={() =>
             window.open("https://cfbtoken.com", "_blank", "noopener")
