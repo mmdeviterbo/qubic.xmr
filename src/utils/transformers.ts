@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { isValidValue } from "./numbers";
 import { blockToXMRConversion, moneroTicker } from "./constants";
 import datetimeDifference, {
