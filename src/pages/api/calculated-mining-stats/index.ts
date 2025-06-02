@@ -82,7 +82,7 @@ const parseCSV = async (stream) => {
 export const getMiningHistory = async () => {
   const res = await axios.get(QUBIC_SOLO_MINING_HISTORY, {
     responseType: "stream",
-    timeout: 12000,
+    timeout: 7000,
   });
   const historyResponse: QubicMiningHistory[] = await parseCSV(res?.data);
   return historyResponse;
