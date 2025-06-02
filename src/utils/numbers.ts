@@ -22,6 +22,13 @@ export const isValidValue = (value: number, isZeroAllowed = true) => {
   return !isNaN(value) && (isZeroAllowed ? value >= 0 : value > 0);
 };
 
+export const getNearestFloor = (value: number) => {
+  if (value >= 1000) {
+    return Math.floor(value / 1000) * 1000;
+  }
+  return Math.floor(value / 100) * 100;
+};
+
 export const isWarningBounceForPoolBlocksFounds = (
   pool_blocks_found?: number,
 ) => {

@@ -3,8 +3,9 @@ import { useEffect } from "react";
 import gsap from "gsap";
 import confetti from "canvas-confetti";
 
-import { isValidValue } from "@/utils/numbers";
+import { getNearestFloor, isValidValue } from "@/utils/numbers";
 import useIsViewing from "./useIsViewing";
+import { getConfettiStorageId } from "@/utils/constants";
 // import { cfbTokenStorageId } from "@/utils/constants";
 
 export const flipCFBImage = () => {
@@ -32,11 +33,13 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
     if (!isValidValue(pool_blocks_found, false)) {
       return false;
     }
-
     if (pool_blocks_found >= 1000) {
-      return pool_blocks_found % 1000 == 0;
+      return pool_blocks_found % 1000 <= 2;
     }
-    return pool_blocks_found % 100 == 0;
+    if (pool_blocks_found >= 100) {
+      return pool_blocks_found % 100 <= 2;
+    }
+    return false;
   };
 
   const showConfetti = () => {
@@ -47,7 +50,7 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
     });
     myConfetti({
       scalar: 2.25,
-      particleCount: 75,
+      particleCount: 150,
       spread: 300,
     });
   };
@@ -69,8 +72,8 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
       return;
     }
 
-    const localStorageId = `confetti-blocks-found-${pool_blocks_found}`;
-
+    const nearestCheckpoint = getNearestFloor(pool_blocks_found);
+    const localStorageId = getConfettiStorageId(nearestCheckpoint);
     const isConfettiAlreadyShown = localStorage.getItem(localStorageId);
 
     if (isConfettiAlreadyShown === "true") {
@@ -82,7 +85,7 @@ export const useConfettiBlocksFound = (pool_blocks_found?: number) => {
       localStorage.setItem(localStorageId, "true");
       const confettiInterval = setInterval(showConfetti, 1000);
       setTimeout(() => {
-        flipCFBImage();
+        // flipCFBImage();
         clearInterval(confettiInterval);
       }, 9000);
     } catch (e) {}

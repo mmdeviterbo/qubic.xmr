@@ -14,7 +14,9 @@ export const QUBIC_SOLO_MINING_HISTORY =
 export const moneroTicker = "XMR";
 export const blockToXMRConversion = 0.6;
 
-// export const cfbTokenStorageId = "cfb-image";
+export const cfbTokenStorageId = "cfb-image";
+export const getConfettiStorageId = (pool_block_found: number) =>
+  `confetti-blocks-found-${pool_block_found}`;
 
 export const enum Labels {
   HASHRATE = "Hashrate",
@@ -45,9 +47,3 @@ export const SWR_HOOK_DEFAULTS = {
   refreshWhenHidden: false,
   refreshWhenOffline: false,
 };
-// revalidateOnFocus: true,
-// revalidateOnReconnect: false,
-// revalidateIfStale: false,
-// revalidateOnMount: true,
-// refreshWhenHidden: false,
-// refreshWhenOffline: false,
