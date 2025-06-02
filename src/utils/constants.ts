@@ -38,16 +38,16 @@ export const MINING_STATS_URL = "/api/mining-stats";
 export const CALCULATED_MINING_STATS_URL = "/api/calculated-mining-stats";
 
 export const SWR_HOOK_DEFAULTS = {
-  revalidateOnFocus: true, 
-  revalidateOnReconnect: false, 
-  revalidateIfStale: true, 
+  revalidateOnFocus: true,
+  revalidateOnReconnect: false,
+  revalidateIfStale: true,
   revalidateOnMount: true,
-  refreshWhenHidden: false, 
-  refreshWhenOffline: false, 
+  refreshWhenHidden: false,
+  refreshWhenOffline: false,
 };
-      // revalidateOnFocus: true,
-      // revalidateOnReconnect: false,
-      // revalidateIfStale: false,
-      // revalidateOnMount: true,
-      // refreshWhenHidden: false,
-      // refreshWhenOffline: false,
+// revalidateOnFocus: true,
+// revalidateOnReconnect: false,
+// revalidateIfStale: false,
+// revalidateOnMount: true,
+// refreshWhenHidden: false,
+// refreshWhenOffline: false,
