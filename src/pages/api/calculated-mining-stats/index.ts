@@ -48,7 +48,7 @@ const getMaxHashrateHistory = (
   history: QubicMiningHistory[],
 ): QubicMiningHistory => {
   // console.log("latestIndex: ", history.length - 1);
-  // console.log("latestMaxHashrateIndex: ", history.findIndex(i => Number(i.pool_hashrate) === 278285638));
+  // console.log("latestMaxHashrateIndex: ", history.findIndex(i => Number(i.pool_hashrate) === 286413241));
 
   const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
   const latestMaxHashrateIndex =
@@ -112,9 +112,21 @@ export default async function handler(
       history,
     );
 
-    res.setHeader("Cache-Control", "public, max-age=95, s-maxage=95");
-    res.setHeader("CDN-Cache-Control", "max-age=95");
-    res.setHeader("Vercel-CDN-Cache-Control", "max-age=95");
+    // localhost
+    // res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    // res.setHeader('Pragma', 'no-cache');
+    // res.setHeader('Expires', '0');
+    // res.setHeader('Surrogate-Control', 'no-store')
+
+    // production
+    res.setHeader(
+      "Cache-Control",
+      "public, max-age=90, stale-while-revalidate=90",
+    );
+    res.setHeader(
+      "CDN-Cache-Control",
+      "public, max-age=120, stale-while-revalidate=90",
+    );
 
     res.status(200).json({
       daily_blocks_found,

@@ -13,6 +13,7 @@ import useSWR from "swr";
 import {
   CALCULATED_MINING_STATS_URL,
   MINING_STATS_URL,
+  SWR_HOOK_DEFAULTS,
 } from "@/utils/constants";
 
 const Main: NextPage<{
@@ -27,36 +28,24 @@ const Main: NextPage<{
     MINING_STATS_URL,
     async () => (await fetch(MINING_STATS_URL)).json(),
     {
-      revalidateOnFocus: true,
-      revalidateOnReconnect: false,
-      revalidateIfStale: false,
-      revalidateOnMount: true,
-      refreshWhenHidden: false,
-      refreshWhenOffline: false,
-      focusThrottleInterval: 15000, //interval of re-calling API when tab is re-focused
-      refreshInterval: 15000, //interval of API calls
-      dedupingInterval: 7500, //interval of calling API when components are re-rendered (debounce)
-      fallbackData: miningStatsProps,
+      ...SWR_HOOK_DEFAULTS,
+      refreshInterval: 15000,
+      focusThrottleInterval: 15000,
+      dedupingInterval: 15000,
     },
   );
 
   const {
-    data: calculatedMiningStats = miningStatsProps,
+    data: calculatedMiningStats,
     isLoading: isLoadingCalculatedMiningStats,
   } = useSWR<CalculatedMiningStats>(
     CALCULATED_MINING_STATS_URL,
     async () => (await fetch(CALCULATED_MINING_STATS_URL)).json(),
     {
-      revalidateOnFocus: true,
-      revalidateOnReconnect: false,
-      revalidateIfStale: false,
-      revalidateOnMount: true,
-      refreshWhenHidden: false,
-      refreshWhenOffline: false,
+      ...SWR_HOOK_DEFAULTS,
       refreshInterval: 90000,
       focusThrottleInterval: 90000,
-      dedupingInterval: 45000,
-      fallbackData: miningStatsProps,
+      dedupingInterval: 90000,
     },
   );
 
