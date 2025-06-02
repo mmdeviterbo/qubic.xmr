@@ -136,7 +136,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
           <Card
             label={Labels.AVG_1H_HASHRATE}
             value={formatLargeInteger(hashrate_average_1h)}
-            loading={isLoadingCalculatedMiningStats}
+            loading={isLoadingMiningStats}
           />
           <Card
             label={Labels.AVG_7D_HASHRATE}
