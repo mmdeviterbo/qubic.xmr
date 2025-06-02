@@ -27,8 +27,15 @@ const Main: NextPage<{
     MINING_STATS_URL,
     async () => (await fetch(MINING_STATS_URL)).json(),
     {
-      refreshInterval: 15000,
-      focusThrottleInterval: 15000,
+      revalidateOnFocus: true,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
+      revalidateOnMount: true,
+      refreshWhenHidden: false,
+      refreshWhenOffline: false,
+      focusThrottleInterval: 15000, //interval of re-calling API when tab is re-focused
+      refreshInterval: 15000, //interval of API calls
+      dedupingInterval: 7500, //interval of calling API when components are re-rendered (debounce)
       fallbackData: miningStatsProps,
     },
   );
@@ -40,8 +47,15 @@ const Main: NextPage<{
     CALCULATED_MINING_STATS_URL,
     async () => (await fetch(CALCULATED_MINING_STATS_URL)).json(),
     {
+      revalidateOnFocus: true,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
+      revalidateOnMount: true,
+      refreshWhenHidden: false,
+      refreshWhenOffline: false,
       refreshInterval: 90000,
       focusThrottleInterval: 90000,
+      dedupingInterval: 45000,
       fallbackData: miningStatsProps,
     },
   );
