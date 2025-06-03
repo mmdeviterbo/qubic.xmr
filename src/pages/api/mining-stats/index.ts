@@ -58,6 +58,10 @@ export default async function handler(
       "CDN-Cache-Control",
       "public, max-age=30, stale-while-revalidate=15",
     );
+    res.setHeader(
+      "Vercel-CDN-Cache-Control",
+      "public, s-maxage=40, stale-while-revalidate=15",
+    );
 
     res.status(200).json(newMiningStats);
   } catch (error) {

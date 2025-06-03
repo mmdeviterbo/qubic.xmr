@@ -92,6 +92,10 @@ export const getServerSideProps = async (ctx) => {
       "CDN-Cache-Control",
       "public, max-age=30, stale-while-revalidate=15",
     );
+    ctx.res.setHeader(
+      "Vercel-CDN-Cache-Control",
+      "public, s-maxage=40, stale-while-revalidate=15",
+    );
 
     const baseUrl = process.env.BASE_URL;
 

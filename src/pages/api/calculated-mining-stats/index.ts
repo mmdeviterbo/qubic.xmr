@@ -121,11 +121,15 @@ export default async function handler(
     // production
     res.setHeader(
       "Cache-Control",
-      "public, max-age=90, stale-while-revalidate=90",
+      "public, max-age=90, stale-while-revalidate=15",
     );
     res.setHeader(
       "CDN-Cache-Control",
-      "public, max-age=120, stale-while-revalidate=90",
+      "public, max-age=120, stale-while-revalidate=15",
+    );
+    res.setHeader(
+      "Vercel-CDN-Cache-Control",
+      "public, s-maxage=130, stale-while-revalidate=15",
     );
 
     res.status(200).json({
