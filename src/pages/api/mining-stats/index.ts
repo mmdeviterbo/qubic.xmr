@@ -52,11 +52,11 @@ export default async function handler(
 
     res.setHeader(
       "Cache-Control",
-      "public, max-age=15, stale-while-revalidate=10",
+      "public, max-age=15, stale-while-revalidate=15",
     );
     res.setHeader(
       "CDN-Cache-Control",
-      "public, max-age=30, stale-while-revalidate=10",
+      "public, max-age=30, stale-while-revalidate=15",
     );
 
     res.status(200).json(newMiningStats);

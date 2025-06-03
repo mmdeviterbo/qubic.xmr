@@ -66,9 +66,15 @@ const Main: NextPage<{
             calculatedMiningStats={calculatedMiningStats}
             isLoadingCalculatedMiningStats={isLoadingCalculatedMiningStats}
           />
-        ) : (
-          <AdvancedMode />
-        )}
+        ) : // <AdvancedMode
+        //   miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}
+        //   isLoadingMiningStats={
+        //     isEmpty(miningStatsProps) && isLoadingMiningStats
+        //   }
+        //   calculatedMiningStats={calculatedMiningStats}
+        //   isLoadingCalculatedMiningStats={isLoadingCalculatedMiningStats}
+        // />
+        null}
       </div>
 
       <canvas className="confetti absolute top-0 left-0 z-50 h-full w-full" />
@@ -76,8 +82,17 @@ const Main: NextPage<{
   );
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (ctx) => {
   try {
+    ctx.res.setHeader(
+      "Cache-Control",
+      "public, max-age=15, stale-while-revalidate=15",
+    );
+    ctx.res.setHeader(
+      "CDN-Cache-Control",
+      "public, max-age=30, stale-while-revalidate=15",
+    );
+
     const baseUrl = process.env.BASE_URL;
 
     const miningStatsResponse = await axios.get<MiningStats>(
