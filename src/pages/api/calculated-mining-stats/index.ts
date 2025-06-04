@@ -48,7 +48,7 @@ const getMaxHashrateHistory = (
   history: QubicMiningHistory[],
 ): QubicMiningHistory => {
   // console.log("latestIndex: ", history.length - 1);
-  // console.log("latestMaxHashrateIndex: ", history.findIndex(i => Number(i.pool_hashrate) === 286413241));
+  // console.log("latestMaxHashrateIndex: ", history.findIndex(i => Number(i.pool_hashrate) === 316551877));
 
   const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
   const latestMaxHashrateIndex =
@@ -113,24 +113,21 @@ export default async function handler(
     );
 
     // localhost
-    // res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    // res.setHeader('Pragma', 'no-cache');
-    // res.setHeader('Expires', '0');
-    // res.setHeader('Surrogate-Control', 'no-store')
-
-    // production
-    res.setHeader(
-      "Cache-Control",
-      "public, max-age=90, stale-while-revalidate=10",
-    );
-    res.setHeader(
-      "CDN-Cache-Control",
-      "public, max-age=110, stale-while-revalidate=10",
-    );
-    res.setHeader(
-      "Vercel-CDN-Cache-Control",
-      "public, s-maxage=120, stale-while-revalidate=10",
-    );
+    if (process.env.NODE_ENV === "production") {
+      console.log("production /api/calculated-mining-stats");
+      res.setHeader("Cache-Control", "public, max-age=90");
+      res.setHeader("CDN-Cache-Control", "public, max-age=110");
+      res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=120");
+    } else {
+      console.log("No caching /api/calculated-mining-stats");
+      res.setHeader(
+        "Cache-Control",
+        "no-store, no-cache, must-revalidate, proxy-revalidate",
+      );
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
+      res.setHeader("Surrogate-Control", "no-store");
+    }
 
     res.status(200).json({
       daily_blocks_found,
