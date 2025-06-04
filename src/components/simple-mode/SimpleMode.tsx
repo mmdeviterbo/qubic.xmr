@@ -23,7 +23,7 @@ import {
 } from "@/utils/transformers";
 import useBreakpoints from "@/hooks/useBreakpoints";
 
-interface SimpleModeProps {
+export interface SimpleModeProps {
   miningStats: MiningStats;
   isLoadingMiningStats: boolean;
   calculatedMiningStats: CalculatedMiningStats;
