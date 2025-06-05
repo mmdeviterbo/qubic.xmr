@@ -13,6 +13,19 @@ import type {
 import { QUBIC_SOLO_MINING_HISTORY } from "@/utils/constants";
 import { getPrevious1159AMUTC, getPreviousEpochDateUTC } from "@/utils/date";
 
+const getBlocksFoundByStartAndEndIndeces = (
+  startIndex: number,
+  endIndex: number,
+  history: QubicMiningHistory[],
+): number => {
+  return (
+    Number(history[endIndex].pool_blocks_found) -
+    Number(history[startIndex].pool_blocks_found) +
+    (Number(history[startIndex].pool_blocks_found) -
+      Number(history[startIndex - 1].pool_blocks_found))
+  );
+};
+
 export const getBlocksFoundByStartDate = (
   startDateUTC: Date,
   history: QubicMiningHistory[],
@@ -27,11 +40,11 @@ export const getBlocksFoundByStartDate = (
     if (startDateLocal < currentDateLocal) {
       index = index - 1;
     } else {
-      totalDailyBlocks =
-        Number(history[maxIndex].pool_blocks_found) -
-        Number(history[index].pool_blocks_found) +
-        (Number(history[index].pool_blocks_found) -
-          Number(history[index - 1].pool_blocks_found));
+      totalDailyBlocks = getBlocksFoundByStartAndEndIndeces(
+        index,
+        maxIndex,
+        history,
+      );
       break;
     }
   }
@@ -114,8 +127,7 @@ export default async function handler(
 
     if (process.env.NODE_ENV === "production") {
       res.setHeader("Cache-Control", "public, max-age=90");
-      res.setHeader("CDN-Cache-Control", "public, max-age=110");
-      res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=120");
+      res.setHeader("CDN-Cache-Control", "public, max-age=120");
     } else {
       console.log("No caching /api/calculated-mining-stats");
       res.setHeader(
@@ -138,4 +150,37 @@ export default async function handler(
   } catch (e) {
     res.status(400);
   }
+}
+
+function getLastNWednesdaysUTC(N) {
+  const wednesdays = [];
+  const now = new Date();
+
+  // Get the day of the week in UTC (0 = Sunday, ..., 3 = Wednesday, ..., 6 = Saturday)
+  const currentUTCDay = now.getUTCDay();
+
+  // Calculate how many days back we need to go to reach the most recent Wednesday (3)
+  const daysSinceWednesday =
+    currentUTCDay >= 3 ? currentUTCDay - 3 : 7 - (3 - currentUTCDay);
+
+  // Get the last Wednesday at the same time of day in UTC
+  let lastWednesday = new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() - daysSinceWednesday,
+      now.getUTCHours(),
+      now.getUTCMinutes(),
+      now.getUTCSeconds(),
+      now.getUTCMilliseconds(),
+    ),
+  );
+
+  // Collect N Wednesdays (each one 7 days apart)
+  for (let i = 0; i < N; i++) {
+    wednesdays.push(new Date(lastWednesday).toISOString());
+    lastWednesday.setUTCDate(lastWednesday.getUTCDate() - 7);
+  }
+
+  return wednesdays;
 }
