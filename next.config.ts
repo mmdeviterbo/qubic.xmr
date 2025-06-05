@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const ContentSecurityPolicy = [
   "default-src https: 'self' https://qubic-xmr.vercel.app/*",
   "object-src 'none'",
-  "style-src 'self' https://fonts.googleapis.com/*",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/*",
   "script-src https: 'self' https://qubic-xmr.vercel.app/*",
   "connect-src 'self'",
   "img-src https: data: blob: 'self'",
