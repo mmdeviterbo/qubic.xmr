@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+
 import axios from "axios";
 import Papa from "papaparse";
-// import meanBy from "lodash/meanBy";
+import meanBy from "lodash/meanBy";
 import maxBy from "lodash/maxBy";
 
 import CHECKPOINTS from "@/utils/checkpoints.json";
@@ -38,11 +39,11 @@ export const getBlocksFoundByStartDate = (
   return totalDailyBlocks;
 };
 
-// const getOneHourHashrateAverage = (history: QubicMiningHistory[]): number => {
-//   const maxLength = history.length;
-//   const oneHrItems = history.slice(maxLength - 600 - 1);
-//   return meanBy(oneHrItems, (i) => Number(i.pool_hashrate));
-// };
+const getOneHourHashrateAverage = (history: QubicMiningHistory[]): number => {
+  const maxLength = history.length;
+  const oneHrItems = history.slice(maxLength - 600 - 1);
+  return meanBy(oneHrItems, (i) => Number(i.pool_hashrate));
+};
 
 const getMaxHashrateHistory = (
   history: QubicMiningHistory[],
@@ -102,6 +103,8 @@ export default async function handler(
     const max_hashrate_last_update = maxHashrateHistory.timestamp;
     const max_hashrate_last_epoch = Number(maxHashrateHistory.qubic_epoch);
 
+    const hashrate_average_1h = getOneHourHashrateAverage(history);
+
     const epoch_blocks_found = getBlocksFoundByStartDate(
       getPreviousEpochDateUTC(),
       history,
@@ -128,6 +131,7 @@ export default async function handler(
     }
 
     res.status(200).json({
+      hashrate_average_1h,
       daily_blocks_found,
       epoch_blocks_found,
       epoch,

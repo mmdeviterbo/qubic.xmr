@@ -53,6 +53,7 @@ export interface QubicMiningHistory {
 
 export type CalculatedMiningStats = Pick<
   MiningStats,
+  | "hashrate_average_1h"
   | "daily_blocks_found"
   | "epoch_blocks_found"
   | "epoch"
