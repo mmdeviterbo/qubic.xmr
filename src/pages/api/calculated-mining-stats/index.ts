@@ -114,8 +114,8 @@ export default async function handler(
 
     if (process.env.NODE_ENV === "production") {
       res.setHeader("Cache-Control", "public, max-age=90");
-      res.setHeader("CDN-Cache-Control", "public, max-age=110");
-      res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=120");
+      res.setHeader("CDN-Cache-Control", "public, max-age=120");
+      res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=180");
     } else {
       console.log("No caching /api/calculated-mining-stats");
       res.setHeader(
