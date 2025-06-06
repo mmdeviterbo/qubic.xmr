@@ -51,11 +51,10 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
   }, [timeframe, blocks_found_chart]);
 
   useLayoutEffect(() => {
-    if (isEmpty(xy) || chart) {
+    if (isEmpty(xy)) {
       return;
     }
 
-    // Register the plugin to all charts:
     const ctx: HTMLCanvasElement = document.querySelector(`canvas#${id}`);
     const barChart = new Chart(ctx, {
       plugins: [ChartDataLabels],
@@ -71,6 +70,7 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
         ],
       },
       options: {
+        responsive: true,
         plugins: {
           datalabels: {
             color: "white",
@@ -79,26 +79,28 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
             display: false,
           },
         },
-        responsive: true,
-        resizeDelay: 100,
       },
     });
-    setChart(chart);
+    setChart(barChart);
     return () => {
       barChart.destroy();
     };
   }, [xy]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isEmpty(chart)) {
       return;
     }
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
   }, [chart]);
 
   return (
-    <div className="w-full relative">
+    <div className="w-full relative z-100">
       {loading ? (
         <ChartSkeleton />
       ) : (

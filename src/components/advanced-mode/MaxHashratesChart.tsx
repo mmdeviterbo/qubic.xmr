@@ -1,4 +1,11 @@
-import { FC, memo, useEffect, useLayoutEffect, useState } from "react";
+import {
+  FC,
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 
 import isEmpty from "lodash/isEmpty";
 import Chart from "chart.js/auto";
@@ -6,6 +13,7 @@ import Chart from "chart.js/auto";
 import ChartSkeleton from "../common/ChartSkeleton";
 import type { HistoryCharts } from "@/types/MiningStats";
 import { formatLargeInteger } from "@/utils/numbers";
+import { Labels } from "@/utils/constants";
 
 interface MaxHashratesChartProps {
   id: string;
@@ -21,6 +29,8 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
   const [chart, setChart] = useState<Chart>();
 
   const [xy, setXY] = useState<{ x: string[]; y: number[] }>();
+
+  const handleResize = useCallback(() => chart?.resize(), [chart]);
 
   useEffect(() => {
     if (isEmpty(max_hashrates_chart)) {
@@ -43,29 +53,33 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
         labels: xy.x,
         datasets: [
           {
-            label: `Peak Hashrates`,
+            label: Labels.PEAK_HASHRATE,
             data: xy.y,
             borderWidth: 1,
+            pointRadius: 6,
+            pointHoverRadius: 10,
+            pointStyle: "circle",
           },
         ],
       },
       options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1.8,
         plugins: {
           legend: {
             labels: {
               usePointStyle: true,
-              pointStyle: "circle",
               font: {
-                size: 10,
+                size: 12,
               },
             },
           },
         },
-        responsive: true,
         scales: {
           y: {
             ticks: {
-              callback: function (value, index, ticks) {
+              callback: function (value) {
                 return formatLargeInteger(Number(value), 0);
               },
             },
@@ -74,14 +88,26 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
         },
       },
     });
-    setChart(chart);
+    setChart(lineChart);
     return () => {
       lineChart.destroy();
     };
   }, [xy]);
 
+  useLayoutEffect(() => {
+    if (isEmpty(chart)) {
+      return;
+    }
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("orientationchange", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("orientationchange", handleResize);
+    };
+  }, [chart]);
+
   return (
-    <div className="w-full relative">
+    <div className="w-full relative z-100">
       {loading ? <ChartSkeleton /> : <canvas id={id} />}
     </div>
   );
