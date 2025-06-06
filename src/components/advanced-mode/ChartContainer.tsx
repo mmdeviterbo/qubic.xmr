@@ -51,14 +51,20 @@ const ChartContainer: FC<ChartContainerProps> = ({
           {rightSubtitles.map((r) => (
             <div
               key={r.label}
-              className={`flex gap-3 justify-between ${loading ? "items-center" : ""}`}
+              className={`flex gap-3 justify-between ${loading ? "items-center mb-1 gap-1" : "gap-3 "}`}
             >
-              <span className="text-gray-50 whitespace-nowrap">{r.label}</span>
+              {!loading ? (
+                <span className="text-gray-50 whitespace-nowrap">
+                  {r.label}
+                </span>
+              ) : (
+                <div className="animate-pulse w-10 h-3 rounded-lg bg-gray-800" />
+              )}
 
               {!loading ? (
                 <span className="whitespace-nowrap">{r.value}</span>
               ) : (
-                <div className="animate-pulse w-8 h-2 rounded-lg bg-gray-800" />
+                <div className="animate-pulse w-10 h-2 rounded-lg bg-gray-800" />
               )}
             </div>
           ))}
