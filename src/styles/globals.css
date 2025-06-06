@@ -50,16 +50,6 @@ html {
   padding-bottom: 2rem;
 }
 
-.px-12 {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-}
-
-.px-24 {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
 .text-gray-50 {
   --tw-text-opacity: 1;
   color: rgb(128 139 155 / var(--tw-text-opacity));

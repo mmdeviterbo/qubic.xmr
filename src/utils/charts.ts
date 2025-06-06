@@ -72,8 +72,8 @@ const getMaxHashratesPerEpoch = (
   let charts = [] as unknown as HistoryCharts["max_hashrates_chart"];
 
   const maxWeeklyHistoryLength = weeklyHistory.length;
-  for (let i = 1; i < maxWeeklyHistoryLength; i++) {
-    const startIndex = weeklyHistory[i - 1].index;
+  for (let i = 0; i < maxWeeklyHistoryLength; i++) {
+    const startIndex = weeklyHistory[i - 1]?.index ?? 0;
     const endIndex = weeklyHistory[i].index;
     const maxHashratePerEpoch = maxBy(
       history.slice(startIndex, endIndex),

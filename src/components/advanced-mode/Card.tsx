@@ -42,7 +42,7 @@ const Card: FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`${customClass} relative flex flex-col gap-8 rounded-12 px-24 py-16 border-1 border-primary-60 bg-primary-70`}
+      className={`${customClass} relative flex flex-col gap-8 rounded-12 px-6 md:px-8 py-16 border-1 border-primary-60 bg-primary-70`}
     >
       {properties?.cfbToken}
       <div className="flex items-center gap-2">

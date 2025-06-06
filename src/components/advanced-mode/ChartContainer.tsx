@@ -28,7 +28,7 @@ const ChartContainer: FC<ChartContainerProps> = ({
 }) => {
   return (
     <div
-      className={`relative flex flex-col gap-8 rounded-12 px-24 py-16 border-1 border-primary-60 bg-primary-70`}
+      className={`relative flex flex-col gap-8 rounded-12 px-6 md:px-8 py-16 border-1 border-primary-60 bg-primary-70`}
     >
       <p className="font-space text-sm text-gray-50 mb-1">{title}</p>
 

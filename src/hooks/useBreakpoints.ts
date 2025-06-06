@@ -9,8 +9,9 @@ const useBreakpoints = (): UseBreakpoints => {
 
   useLayoutEffect(() => {
     function handleResize() {
-      setIsXs(window.innerWidth < 375);
+      setIsXs(window.innerWidth < 460);
     }
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
