@@ -47,7 +47,7 @@ const ChartContainer: FC<ChartContainerProps> = ({
           <p className="text-gray-50 text-xs">{leftSubtitle.label}</p>
         </div>
 
-        <div className="w-fit gap-0 text-xs">
+        <div className="w-fit gap-0 text-xs md:text-sm">
           {rightSubtitles.map((r) => (
             <div
               key={r.label}

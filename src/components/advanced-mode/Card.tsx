@@ -46,7 +46,7 @@ const Card: FC<CardProps> = ({
     >
       {properties?.cfbToken}
       <div className="flex items-center gap-2">
-        <span className="font-space text-14 text-gray-50">{label}</span>
+        <span className="font-space text-sm text-gray-50">{label}</span>
         {index === 0 ? (
           <AnimationPing isOnline={properties?.isOnline} />
         ) : (
@@ -63,9 +63,7 @@ const Card: FC<CardProps> = ({
       ) : (
         <>
           <div className="flex items-center">
-            <p
-              className={`whitespace-nowrap font-space ${index !== 0 ? "text-16" : ""} text-lg md:text-2xl`}
-            >
+            <p className={`whitespace-nowrap font-space text-lg md:text-2xl`}>
               {loading ? "" : value}
             </p>
             {subValue && (
