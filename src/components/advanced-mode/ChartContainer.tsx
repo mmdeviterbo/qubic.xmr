@@ -34,7 +34,7 @@ const ChartContainer: FC<ChartContainerProps> = ({
 
       <div className="flex justify-between items-end w-full">
         <div className="gap-0">
-          <div className="flex items-end gap-1">
+          <div className="flex items-center gap-1">
             <span
               className={`${leftSubtitle?.properties?.bounce ? "animate-bounce" : ""} text-lg md:text-2xl`}
             >
