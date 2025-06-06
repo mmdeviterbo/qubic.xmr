@@ -40,6 +40,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
     pool_hashrate,
     pool_blocks_found,
     last_block_found,
+    hashrate_average_1h,
     hashrate_average_7d,
     connected_miners,
     network_hashrate: monero_network_hashrate,
@@ -47,7 +48,6 @@ const SimpleMode: FC<SimpleModeProps> = ({
   } = miningStats ?? {};
 
   const {
-    hashrate_average_1h,
     daily_blocks_found,
     epoch_blocks_found,
     epoch,
@@ -136,7 +136,7 @@ const SimpleMode: FC<SimpleModeProps> = ({
           <Card
             label={Labels.AVG_1H_HASHRATE}
             value={formatLargeInteger(hashrate_average_1h)}
-            loading={isLoadingCalculatedMiningStats}
+            loading={isLoadingMiningStats}
           />
           <Card
             label={Labels.AVG_7D_HASHRATE}

@@ -1,8 +1,9 @@
+import { getChartHistory } from "../../../utils/charts";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import axios from "axios";
 import Papa from "papaparse";
-import meanBy from "lodash/meanBy";
+// import meanBy from "lodash/meanBy";
 import maxBy from "lodash/maxBy";
 
 import CHECKPOINTS from "@/utils/checkpoints.json";
@@ -12,57 +13,18 @@ import type {
   QubicMiningHistory,
 } from "@/types/MiningStats";
 import { QUBIC_SOLO_MINING_HISTORY } from "@/utils/constants";
-import { getPrevious1159AMUTC, getPreviousEpochDateUTC } from "@/utils/date";
 
-const getBlocksFoundByStartAndEndIndeces = (
-  startIndex: number,
-  endIndex: number,
-  history: QubicMiningHistory[],
-): number => {
-  return (
-    Number(history[endIndex].pool_blocks_found) -
-    Number(history[startIndex].pool_blocks_found) +
-    (Number(history[startIndex].pool_blocks_found) -
-      Number(history[startIndex - 1].pool_blocks_found))
-  );
-};
-
-export const getBlocksFoundByStartDate = (
-  startDateUTC: Date,
-  history: QubicMiningHistory[],
-): number => {
-  let totalDailyBlocks = 0;
-  const startDateLocal = new Date(startDateUTC);
-
-  const maxIndex = history.length - 1;
-  let index = maxIndex;
-  while (index >= 0) {
-    const currentDateLocal = new Date(history[index].timestamp.concat("Z"));
-    if (startDateLocal < currentDateLocal) {
-      index = index - 1;
-    } else {
-      totalDailyBlocks = getBlocksFoundByStartAndEndIndeces(
-        index,
-        maxIndex,
-        history,
-      );
-      break;
-    }
-  }
-  return totalDailyBlocks;
-};
-
-const getOneHourHashrateAverage = (history: QubicMiningHistory[]): number => {
-  const maxLength = history.length;
-  const oneHrItems = history.slice(maxLength - 600 - 1);
-  return meanBy(oneHrItems, (i) => Number(i.pool_hashrate));
-};
+// const getOneHourHashrateAverage = (history: QubicMiningHistory[]): number => {
+//   const maxLength = history.length;
+//   const oneHrItems = history.slice(maxLength - 600 - 1);
+//   return meanBy(oneHrItems, (i) => Number(i.pool_hashrate));
+// };
 
 const getMaxHashrateHistory = (
   history: QubicMiningHistory[],
 ): QubicMiningHistory => {
   // console.log("latestIndex: ", history.length - 1);
-  // console.log("latestMaxHashrateIndex: ", history.findIndex(i => Number(i.pool_hashrate) === 316551877));
+  // console.log("latestMaxHashrateIndex: ", history.findIndex(i => Number(i.pool_hashrate) === 393106095));
 
   const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
   const latestMaxHashrateIndex =
@@ -96,7 +58,7 @@ const parseCSV = async (stream) => {
 export const getMiningHistory = async () => {
   const res = await axios.get(QUBIC_SOLO_MINING_HISTORY, {
     responseType: "stream",
-    timeout: 7000,
+    timeout: 9000,
   });
   const historyResponse: QubicMiningHistory[] = await parseCSV(res?.data);
   return historyResponse;
@@ -111,22 +73,17 @@ export default async function handler(
 
     const epoch = Number(history.at(-1).qubic_epoch);
 
+    const { blocks_found_chart, max_hashrates_chart } =
+      getChartHistory(history);
+
     const maxHashrateHistory = getMaxHashrateHistory(history);
     const max_hashrate = Number(maxHashrateHistory.pool_hashrate);
     const max_hashrate_last_update = maxHashrateHistory.timestamp;
     const max_hashrate_last_epoch = Number(maxHashrateHistory.qubic_epoch);
 
-    const hashrate_average_1h = getOneHourHashrateAverage(history);
-
-    const epoch_blocks_found = getBlocksFoundByStartDate(
-      getPreviousEpochDateUTC(),
-      history,
-    );
-
-    const daily_blocks_found = getBlocksFoundByStartDate(
-      getPrevious1159AMUTC(),
-      history,
-    );
+    const { weekly: weeklyChart, daily: dailyChart } = blocks_found_chart;
+    const epoch_blocks_found = weeklyChart.at(-1).blocks_found;
+    const daily_blocks_found = dailyChart.at(-1).blocks_found;
 
     if (process.env.NODE_ENV === "production") {
       res.setHeader("Cache-Control", "public, max-age=90");
@@ -144,48 +101,18 @@ export default async function handler(
     }
 
     res.status(200).json({
-      hashrate_average_1h,
       daily_blocks_found,
       epoch_blocks_found,
       epoch,
       max_hashrate,
       max_hashrate_last_update,
       max_hashrate_last_epoch,
+      historyCharts: {
+        blocks_found_chart,
+        max_hashrates_chart,
+      },
     });
   } catch (e) {
     res.status(400);
   }
-}
-
-function getLastNWednesdaysUTC(N) {
-  const wednesdays = [];
-  const now = new Date();
-
-  // Get the day of the week in UTC (0 = Sunday, ..., 3 = Wednesday, ..., 6 = Saturday)
-  const currentUTCDay = now.getUTCDay();
-
-  // Calculate how many days back we need to go to reach the most recent Wednesday (3)
-  const daysSinceWednesday =
-    currentUTCDay >= 3 ? currentUTCDay - 3 : 7 - (3 - currentUTCDay);
-
-  // Get the last Wednesday at the same time of day in UTC
-  let lastWednesday = new Date(
-    Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate() - daysSinceWednesday,
-      now.getUTCHours(),
-      now.getUTCMinutes(),
-      now.getUTCSeconds(),
-      now.getUTCMilliseconds(),
-    ),
-  );
-
-  // Collect N Wednesdays (each one 7 days apart)
-  for (let i = 0; i < N; i++) {
-    wednesdays.push(new Date(lastWednesday).toISOString());
-    lastWednesday.setUTCDate(lastWednesday.getUTCDate() - 7);
-  }
-
-  return wednesdays;
 }

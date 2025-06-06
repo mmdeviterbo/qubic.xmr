@@ -32,6 +32,7 @@ export type MiningStats = {
 };
 
 export interface QubicMiningHistory {
+  index?: number;
   timestamp: string; //utc already
   pool_hashrate: `${number}`;
   network_hashrate: `${number}`;
@@ -53,11 +54,35 @@ export interface QubicMiningHistory {
 
 export type CalculatedMiningStats = Pick<
   MiningStats,
-  | "hashrate_average_1h"
   | "daily_blocks_found"
   | "epoch_blocks_found"
   | "epoch"
   | "max_hashrate"
   | "max_hashrate_last_update"
   | "max_hashrate_last_epoch"
->;
+> & {
+  historyCharts: HistoryCharts;
+};
+
+export type HistoryCharts = {
+  blocks_found_chart: {
+    daily: [
+      {
+        timestamp: string;
+        blocks_found: number;
+      },
+    ];
+    weekly: [
+      {
+        blocks_found: number;
+        epoch: number;
+      },
+    ];
+  };
+  max_hashrates_chart: [
+    {
+      max_hashrate: number;
+      epoch: number;
+    },
+  ];
+};
