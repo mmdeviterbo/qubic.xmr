@@ -64,7 +64,7 @@ const Card: FC<CardProps> = ({
         <>
           <div className="flex items-center">
             <p
-              className={`whitespace-nowrap font-space ${index !== 0 ? "text-16" : ""} xs:text-18 sm:text-22`}
+              className={`whitespace-nowrap font-space ${index !== 0 ? "text-16" : ""} text-lg md:text-2xl`}
             >
               {loading ? "" : value}
             </p>

@@ -1,15 +1,12 @@
-import { useState } from "react";
 import type { NextPage } from "next";
 
 import Head from "next/head";
 import axios from "axios";
 import isEmpty from "lodash/isEmpty";
+import useSWR from "swr";
 
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
-import SimpleMode from "@/components/simple-mode/SimpleMode";
-import { MODE } from "@/types/views";
 import AdvancedMode from "@/components/advanced-mode/AdvancedMode";
-import useSWR from "swr";
 import {
   CALCULATED_MINING_STATS_URL,
   MINING_STATS_URL,
@@ -19,8 +16,6 @@ import {
 const Main: NextPage<{
   miningStatsProps?: MiningStats;
 }> = ({ miningStatsProps }) => {
-  const [mode, setMode] = useState<MODE>(MODE.SIMPLE);
-
   const {
     data: miningStats = miningStatsProps,
     isLoading: isLoadingMiningStats,
@@ -57,24 +52,14 @@ const Main: NextPage<{
       </Head>
 
       <div className="md:mt-4 flex justify-center">
-        {mode === MODE.SIMPLE ? (
-          <SimpleMode
-            miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}
-            isLoadingMiningStats={
-              isEmpty(miningStatsProps) && isLoadingMiningStats
-            }
-            calculatedMiningStats={calculatedMiningStats}
-            isLoadingCalculatedMiningStats={isLoadingCalculatedMiningStats}
-          />
-        ) : // <AdvancedMode
-        //   miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}
-        //   isLoadingMiningStats={
-        //     isEmpty(miningStatsProps) && isLoadingMiningStats
-        //   }
-        //   calculatedMiningStats={calculatedMiningStats}
-        //   isLoadingCalculatedMiningStats={isLoadingCalculatedMiningStats}
-        // />
-        null}
+        <AdvancedMode
+          miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}
+          isLoadingMiningStats={
+            isEmpty(miningStatsProps) && isLoadingMiningStats
+          }
+          calculatedMiningStats={calculatedMiningStats}
+          isLoadingCalculatedMiningStats={isLoadingCalculatedMiningStats}
+        />
       </div>
 
       <canvas className="confetti absolute top-0 left-0 z-50 h-full w-full" />
@@ -86,15 +71,15 @@ export const getServerSideProps = async (ctx) => {
   try {
     ctx.res.setHeader(
       "Cache-Control",
-      "public, max-age=15, stale-while-revalidate=7",
+      "public, max-age=15, stale-while-revalidate=10",
     );
     ctx.res.setHeader(
       "CDN-Cache-Control",
-      "public, max-age=20, stale-while-revalidate=7",
+      "public, max-age=25, stale-while-revalidate=10",
     );
     ctx.res.setHeader(
       "Vercel-CDN-Cache-Control",
-      "public, s-maxage=25, stale-while-revalidate=7",
+      "public, s-maxage=30, stale-while-revalidate=10",
     );
 
     const baseUrl = process.env.BASE_URL;

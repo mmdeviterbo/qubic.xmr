@@ -1,5 +1,5 @@
 import { isValidValue } from "./numbers";
-import { blockToXMRConversion, moneroTicker } from "./constants";
+import { blockToXMRConversion, Labels, moneroTicker } from "./constants";
 import datetimeDifference, {
   type DateTimeDifference,
 } from "datetime-difference";
@@ -32,10 +32,11 @@ export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
   return `≈ ${totalXMR.toFixed(2)} ${moneroTicker}`;
 };
 
-export const formatPeakHashrateDateDifference = (
-  date: string,
-  epoch?: number,
-) => {
+export const formatPeakHashrateDateDifference = (date: string) => {
+  if (!date) {
+    return [];
+  }
+
   const dateInt = new Date(`${date}Z`).getTime() / 1000;
 
   const timeDifference = formatLatestBlockFoundSubValue(dateInt)?.replace(
@@ -43,14 +44,10 @@ export const formatPeakHashrateDateDifference = (
     "",
   );
 
-  const arrString = [];
   if (timeDifference) {
-    arrString.push(timeDifference);
+    return [Labels.ATH_HASHRATE, " | ", timeDifference];
   }
-  if (isValidValue(epoch, false)) {
-    arrString.push("|", `Epoch ${epoch}`);
-  }
-  return arrString?.reverse();
+  return [];
 };
 
 export const getTimeUnitShortVersion = (time: string) => {
@@ -109,5 +106,5 @@ export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
     .filter((k) => !!difference[k])
     .map((k) => `${difference[k]} ${k}`)[0];
 
-  return `≈ ${getTimeUnitShortVersion(formattedDifference)} ago`;
+  return `${getTimeUnitShortVersion(formattedDifference)} ago`;
 };

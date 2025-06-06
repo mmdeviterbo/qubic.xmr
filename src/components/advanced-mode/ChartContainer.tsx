@@ -1,0 +1,73 @@
+import { type FC, type ReactNode } from "react";
+
+type Properties = {
+  bounce?: boolean;
+};
+
+type Subtitle = {
+  label: string;
+  sublabel?: string;
+  value: string | number;
+  properties?: Properties;
+};
+
+interface ChartContainerProps {
+  title: string;
+  leftSubtitle: Subtitle;
+  rightSubtitles: Subtitle[];
+  chart: ReactNode;
+  loading: boolean;
+}
+
+const ChartContainer: FC<ChartContainerProps> = ({
+  title,
+  leftSubtitle,
+  rightSubtitles,
+  chart,
+  loading,
+}) => {
+  return (
+    <div
+      className={`relative flex flex-col gap-8 rounded-12 px-24 py-16 border-1 border-primary-60 bg-primary-70`}
+    >
+      <p className="font-space text-sm text-gray-50 mb-1">{title}</p>
+
+      <div className="flex justify-between items-end w-full">
+        <div className="gap-0">
+          <div className="flex items-end gap-1">
+            <span
+              className={`${leftSubtitle?.properties?.bounce ? "animate-bounce" : ""} text-lg md:text-2xl`}
+            >
+              {leftSubtitle.value}
+            </span>
+            <span className="ml-1 font-space text-sm text-gray-50">
+              {leftSubtitle?.sublabel}
+            </span>
+          </div>
+          <p className="text-gray-50 text-xs">{leftSubtitle.label}</p>
+        </div>
+
+        <div className="w-fit gap-0 text-xs">
+          {rightSubtitles.map((r) => (
+            <div
+              key={r.label}
+              className={`flex gap-3 justify-between ${loading ? "items-center" : ""}`}
+            >
+              <span className="text-gray-50 whitespace-nowrap">{r.label}</span>
+
+              {!loading ? (
+                <span className="whitespace-nowrap">{r.value}</span>
+              ) : (
+                <div className="animate-pulse w-8 h-2 rounded-lg bg-gray-800" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="my-2">{chart}</div>
+    </div>
+  );
+};
+
+export default ChartContainer;

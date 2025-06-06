@@ -20,19 +20,15 @@ export const getConfettiStorageId = (pool_block_found: number) =>
 
 export const enum Labels {
   HASHRATE = "Hashrate",
-  PEAK_HASHRATE = "Peak Hashrate",
-  AVG_1H_HASHRATE = "Avg 1H Hashrate",
-  AVG_7D_HASHRATE = "Avg 7D Hashrate",
+  HASHRATE_PERFORMANCE = "Hashrate Performance",
+  ATH_HASHRATE = "ATH Hashrate",
+  AVG_1H_HASHRATE = "Avg 1H",
+  AVG_7D_HASHRATE = "Avg 7D",
   BLOCKS_FOUND = "Blocks Found",
   TOTAL_BLOCKS_FOUND = "Total Blocks Found",
-  DAILY_BLOCKS_FOUND = "Daily Blocks Found",
-  DAILY_BLOCKS_FOUND_SHORT = "Daily",
-  EPOCH_BLOCKS_FOUND = "Epoch <number> Blocks Found ",
-  EPOCH_BLOCKS_FOUND_SHORT = "Epoch <number> ",
-  LAST_BLOCK_FOUND = "Last Block Found",
-  CONNECTED_MINERS = "Connected Miners",
+  DAILY_BLOCKS_FOUND = "Daily",
+  EPOCH_BLOCKS_FOUND = "Epoch <number> ",
   MONERO_NETWORK_HASHRATE = "Monero Network Hashrate",
-  MONERO_NETWORK_DIFFICULTY = "Monero Network Difficulty",
 }
 
 //APIs
