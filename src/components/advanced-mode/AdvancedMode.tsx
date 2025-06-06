@@ -124,7 +124,7 @@ const AdvancedMode: FC<AdvancedModeProps> = ({
       <ChartContainer
         title={Labels.BLOCKS_FOUND}
         leftSubtitle={{
-          label: `${isXs ? Labels.TOTAL_BLOCKS_FOUND_SHORT : Labels.TOTAL_BLOCKS_FOUND} ${daily_blocks_found > 0 ? " | ".concat(formatLatestBlockFoundSubValue(last_block_found)) : ""}`,
+          label: formatLatestBlockFoundSubValue(last_block_found),
           sublabel: formatPoolBlocksFoundSubValue(pool_blocks_found),
           value: isValidValue(pool_blocks_found, false)
             ? pool_blocks_found?.toLocaleString()

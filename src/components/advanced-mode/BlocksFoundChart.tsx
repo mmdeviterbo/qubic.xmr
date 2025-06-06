@@ -40,6 +40,13 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
       return;
     }
     const { daily, weekly } = blocks_found_chart;
+
+    // const sumD = daily.reduce((partialSum, a) => partialSum + Number(a.blocks_found), 0);
+    // console.log(sumD); // 6
+
+    // const sumW = weekly.reduce((partialSum, a) => partialSum + Number(a.blocks_found), 0);
+    // console.log(sumW); // 6
+
     const isDailyTimeFrame = timeframe === Timeframe.DAILY;
     const x = (isDailyTimeFrame ? daily : weekly).map((i) =>
       isDailyTimeFrame

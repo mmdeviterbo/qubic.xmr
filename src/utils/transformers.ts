@@ -50,7 +50,7 @@ export const formatPeakHashrateDateDifference = (
   if (timeDifference) {
     return [
       isXs ? Labels.ATH_HASHRATE_SHORT : Labels.ATH_HASHRATE,
-      " | ",
+      " • ",
       timeDifference,
     ];
   }
