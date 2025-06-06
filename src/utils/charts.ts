@@ -107,13 +107,14 @@ export const getChartHistory = (
     const minutes = date.getUTCMinutes();
     const seconds = date.getUTCSeconds();
 
-    const isBeforeNoon = hours === 11 && minutes <= 59 && seconds <= 59;
-    if (!seenDaily.has(utcDateStr) && isBeforeNoon) {
+    const isBeforeDayEnds = hours < 24;
+    if (!seenDaily.has(utcDateStr) && isBeforeDayEnds) {
       seenDaily.add(utcDateStr);
       indicesDaily.push(i);
     }
 
-    const isBeforeWednesdayNoon = days === 3 && isBeforeNoon;
+    const isBeforeWednesdayNoon =
+      days === 3 && hours < 12 && minutes <= 59 && seconds <= 59;
     if (!seenWeekly.has(utcDateStr) && isBeforeWednesdayNoon) {
       seenWeekly.add(utcDateStr);
       indicesWeekly.push(i);
@@ -124,7 +125,6 @@ export const getChartHistory = (
   const historyWithIndexDaily: QubicMiningHistory[] = sortedIndecesDaily.map(
     (i) => ({ ...history[i], index: i }),
   );
-  historyWithIndexDaily.push({ ...history.at(-1), index: maxLength });
 
   const sortedIndecesWeekly = indicesWeekly.reverse();
   const historyWithIndexWeekly: QubicMiningHistory[] = sortedIndecesWeekly.map(

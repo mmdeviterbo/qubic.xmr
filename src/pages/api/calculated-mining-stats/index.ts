@@ -14,17 +14,14 @@ import type {
 } from "@/types/MiningStats";
 import { QUBIC_SOLO_MINING_HISTORY } from "@/utils/constants";
 
-// const getOneHourHashrateAverage = (history: QubicMiningHistory[]): number => {
-//   const maxLength = history.length;
-//   const oneHrItems = history.slice(maxLength - 600 - 1);
-//   return meanBy(oneHrItems, (i) => Number(i.pool_hashrate));
-// };
-
 const getMaxHashrateHistory = (
   history: QubicMiningHistory[],
 ): QubicMiningHistory => {
   // console.log("latestIndex: ", history.length - 1);
-  // console.log("latestMaxHashrateIndex: ", history.findIndex(i => Number(i.pool_hashrate) === 393106095));
+  // console.log(
+  //   "latestMaxHashrateIndex: ",
+  //   history.findIndex((i) => Number(i.pool_hashrate) === 401417887),
+  // );
 
   const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
   const latestMaxHashrateIndex =
@@ -58,7 +55,7 @@ const parseCSV = async (stream) => {
 export const getMiningHistory = async () => {
   const res = await axios.get(QUBIC_SOLO_MINING_HISTORY, {
     responseType: "stream",
-    timeout: 9000,
+    timeout: 10000,
   });
   const historyResponse: QubicMiningHistory[] = await parseCSV(res?.data);
   return historyResponse;
