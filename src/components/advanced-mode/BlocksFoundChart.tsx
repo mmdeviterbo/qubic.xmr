@@ -1,5 +1,6 @@
 import {
   type FC,
+  memo,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -123,4 +124,4 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
   );
 };
 
-export default BarChart;
+export default memo<BarChartProps>(BarChart);

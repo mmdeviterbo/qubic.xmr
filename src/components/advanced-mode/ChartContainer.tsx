@@ -1,4 +1,4 @@
-import { type FC, type ReactNode } from "react";
+import { memo, type FC, type ReactNode } from "react";
 
 type Properties = {
   bounce?: boolean;
@@ -70,4 +70,4 @@ const ChartContainer: FC<ChartContainerProps> = ({
   );
 };
 
-export default ChartContainer;
+export default memo<ChartContainerProps>(ChartContainer);

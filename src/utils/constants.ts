@@ -26,6 +26,7 @@ export const enum Labels {
   AVG_7D_HASHRATE = "Avg 7D",
   BLOCKS_FOUND = "Blocks Found",
   TOTAL_BLOCKS_FOUND = "Total Blocks Found",
+  TOTAL_BLOCKS_FOUND_SHORT = "Total",
   DAILY_BLOCKS_FOUND = "Daily",
   EPOCH_BLOCKS_FOUND = "Epoch <number> ",
   MONERO_NETWORK_HASHRATE = "Monero Network Hashrate",

@@ -6,11 +6,15 @@ const getBlocksFoundByStartIndexAndEndIndex = (
   endIndex: number,
   history: QubicMiningHistory[],
 ): number => {
+  if (!startIndex) {
+    return Number(history[endIndex].pool_blocks_found);
+  }
+
   return (
     Number(history[endIndex].pool_blocks_found) -
     Number(history[startIndex].pool_blocks_found) +
     (Number(history[startIndex].pool_blocks_found) -
-      Number(history[startIndex - 1]?.pool_blocks_found ?? 0))
+      Number(history[startIndex - 1].pool_blocks_found))
   );
 };
 
@@ -20,8 +24,8 @@ const getDailyBlocksFound = (
 ): HistoryCharts["blocks_found_chart"]["daily"] => {
   let charts = [] as unknown as HistoryCharts["blocks_found_chart"]["daily"];
   const maxDailyHistoryLength = dailyHistory.length;
-  for (let i = 1; i < maxDailyHistoryLength; i++) {
-    const startIndex = dailyHistory[i - 1].index;
+  for (let i = 0; i < maxDailyHistoryLength; i++) {
+    const startIndex = dailyHistory[i - 1]?.index;
     const endIndex = dailyHistory[i].index;
 
     const blocks_found = getBlocksFoundByStartIndexAndEndIndex(
@@ -44,8 +48,8 @@ const getWeeklyBlocksFound = (
   let charts = [] as unknown as HistoryCharts["blocks_found_chart"]["weekly"];
 
   const maxWeeklyHistoryLength = weeklyHistory.length;
-  for (let i = 1; i < maxWeeklyHistoryLength; i++) {
-    const startIndex = weeklyHistory[i - 1].index;
+  for (let i = 0; i < maxWeeklyHistoryLength; i++) {
+    const startIndex = weeklyHistory[i - 1]?.index;
     const endIndex = weeklyHistory[i].index;
 
     const blocks_found = getBlocksFoundByStartIndexAndEndIndex(

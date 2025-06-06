@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { memo, type FC } from "react";
 
 import QubicLogo from "../common/logos/QubicLogo";
 import Card from "./Card";
@@ -25,14 +25,14 @@ import {
 } from "@/utils/numbers";
 import { isValidValue } from "@/utils/numbers";
 
-export interface SimpleModeProps {
+export interface AdvancedModeProps {
   miningStats: MiningStats;
   isLoadingMiningStats: boolean;
   calculatedMiningStats: CalculatedMiningStats;
   isLoadingCalculatedMiningStats: boolean;
 }
 
-const AdvancedMode: FC<SimpleModeProps> = ({
+const AdvancedMode: FC<AdvancedModeProps> = ({
   miningStats,
   isLoadingMiningStats,
   calculatedMiningStats,
@@ -54,7 +54,6 @@ const AdvancedMode: FC<SimpleModeProps> = ({
     epoch,
     max_hashrate,
     max_hashrate_last_update,
-    max_hashrate_last_epoch,
     historyCharts: { blocks_found_chart, max_hashrates_chart } = {},
   } = calculatedMiningStats ?? {};
 
@@ -124,7 +123,7 @@ const AdvancedMode: FC<SimpleModeProps> = ({
       <ChartContainer
         title={Labels.BLOCKS_FOUND}
         leftSubtitle={{
-          label: `${Labels.TOTAL_BLOCKS_FOUND} ${daily_blocks_found > 0 ? " | ".concat(formatLatestBlockFoundSubValue(last_block_found)) : ""}`,
+          label: `${isXs ? Labels.TOTAL_BLOCKS_FOUND_SHORT : Labels.TOTAL_BLOCKS_FOUND} ${daily_blocks_found > 0 ? " | ".concat(formatLatestBlockFoundSubValue(last_block_found)) : ""}`,
           sublabel: formatPoolBlocksFoundSubValue(pool_blocks_found),
           value: isValidValue(pool_blocks_found, false)
             ? pool_blocks_found?.toLocaleString()
@@ -143,7 +142,7 @@ const AdvancedMode: FC<SimpleModeProps> = ({
           {
             label: Labels.EPOCH_BLOCKS_FOUND.replace(
               "<number>",
-              isLoadingCalculatedMiningStats || epoch <= 0
+              isLoadingCalculatedMiningStats || !isValidValue(epoch, false)
                 ? ""
                 : epoch?.toString(),
             ),
@@ -165,11 +164,10 @@ const AdvancedMode: FC<SimpleModeProps> = ({
         label={Labels.MONERO_NETWORK_HASHRATE}
         value={formatLargeInteger(monero_network_hashrate)}
         loading={isLoadingMiningStats}
-        customClass="mt-4"
       />
       <Footer />
     </main>
   );
 };
 
-export default AdvancedMode;
+export default memo<AdvancedModeProps>(AdvancedMode);

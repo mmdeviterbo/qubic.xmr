@@ -1,4 +1,4 @@
-import { FC, useEffect, useLayoutEffect, useState } from "react";
+import { FC, memo, useEffect, useLayoutEffect, useState } from "react";
 
 import isEmpty from "lodash/isEmpty";
 import Chart from "chart.js/auto";
@@ -87,4 +87,4 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
   );
 };
 
-export default MaxHashratesChart;
+export default memo<MaxHashratesChartProps>(MaxHashratesChart);
