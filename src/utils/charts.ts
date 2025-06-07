@@ -113,8 +113,7 @@ export const getChartHistory = (
       indicesDaily.push(i);
     }
 
-    const isBeforeWednesdayNoon =
-      days === 3 && hours < 12 && minutes <= 59 && seconds <= 59;
+    const isBeforeWednesdayNoon = days === 3 && hours < 12;
     if (!seenWeekly.has(utcDateStr) && isBeforeWednesdayNoon) {
       seenWeekly.add(utcDateStr);
       indicesWeekly.push(i);
@@ -130,7 +129,9 @@ export const getChartHistory = (
   const historyWithIndexWeekly: QubicMiningHistory[] = sortedIndecesWeekly.map(
     (i) => ({ ...history[i], index: i }),
   );
-  historyWithIndexWeekly.push({ ...history.at(-1), index: maxLength });
+  if (historyWithIndexWeekly.at(-1).timestamp !== history.at(-1).timestamp) {
+    historyWithIndexWeekly.push({ ...history.at(-1), index: maxLength });
+  }
 
   const blocks_found_chart: HistoryCharts["blocks_found_chart"] = {
     daily: getDailyBlocksFound(historyWithIndexDaily, history),
