@@ -36,31 +36,9 @@ html {
   border-color: rgb(32 46 60 / var(--tw-border-opacity));
 }
 
-.rounded-12 {
-  border-radius: .75rem;
-}
-
-.py-16 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.py-32 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
 .text-gray-50 {
   --tw-text-opacity: 1;
   color: rgb(128 139 155 / var(--tw-text-opacity));
-}
-
-.gap-8 {
-  gap: .5rem;
-}
-
-.gap-16 {
-  gap: 1rem;
 }
 
 .font-space {

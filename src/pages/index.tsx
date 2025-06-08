@@ -48,7 +48,7 @@ const MainPage: NextPage<{
     <>
       <Head>
         <link rel="icon" href="/qubic.svg" sizes="any" type="image/svg+xml" />
-        <title>Qubic-XMR Live</title>
+        <title>Qubic Custom Mining</title>
       </Head>
 
       <div className="md:mt-4 flex justify-center">

@@ -62,8 +62,8 @@ const Main: FC<AdvancedModeProps> = ({
   useConfettiBlocksFound(pool_blocks_found);
 
   return (
-    <main className="w-full flex flex-col gap-16 lg:w-2/3 xl:w-[60%] px-2 md:px-12 py-32">
-      <div className="ml-1 md:ml-0 md:mb-2">
+    <main className="w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-8">
+      <div className="ml-2 md:ml-1 md:mb-2">
         <QubicLogo showTitle={true} />
       </div>
 

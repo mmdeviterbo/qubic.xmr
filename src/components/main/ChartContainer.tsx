@@ -28,7 +28,7 @@ const ChartContainer: FC<ChartContainerProps> = ({
 }) => {
   return (
     <div
-      className={`relative flex flex-col gap-8 rounded-12 px-4 md:px-8 py-16 border-1 border-primary-60 bg-primary-70`}
+      className={`relative flex flex-col gap-1 rounded-xl px-4 md:px-8 py-4 md:py-6 border-1 border-primary-60 bg-primary-70`}
     >
       <p className="font-space text-sm text-gray-50 mb-1">{title}</p>
 
@@ -58,13 +58,13 @@ const ChartContainer: FC<ChartContainerProps> = ({
                   {r.label}
                 </span>
               ) : (
-                <div className="animate-pulse w-10 h-3 rounded-lg bg-gray-800" />
+                <div className="animate-pulse w-10 h-3 rounded-xl bg-gray-800" />
               )}
 
               {!loading ? (
                 <span className="whitespace-nowrap">{r.value}</span>
               ) : (
-                <div className="animate-pulse w-10 h-2 rounded-lg bg-gray-800" />
+                <div className="animate-pulse w-10 h-2 rounded-xl bg-gray-800" />
               )}
             </div>
           ))}

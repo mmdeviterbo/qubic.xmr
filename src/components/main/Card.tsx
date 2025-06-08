@@ -42,7 +42,7 @@ const Card: FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`${customClass} relative flex flex-col gap-8 rounded-12 px-4 md:px-8 py-16 border-1 border-primary-60 bg-primary-70`}
+      className={`${customClass} relative flex flex-col gap-1 rounded-xl px-4 md:px-8 py-4 md:py-6 border-1 border-primary-60 bg-primary-70`}
     >
       {properties?.cfbToken}
       <div className="flex items-center gap-2">
@@ -58,7 +58,7 @@ const Card: FC<CardProps> = ({
 
       {loading ? (
         <div
-          className={`animate-pulse ${index === 0 ? "w-1/3" : "sm:w-1/2 w-2/3"} my-1 h-4 rounded-lg bg-gray-800`}
+          className={`animate-pulse ${index === 0 ? "w-1/3" : "sm:w-1/2 w-2/3"} my-1 h-4 rounded-xl bg-gray-800`}
         />
       ) : (
         <>

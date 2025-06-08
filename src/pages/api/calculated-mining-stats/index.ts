@@ -82,7 +82,7 @@ export default async function handler(
     const epoch_blocks_found = weeklyChart.at(-1).blocks_found;
     const daily_blocks_found = dailyChart.at(-1).blocks_found;
 
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "development") {
       res.setHeader("Cache-Control", "public, max-age=90");
       res.setHeader("CDN-Cache-Control", "public, max-age=120");
       res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=180");
