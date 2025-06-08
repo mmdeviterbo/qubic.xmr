@@ -1,4 +1,4 @@
-import { getChartHistory } from "../../../utils/charts";
+import { getChartHistory } from "../../../utils/xmr-charts";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import axios from "axios";
@@ -10,13 +10,13 @@ import CHECKPOINTS from "@/utils/checkpoints.json";
 
 import type {
   CalculatedMiningStats,
-  QubicMiningHistory,
+  XMRMiningHistory,
 } from "@/types/MiningStats";
 import { QUBIC_SOLO_MINING_HISTORY } from "@/utils/constants";
 
 const getMaxHashrateHistory = (
-  history: QubicMiningHistory[],
-): QubicMiningHistory => {
+  history: XMRMiningHistory[],
+): XMRMiningHistory => {
   // console.log("latestIndex: ", history.length - 1);
   // console.log(
   //   "latestMaxHashrateIndex: ",
@@ -52,12 +52,12 @@ const parseCSV = async (stream) => {
   });
 };
 
-export const getMiningHistory = async () => {
+export const getXMRMiningHistory = async () => {
   const res = await axios.get(QUBIC_SOLO_MINING_HISTORY, {
     responseType: "stream",
     timeout: 10000,
   });
-  const historyResponse: QubicMiningHistory[] = await parseCSV(res?.data);
+  const historyResponse: XMRMiningHistory[] = await parseCSV(res?.data);
   return historyResponse;
 };
 
@@ -66,7 +66,7 @@ export default async function handler(
   res: NextApiResponse<CalculatedMiningStats>,
 ) {
   try {
-    const history = await getMiningHistory();
+    const history = await getXMRMiningHistory();
 
     const epoch = Number(history.at(-1).qubic_epoch);
 

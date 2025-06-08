@@ -32,7 +32,7 @@ export type MiningStats = {
   epoch: number;
 };
 
-export interface QubicMiningHistory {
+export interface XMRMiningHistory {
   index?: number;
   timestamp: string; //utc already
   pool_hashrate: `${number}`;

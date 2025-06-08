@@ -1,10 +1,10 @@
-import type { HistoryCharts, QubicMiningHistory } from "@/types/MiningStats";
+import type { HistoryCharts, XMRMiningHistory } from "@/types/MiningStats";
 import maxBy from "lodash/maxBy";
 
 const getBlocksFoundByStartIndexAndEndIndex = (
   startIndex: number,
   endIndex: number,
-  history: QubicMiningHistory[],
+  history: XMRMiningHistory[],
 ): number => {
   if (!startIndex) {
     return Number(history[endIndex].pool_blocks_found);
@@ -19,8 +19,8 @@ const getBlocksFoundByStartIndexAndEndIndex = (
 };
 
 const getDailyBlocksFound = (
-  dailyHistory: QubicMiningHistory[],
-  history: QubicMiningHistory[],
+  dailyHistory: XMRMiningHistory[],
+  history: XMRMiningHistory[],
 ): HistoryCharts["blocks_found_chart"]["daily"] => {
   let charts = [] as unknown as HistoryCharts["blocks_found_chart"]["daily"];
   const maxDailyHistoryLength = dailyHistory.length;
@@ -42,8 +42,8 @@ const getDailyBlocksFound = (
 };
 
 const getWeeklyBlocksFound = (
-  weeklyHistory: QubicMiningHistory[],
-  history: QubicMiningHistory[],
+  weeklyHistory: XMRMiningHistory[],
+  history: XMRMiningHistory[],
 ): HistoryCharts["blocks_found_chart"]["weekly"] => {
   let charts = [] as unknown as HistoryCharts["blocks_found_chart"]["weekly"];
 
@@ -66,8 +66,8 @@ const getWeeklyBlocksFound = (
 };
 
 const getMaxHashratesPerEpoch = (
-  weeklyHistory: QubicMiningHistory[],
-  history: QubicMiningHistory[],
+  weeklyHistory: XMRMiningHistory[],
+  history: XMRMiningHistory[],
 ): HistoryCharts["max_hashrates_chart"] => {
   let charts = [] as unknown as HistoryCharts["max_hashrates_chart"];
 
@@ -87,9 +87,7 @@ const getMaxHashratesPerEpoch = (
   return charts;
 };
 
-export const getChartHistory = (
-  history: QubicMiningHistory[],
-): HistoryCharts => {
+export const getChartHistory = (history: XMRMiningHistory[]): HistoryCharts => {
   const seenDaily = new Set();
   const indicesDaily = [];
 
@@ -121,12 +119,12 @@ export const getChartHistory = (
   }
 
   const sortedIndecesDaily = indicesDaily.reverse();
-  const historyWithIndexDaily: QubicMiningHistory[] = sortedIndecesDaily.map(
+  const historyWithIndexDaily: XMRMiningHistory[] = sortedIndecesDaily.map(
     (i) => ({ ...history[i], index: i }),
   );
 
   const sortedIndecesWeekly = indicesWeekly.reverse();
-  const historyWithIndexWeekly: QubicMiningHistory[] = sortedIndecesWeekly.map(
+  const historyWithIndexWeekly: XMRMiningHistory[] = sortedIndecesWeekly.map(
     (i) => ({ ...history[i], index: i }),
   );
   if (historyWithIndexWeekly.at(-1).timestamp !== history.at(-1).timestamp) {
