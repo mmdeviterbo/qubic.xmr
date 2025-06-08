@@ -47,6 +47,7 @@ export const SuperCfbToken: FC<{ customClass?: string; showFire: boolean }> = ({
           width={width * 1.05}
           height={width * 1.05}
           draggable={false}
+          quality={90}
         />
       </div>
     </>
