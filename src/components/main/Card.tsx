@@ -4,7 +4,8 @@ interface CardProps {
   index?: number;
   label: string;
   value: ReactNode;
-  subValue?: string;
+  subValue?: ReactNode;
+  subValue2?: ReactNode;
   loading: boolean;
   properties?: {
     isOnline?: boolean;
@@ -29,7 +30,8 @@ const Card: FC<CardProps> = ({
   index,
   label,
   value,
-  subValue = "",
+  subValue,
+  subValue2,
   loading,
   properties,
 }) => {
@@ -46,18 +48,23 @@ const Card: FC<CardProps> = ({
           className={`animate-pulse ${index === 0 ? "w-1/3" : "sm:w-1/2 w-2/3"} my-1 h-4 rounded-xl bg-gray-800`}
         />
       ) : (
-        <>
+        <div className="flex flex-col">
           <div className="flex items-center">
             <p className={`whitespace-nowrap font-space text-lg md:text-2xl`}>
               {loading ? "" : value}
             </p>
-            {subValue && (
-              <span className="ml-2 font-space text-sm text-gray-50">
-                {loading ? "" : subValue}
-              </span>
+            {subValue2 && (
+              <div className="ml-2 font-space text-sm text-gray-50">
+                {loading ? "" : subValue2}
+              </div>
             )}
           </div>
-        </>
+          {subValue && (
+            <div className="font-space text-sm text-gray-50">
+              {loading ? "" : subValue}
+            </div>
+          )}
+        </div>
       )}
     </div>
   );

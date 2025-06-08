@@ -1,5 +1,6 @@
 export type MiningStats = {
   pool_hashrate: number;
+  pool_hashrate_ranking: number;
   round_hashes: number;
   network_hashrate: number;
   network_difficulty: number;

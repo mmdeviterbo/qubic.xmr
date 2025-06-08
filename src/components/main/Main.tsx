@@ -1,4 +1,4 @@
-import { memo, type FC } from "react";
+import { memo, useMemo, type FC } from "react";
 
 import QubicLogo from "../common/logos/QubicLogo";
 import Card from "./Card";
@@ -46,6 +46,7 @@ const Main: FC<AdvancedModeProps> = ({
     hashrate_average_7d,
     connected_miners,
     network_hashrate: monero_network_hashrate,
+    pool_hashrate_ranking,
   } = miningStats ?? {};
 
   const {
@@ -61,6 +62,21 @@ const Main: FC<AdvancedModeProps> = ({
 
   useConfettiBlocksFound(pool_blocks_found);
 
+  const hashrateSubValue2 = useMemo(() => {
+    const pill = (
+      <div className="z-100 cursor-pointer inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-gray-500/10 ring-inset bg-gray-800 text-gray-400">
+        Rank {pool_hashrate_ranking}
+      </div>
+    );
+    return (
+      <>
+        {pool_hashrate_ranking < 10 && (
+          <div className="mt-0.5 md:mt-1">{pill}</div>
+        )}
+      </>
+    );
+  }, [pool_hashrate, monero_network_hashrate, pool_hashrate_ranking]);
+
   return (
     <main className="w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-8">
       <div className="ml-2 md:ml-1 md:mb-2">
@@ -71,7 +87,8 @@ const Main: FC<AdvancedModeProps> = ({
         index={0}
         label={Labels.HASHRATE}
         value={formatLargeInteger(pool_hashrate)}
-        subValue={formatPoolHashrateSubValue(
+        subValue={hashrateSubValue2}
+        subValue2={formatPoolHashrateSubValue(
           pool_hashrate,
           monero_network_hashrate,
         )}
