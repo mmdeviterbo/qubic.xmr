@@ -9,7 +9,7 @@ export const formatPoolHashrateSubValue = (
   network_hashrate: number,
 ) => {
   let percentage: string | number = (pool_hashrate / network_hashrate) * 100;
-  if (!isValidValue(percentage) || percentage === 0) {
+  if (!isValidValue(percentage, false)) {
     return "";
   }
   const wholeNumberPercentage = Math.trunc(percentage);
@@ -21,7 +21,7 @@ export const formatPoolHashrateSubValue = (
   } else {
     percentage = percentage.toFixed(3);
   }
-  return `≈ ${percentage}%`;
+  return `${percentage}%`;
 };
 
 export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {

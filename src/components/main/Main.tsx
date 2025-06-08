@@ -1,4 +1,4 @@
-import { memo, useMemo, type FC } from "react";
+import { memo, useMemo, type FC, type ReactNode } from "react";
 
 import QubicLogo from "../common/logos/QubicLogo";
 import Card from "./Card";
@@ -62,20 +62,24 @@ const Main: FC<AdvancedModeProps> = ({
 
   useConfettiBlocksFound(pool_blocks_found);
 
-  const hashrateSubValue2 = useMemo(() => {
-    const pill = (
-      <div className="z-100 cursor-pointer inline-flex items-center rounded-md px-2 py-1 text-xs ring-1 ring-gray-500/10 ring-inset bg-gray-800 text-gray-400">
-        Rank {pool_hashrate_ranking}
+  const hashrateRanking = useMemo<ReactNode>(() => {
+    const isValidPoolHashrate = isValidValue(pool_hashrate, false);
+    return (
+      <div
+        className={`flex items-center gap-1 ${isValidPoolHashrate ? "mt-0.5" : ""}`}
+      >
+        {isValidPoolHashrate && (
+          <>
+            <span>Rank {pool_hashrate_ranking}</span>
+            <span>•</span>
+          </>
+        )}
+        <span>
+          {formatPoolHashrateSubValue(pool_hashrate, monero_network_hashrate)}
+        </span>
       </div>
     );
-    return (
-      <>
-        {pool_hashrate_ranking < 10 && (
-          <div className="mt-0.5 md:mt-1">{pill}</div>
-        )}
-      </>
-    );
-  }, [pool_hashrate, monero_network_hashrate, pool_hashrate_ranking]);
+  }, [pool_hashrate_ranking, pool_hashrate, monero_network_hashrate]);
 
   return (
     <main className="w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-8">
@@ -87,11 +91,7 @@ const Main: FC<AdvancedModeProps> = ({
         index={0}
         label={Labels.HASHRATE}
         value={formatLargeInteger(pool_hashrate)}
-        subValue={hashrateSubValue2}
-        subValue2={formatPoolHashrateSubValue(
-          pool_hashrate,
-          monero_network_hashrate,
-        )}
+        subValue={hashrateRanking}
         loading={isLoadingMiningStats}
         properties={{
           isOnline: connected_miners > 0 && pool_blocks_found > 0,

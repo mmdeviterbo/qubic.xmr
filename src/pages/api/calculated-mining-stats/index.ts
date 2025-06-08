@@ -20,7 +20,7 @@ const getMaxHashrateHistory = (
   // console.log("latestIndex: ", history.length - 1);
   // console.log(
   //   "latestMaxHashrateIndex: ",
-  //   history.findIndex((i) => Number(i.pool_hashrate) === 401417887),
+  //   history.findIndex((i) => Number(i.pool_hashrate) === 438803704),
   // );
 
   const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
@@ -82,20 +82,9 @@ export default async function handler(
     const epoch_blocks_found = weeklyChart.at(-1).blocks_found;
     const daily_blocks_found = dailyChart.at(-1).blocks_found;
 
-    if (process.env.NODE_ENV === "production") {
-      res.setHeader("Cache-Control", "public, max-age=90");
-      res.setHeader("CDN-Cache-Control", "public, max-age=120");
-      res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=180");
-    } else {
-      console.log("No caching /api/calculated-mining-stats");
-      res.setHeader(
-        "Cache-Control",
-        "no-store, no-cache, must-revalidate, proxy-revalidate",
-      );
-      res.setHeader("Pragma", "no-cache");
-      res.setHeader("Expires", "0");
-      res.setHeader("Surrogate-Control", "no-store");
-    }
+    res.setHeader("Cache-Control", "public, max-age=90");
+    res.setHeader("CDN-Cache-Control", "public, max-age=120");
+    res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=180");
 
     res.status(200).json({
       daily_blocks_found,

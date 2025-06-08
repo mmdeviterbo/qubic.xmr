@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import sortBy from "lodash/sortBy";
+import orderBy from "lodash/orderBy";
 
 import type { MiningStats } from "@/types/MiningStats";
 import {
@@ -13,11 +13,11 @@ import {
 const getRankingByPoolHashrate = (
   data: Array<Record<"hashrate" | "url", unknown>>,
 ): number => {
-  const sortPools = sortBy(data, (a) => Number(a.hashrate));
-  return sortPools.findIndex((s) => s.url === QUBIC_XMR_STATS_URL);
+  const sortPools = orderBy(data, (a) => Number(a.hashrate), "desc");
+  return sortPools.findIndex((s) => s.url === QUBIC_XMR_STATS_URL) + 1;
 };
 
-async function getMiningAveragesAndRanking() {
+async function getMiningAveragesAndRanking(accurate_qubic_hashrate: number) {
   try {
     const latestBlockFoundTime: number = (
       await axios.get(MONERO_MINING_LATEST_BLOCK_FOUND_URL())
@@ -28,15 +28,22 @@ async function getMiningAveragesAndRanking() {
     )?.data?.data;
 
     const qubicPool = pools?.find((p) => p.url === QUBIC_XMR_STATS_URL);
+    qubicPool.hashrate = accurate_qubic_hashrate;
 
     if (!qubicPool) {
       throw new Error();
     }
 
+    const poolsWithUpdatedQubicHashrate = pools?.map((pool) =>
+      pool.url === QUBIC_XMR_STATS_URL ? qubicPool : pool,
+    );
+
     return {
       hashrate_average_7d: qubicPool.hashrate_average_7d as number,
       hashrate_average_1h: qubicPool.hashrate_average_1h as number,
-      pool_hashrate_ranking: getRankingByPoolHashrate(pools),
+      pool_hashrate_ranking: getRankingByPoolHashrate(
+        poolsWithUpdatedQubicHashrate,
+      ),
     };
   } catch (e) {
     return null;
@@ -51,11 +58,13 @@ export default async function handler(
     let newMiningStats: MiningStats = (await axios.get(QUBIC_XMR_STATS_API_URL))
       .data;
 
-    const averages = await getMiningAveragesAndRanking();
-    if (averages) {
+    const averagesAndRanking = await getMiningAveragesAndRanking(
+      newMiningStats.pool_hashrate,
+    );
+    if (averagesAndRanking) {
       newMiningStats = {
         ...newMiningStats,
-        ...(averages ? averages : {}),
+        ...(averagesAndRanking ? averagesAndRanking : {}),
       };
     }
 

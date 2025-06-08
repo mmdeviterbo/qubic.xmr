@@ -48,9 +48,3 @@ export const isWarningBounceForPoolBlocksFounds = (
     nearestCeiling - pool_blocks_found >= 1
   );
 };
-
-export const isDifferenceAtMost15Percent = (value1: number, value2: number) => {
-  const before = value1 < value2 ? value1 : value2;
-  const after = value1 < value2 ? value2 : value1;
-  return (after - before) / before <= 0.15;
-};
