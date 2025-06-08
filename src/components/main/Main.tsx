@@ -63,12 +63,9 @@ const Main: FC<AdvancedModeProps> = ({
   useConfettiBlocksFound(pool_blocks_found);
 
   const hashrateRanking = useMemo<ReactNode>(() => {
-    const isValidPoolHashrate = isValidValue(pool_hashrate, false);
     return (
-      <div
-        className={`flex items-center gap-1 ${isValidPoolHashrate ? "mt-0.5" : ""}`}
-      >
-        {isValidPoolHashrate && (
+      <div className="flex items-center gap-1">
+        {isValidValue(pool_hashrate, false) && (
           <>
             <span>Rank {pool_hashrate_ranking}</span>
             <span>•</span>
