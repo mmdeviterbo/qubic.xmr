@@ -11,8 +11,12 @@ import CHECKPOINTS from "@/utils/checkpoints.json";
 import type {
   CalculatedMiningStats,
   XMRMiningHistory,
+  XTMMiningHistory,
 } from "@/types/MiningStats";
-import { QUBIC_SOLO_MINING_HISTORY } from "@/utils/constants";
+import {
+  QUBIC_SOLO_MINING_HISTORY,
+  TARI_BLOCKS_API_URL,
+} from "@/utils/constants";
 
 const getMaxHashrateHistory = (
   history: XMRMiningHistory[],
@@ -52,6 +56,12 @@ const parseCSV = async (stream) => {
   });
 };
 
+export const getXTMMiningHistory = async (): Promise<XTMMiningHistory[]> => {
+  const { data, status } =
+    await axios.get<XTMMiningHistory[]>(TARI_BLOCKS_API_URL);
+  return status === 200 ? data : [];
+};
+
 export const getXMRMiningHistory = async () => {
   const res = await axios.get(QUBIC_SOLO_MINING_HISTORY, {
     responseType: "stream",
@@ -66,14 +76,16 @@ export default async function handler(
   res: NextApiResponse<CalculatedMiningStats>,
 ) {
   try {
-    const history = await getXMRMiningHistory();
+    // const xtmHistory = await getXTMMiningHistory();
 
-    const epoch = Number(history.at(-1).qubic_epoch);
+    const xmrHistory = await getXMRMiningHistory();
+
+    const epoch = Number(xmrHistory.at(-1).qubic_epoch);
 
     const { blocks_found_chart, max_hashrates_chart } =
-      getChartHistory(history);
+      getChartHistory(xmrHistory);
 
-    const maxHashrateHistory = getMaxHashrateHistory(history);
+    const maxHashrateHistory = getMaxHashrateHistory(xmrHistory);
     const max_hashrate = Number(maxHashrateHistory.pool_hashrate);
     const max_hashrate_last_update = maxHashrateHistory.timestamp;
     const max_hashrate_last_epoch = Number(maxHashrateHistory.qubic_epoch);

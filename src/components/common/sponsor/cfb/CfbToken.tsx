@@ -1,4 +1,4 @@
-import { FC, useLayoutEffect, useState } from "react";
+import { type FC, useLayoutEffect, useState } from "react";
 import Image from "next/image";
 import Fire from "@/components/effects/Fire";
 
@@ -32,11 +32,11 @@ export const SuperCfbToken: FC<{ customClass?: string; showFire: boolean }> = ({
     <>
       <Fire show={showFire} />
       <div
-        id="cfb-token-100th-block-container"
+        id="cfb-token-container"
         className={`absolute z-100 right-4 ${customClass}`}
       >
         <Image
-          id="cfb-token-100th-block"
+          id="cfb-token"
           onClick={() =>
             window.open("https://cfbtoken.com", "_blank", "noopener")
           }

@@ -53,6 +53,13 @@ export interface XMRMiningHistory {
   // qubic_epoch: '162'
 }
 
+export interface XTMMiningHistory {
+  blocks: number[];
+  blocks_found_this_epoch: number;
+  last_scanned_height: number;
+  total_found: number;
+}
+
 export type CalculatedMiningStats = Pick<
   MiningStats,
   | "daily_blocks_found"
