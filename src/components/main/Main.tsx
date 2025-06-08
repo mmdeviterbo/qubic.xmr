@@ -32,7 +32,7 @@ export interface AdvancedModeProps {
   isLoadingCalculatedMiningStats: boolean;
 }
 
-const AdvancedMode: FC<AdvancedModeProps> = ({
+const Main: FC<AdvancedModeProps> = ({
   miningStats,
   isLoadingMiningStats,
   calculatedMiningStats,
@@ -171,4 +171,4 @@ const AdvancedMode: FC<AdvancedModeProps> = ({
   );
 };
 
-export default memo<AdvancedModeProps>(AdvancedMode);
+export default memo<AdvancedModeProps>(Main);

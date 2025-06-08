@@ -6,14 +6,14 @@ import isEmpty from "lodash/isEmpty";
 import useSWR from "swr";
 
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
-import AdvancedMode from "@/components/advanced-mode/AdvancedMode";
+import Main from "@/components/main/Main";
 import {
   CALCULATED_MINING_STATS_URL,
   MINING_STATS_URL,
   SWR_HOOK_DEFAULTS,
 } from "@/utils/constants";
 
-const Main: NextPage<{
+const MainPage: NextPage<{
   miningStatsProps?: MiningStats;
 }> = ({ miningStatsProps }) => {
   const {
@@ -52,7 +52,7 @@ const Main: NextPage<{
       </Head>
 
       <div className="md:mt-4 flex justify-center">
-        <AdvancedMode
+        <Main
           miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}
           isLoadingMiningStats={
             isEmpty(miningStatsProps) && isLoadingMiningStats
@@ -90,4 +90,4 @@ export const getServerSideProps = async (ctx) => {
   }
 };
 
-export default Main;
+export default MainPage;
