@@ -8,6 +8,7 @@ import useSWR from "swr";
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import Main from "@/components/main/Main";
 import {
+  ABOUT_ME_NOTE,
   CALCULATED_MINING_STATS_URL,
   MINING_STATS_URL,
   SWR_HOOK_DEFAULTS,
@@ -49,6 +50,7 @@ const MainPage: NextPage<{
       <Head>
         <link rel="icon" href="/qubic.svg" sizes="any" type="image/svg+xml" />
         <title>Qubic Custom Mining</title>
+        <meta name="description" content={ABOUT_ME_NOTE}></meta>
       </Head>
 
       <div className="md:mt-4 flex justify-center">
