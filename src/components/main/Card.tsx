@@ -1,15 +1,11 @@
-import { memo, ReactElement, type FC, type ReactNode } from "react";
+import { memo, type ReactElement, type FC, type ReactNode } from "react";
 
-import Tooltip from "@/components/common/Tooltip";
 interface CardProps {
   index?: number;
   label: string;
   value: ReactNode;
   subValue?: string;
   loading: boolean;
-  toolTip?: string;
-  toolTipLeftPosition?: boolean;
-  customClass?: string;
   properties?: {
     isOnline?: boolean;
     cfbToken: ReactElement;
@@ -35,25 +31,14 @@ const Card: FC<CardProps> = ({
   value,
   subValue = "",
   loading,
-  toolTip,
-  toolTipLeftPosition = true,
-  customClass = "",
   properties,
 }) => {
   return (
-    <div
-      className={`${customClass} relative flex flex-col gap-1 rounded-xl px-4 md:px-8 py-4 md:py-6 border-1 border-primary-60 bg-primary-70`}
-    >
+    <div className="relative flex flex-col gap-1 rounded-xl px-4 md:px-8 py-4 md:py-6 border-1 border-primary-60 bg-primary-70">
       {properties?.cfbToken}
       <div className="flex items-center gap-2">
         <span className="font-space text-sm text-gray-50">{label}</span>
-        {index === 0 ? (
-          <AnimationPing isOnline={properties?.isOnline} />
-        ) : (
-          toolTip && (
-            <Tooltip content={toolTip} leftPosition={toolTipLeftPosition} />
-          )
-        )}
+        {index === 0 && <AnimationPing isOnline={properties?.isOnline} />}
       </div>
 
       {loading ? (

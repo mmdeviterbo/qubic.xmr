@@ -1,14 +1,23 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
+import sortBy from "lodash/sortBy";
 
 import type { MiningStats } from "@/types/MiningStats";
 import {
   MONERO_MINING_LATEST_BLOCK_FOUND_URL,
   MONERO_MINING_POOLS_STATS_URL,
+  QUBIC_XMR_STATS_API_URL,
   QUBIC_XMR_STATS_URL,
 } from "@/utils/constants";
 
-async function getMiningAverages() {
+const getRankingByPoolHashrate = (
+  data: Array<Record<"hashrate" | "url", unknown>>,
+): number => {
+  const sortPools = sortBy(data, (a) => Number(a.hashrate));
+  return sortPools.findIndex((s) => s.url === QUBIC_XMR_STATS_URL);
+};
+
+async function getMiningAveragesAndRanking() {
   try {
     const latestBlockFoundTime: number = (
       await axios.get(MONERO_MINING_LATEST_BLOCK_FOUND_URL())
@@ -18,8 +27,7 @@ async function getMiningAverages() {
       await axios.get(MONERO_MINING_POOLS_STATS_URL(latestBlockFoundTime))
     )?.data?.data;
 
-    const qubicStatsUrl = QUBIC_XMR_STATS_URL.replace("/stats", "");
-    const qubicPool = pools?.find((p) => p.url === qubicStatsUrl);
+    const qubicPool = pools?.find((p) => p.url === QUBIC_XMR_STATS_URL);
 
     if (!qubicPool) {
       throw new Error();
@@ -28,6 +36,7 @@ async function getMiningAverages() {
     return {
       hashrate_average_7d: qubicPool.hashrate_average_7d as number,
       hashrate_average_1h: qubicPool.hashrate_average_1h as number,
+      pool_hashrate_ranking: getRankingByPoolHashrate(pools),
     };
   } catch (e) {
     return null;
@@ -39,10 +48,10 @@ export default async function handler(
   res: NextApiResponse<MiningStats>,
 ) {
   try {
-    let newMiningStats: MiningStats = (await axios.get(QUBIC_XMR_STATS_URL))
+    let newMiningStats: MiningStats = (await axios.get(QUBIC_XMR_STATS_API_URL))
       .data;
 
-    const averages = await getMiningAverages();
+    const averages = await getMiningAveragesAndRanking();
     if (averages) {
       newMiningStats = {
         ...newMiningStats,

@@ -1,6 +1,6 @@
 import { type FC, memo, useCallback } from "react";
 import Link from "next/link";
-import { QUBIC_XMR_STATS_URL } from "@/utils/constants";
+import { QUBIC_XMR_STATS_API_URL } from "@/utils/constants";
 
 const Footer: FC = () => {
   const openMultipleTabs = useCallback(() => {
@@ -12,7 +12,9 @@ const Footer: FC = () => {
 
   return (
     <div className="px-1 md:px-0 flex mt-4 gap-2 text-gray-50 text-xs underline">
-      <Link href={QUBIC_XMR_STATS_URL.replace("/stats", "")}>Live data</Link>
+      <Link href={QUBIC_XMR_STATS_API_URL.replace("/stats", "")}>
+        Live data
+      </Link>
       <span>|</span>
       <Link href={""} onClick={openMultipleTabs}>
         Detailed Insights

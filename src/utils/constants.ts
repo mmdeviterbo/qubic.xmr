@@ -1,4 +1,5 @@
-export const QUBIC_XMR_STATS_URL = "https://xmr-stats.qubic.org/stats";
+export const QUBIC_XMR_STATS_URL = "https://xmr-stats.qubic.org";
+export const QUBIC_XMR_STATS_API_URL = `${QUBIC_XMR_STATS_URL}/stats`;
 export const EXPLORER_QUBIC_URL = "https://explorer.qubic.org/network";
 export const MONERO_MINING_POOLS_STATS_BASE_URL = "miningpoolstats.stream";
 
