@@ -1,3 +1,6 @@
+export const ABOUT_ME_NOTE =
+  "This user-interface is developed by Marty De Viterbo sa may Krispy Kreme, SM Dasma ◡̈ on May 18, 2025 wahhahaa. Qubic will first to achieve AGI.";
+
 export const QUBIC_XMR_STATS_URL = "https://xmr-stats.qubic.org";
 export const QUBIC_XMR_STATS_API_URL = `${QUBIC_XMR_STATS_URL}/stats`;
 export const EXPLORER_QUBIC_URL = "https://explorer.qubic.org/network";

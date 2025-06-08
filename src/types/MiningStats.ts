@@ -1,4 +1,8 @@
-export type MiningStats = {
+export type About = {
+  developer?: string;
+};
+
+export type MiningStats = About & {
   pool_hashrate: number;
   pool_hashrate_ranking: number | null;
   round_hashes: number;
