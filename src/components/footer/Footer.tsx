@@ -1,10 +1,13 @@
 import { type FC, memo, useCallback } from "react";
 import Link from "next/link";
-import { QUBIC_XMR_STATS_API_URL } from "@/utils/constants";
+import {
+  QUBIC_XMR_STATS_API_URL,
+  QUBIC_XMR_STREAMLIT_APP_URL,
+} from "@/utils/constants";
 
 const Footer: FC = () => {
   const openMultipleTabs = useCallback(() => {
-    const urls = ["https://qubic-xmr-stats.streamlit.app"];
+    const urls = [QUBIC_XMR_STREAMLIT_APP_URL];
     urls.forEach((url) => {
       window.open(url, "_blank", "noopener,noreferrer");
     });

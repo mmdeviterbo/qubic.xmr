@@ -2,6 +2,8 @@ export const QUBIC_XMR_STATS_URL = "https://xmr-stats.qubic.org";
 export const QUBIC_XMR_STATS_API_URL = `${QUBIC_XMR_STATS_URL}/stats`;
 export const EXPLORER_QUBIC_URL = "https://explorer.qubic.org/network";
 export const MONERO_MINING_POOLS_STATS_BASE_URL = "miningpoolstats.stream";
+export const QUBIC_XMR_STREAMLIT_APP_URL =
+  "https://qubic-xmr-stats.streamlit.app";
 
 export const MONERO_MINING_LATEST_BLOCK_FOUND_URL = (seconds?: number) =>
   `https://${MONERO_MINING_POOLS_STATS_BASE_URL}/data/time?t=${seconds}`;
