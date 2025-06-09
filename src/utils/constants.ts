@@ -1,4 +1,5 @@
-export const ABOUT_ME_NOTE = "Made by Marty De Viterbo habang nagkakape sa SM Dasma -- May 18, 2025";
+export const ABOUT_ME_NOTE =
+  "Made by Marty De Viterbo habang nagkakape sa SM Dasma wahahaha -- May 18, 2025";
 
 export const QUBIC_XMR_STATS_URL = "https://xmr-stats.qubic.org";
 export const QUBIC_XMR_STATS_API_URL = `${QUBIC_XMR_STATS_URL}/stats`;

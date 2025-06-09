@@ -50,7 +50,13 @@ const MainPage: NextPage<{
       <Head>
         <link rel="icon" href="/qubic.svg" sizes="any" type="image/svg+xml" />
         <title>Qubic Custom Mining</title>
-        <meta name="description" content={"Qubic Custom Mining as the first to execute useful Proof of Work (uPow)"}></meta>
+        <meta
+          name="description"
+          content={
+            "Qubic Custom Mining as the first to execute useful Proof of Work (uPow). UI made by Marty de Viterbo."
+          }
+        />
+        <meta name="robots" content="index, follow" />
         <meta name="description" content={ABOUT_ME_NOTE}></meta>
         <meta
           name="google-site-verification"
