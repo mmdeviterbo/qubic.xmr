@@ -32,10 +32,7 @@ export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
   return `≈ ${totalXMR.toFixed(2)} ${moneroTicker}`;
 };
 
-export const formatPeakHashrateDateDifference = (
-  date: string,
-  isXs: boolean,
-) => {
+export const formatPeakHashrateDateDifference = (date: string) => {
   if (!date) {
     return [];
   }
@@ -48,11 +45,7 @@ export const formatPeakHashrateDateDifference = (
   );
 
   if (timeDifference) {
-    return [
-      isXs ? Labels.ATH_HASHRATE_SHORT : Labels.ATH_HASHRATE,
-      " • ",
-      timeDifference,
-    ];
+    return [Labels.ATH_HASHRATE, " • ", timeDifference];
   }
   return [];
 };

@@ -30,9 +30,8 @@ export const getConfettiStorageId = (pool_block_found: number) =>
 export const enum Labels {
   HASHRATE = "Hashrate",
   HASHRATE_PERFORMANCE = "Hashrate Performance",
-  ATH_HASHRATE = "ATH hashrate",
+  ATH_HASHRATE = "ATH",
   PEAK_HASHRATE = "Peak hashrate",
-  ATH_HASHRATE_SHORT = "ATH",
   AVG_1H_HASHRATE = "Avg 1H",
   AVG_7D_HASHRATE = "Avg 7D",
   BLOCKS_FOUND = "Blocks Found",

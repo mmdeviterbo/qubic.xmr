@@ -16,7 +16,6 @@ import {
   formatPoolHashrateSubValue,
 } from "@/utils/transformers";
 
-import useBreakpoints from "@/hooks/useBreakpoints";
 import { useConfettiBlocksFound } from "@/hooks/useConfettiBlocksFound";
 import { Labels } from "@/utils/constants";
 import {
@@ -57,8 +56,6 @@ const Main: FC<AdvancedModeProps> = ({
     max_hashrate_last_update,
     historyCharts: { blocks_found_chart, max_hashrates_chart } = {},
   } = calculatedMiningStats ?? {};
-
-  const { isXs } = useBreakpoints();
 
   useConfettiBlocksFound(pool_blocks_found);
 
@@ -109,7 +106,6 @@ const Main: FC<AdvancedModeProps> = ({
         leftSubtitle={{
           label: formatPeakHashrateDateDifference(
             max_hashrate_last_update,
-            isXs,
           ).join(""),
           value: isLoadingCalculatedMiningStats
             ? ""
