@@ -53,7 +53,7 @@ const MainPage: NextPage<{
         <meta
           name="description"
           content={
-            "Qubic Custom Mining as the first to execute useful Proof of Work (uPow). UI made by Marty de Viterbo."
+            "Qubic Custom Mining as the first to execute Useful Proof of Work (UPoW). UI made by Marty de Viterbo."
           }
         />
         <meta name="robots" content="index, follow" />
