@@ -1,4 +1,5 @@
-export const ABOUT_ME_NOTE = "UI by Marty De Viterbo.";
+export const ABOUT_ME_NOTE =
+  "UI by Marty De Viterbo habang nagkakape sa labas.";
 
 export const QUBIC_XMR_STATS_URL = "https://xmr-stats.qubic.org";
 export const QUBIC_XMR_STATS_API_URL = `${QUBIC_XMR_STATS_URL}/stats`;
