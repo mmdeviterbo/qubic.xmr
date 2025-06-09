@@ -57,7 +57,6 @@ const MainPage: NextPage<{
           }
         />
         <meta name="robots" content="index, follow" />
-        <meta name="description" content={ABOUT_ME_NOTE}></meta>
         <meta
           name="google-site-verification"
           content="kRyiHx6Z1sxZ0B3fxRZdAeTxI62_Z43GopJIw7Bi3k8"
