@@ -20,7 +20,7 @@ const Footer: FC = () => {
       </Link>
       <span>|</span>
       <Link href={""} onClick={openMultipleTabs}>
-        Detailed Stats
+        Detailed stats
       </Link>
     </div>
   );
