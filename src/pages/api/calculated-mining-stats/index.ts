@@ -94,9 +94,9 @@ export default async function handler(
     const epoch_blocks_found = weeklyChart.at(-1).blocks_found;
     const daily_blocks_found = dailyChart.at(-1).blocks_found;
 
-    res.setHeader("Cache-Control", "public, max-age=90");
-    res.setHeader("CDN-Cache-Control", "public, max-age=120");
-    res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=180");
+    res.setHeader("Cache-Control", "public, max-age=90, s-maxage=120");
+    res.setHeader("CDN-Cache-Control", "public, s-maxage=150");
+    res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=300");
 
     res.status(200).json({
       daily_blocks_found,

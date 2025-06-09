@@ -51,7 +51,10 @@ const MainPage: NextPage<{
         <link rel="icon" href="/qubic.svg" sizes="any" type="image/svg+xml" />
         <title>Qubic Custom Mining</title>
         <meta name="description" content={ABOUT_ME_NOTE}></meta>
-        <meta name="google-site-verification" content="kRyiHx6Z1sxZ0B3fxRZdAeTxI62_Z43GopJIw7Bi3k8" />
+        <meta
+          name="google-site-verification"
+          content="kRyiHx6Z1sxZ0B3fxRZdAeTxI62_Z43GopJIw7Bi3k8"
+        />
       </Head>
 
       <div className="md:mt-4 flex justify-center">
