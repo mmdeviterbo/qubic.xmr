@@ -96,7 +96,7 @@ export default async function handler(
 
     res.setHeader("Cache-Control", "public, max-age=90, s-maxage=120");
     res.setHeader("CDN-Cache-Control", "public, s-maxage=180");
-    res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=360");
+    res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=480");
 
     res.status(200).json({
       daily_blocks_found,
