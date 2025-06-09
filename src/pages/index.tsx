@@ -8,11 +8,11 @@ import useSWR from "swr";
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import Main from "@/components/main/Main";
 import {
-  ABOUT_ME_NOTE,
   CALCULATED_MINING_STATS_URL,
   MINING_STATS_URL,
   SWR_HOOK_DEFAULTS,
 } from "@/utils/constants";
+import Footer from "@/components/footer/Footer";
 
 const MainPage: NextPage<{
   miningStatsProps?: MiningStats;
@@ -50,20 +50,24 @@ const MainPage: NextPage<{
       <Head>
         <link rel="icon" href="/qubic.svg" sizes="any" type="image/svg+xml" />
         <title>Qubic Custom Mining</title>
+
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="robots" content="index, follow" />
         <meta
           name="description"
           content={
             "Qubic Custom Mining as the first to execute Useful Proof of Work (UPoW). UI made by Marty de Viterbo."
           }
         />
-        <meta name="robots" content="index, follow" />
         <meta
           name="google-site-verification"
           content="kRyiHx6Z1sxZ0B3fxRZdAeTxI62_Z43GopJIw7Bi3k8"
         />
       </Head>
 
-      <div className="md:mt-4 flex justify-center">
+      <main className="mx-auto md:mt-4 w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 pt-6 md:pt-4">
+        <p className="text-xs opacity-0 absolute">Made by Marty De Viterbo</p>
         <Main
           miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}
           isLoadingMiningStats={
@@ -72,9 +76,12 @@ const MainPage: NextPage<{
           calculatedMiningStats={calculatedMiningStats}
           isLoadingCalculatedMiningStats={isLoadingCalculatedMiningStats}
         />
-      </div>
+        <canvas className="confetti absolute top-0 left-0 z-50 h-full w-full" />
+      </main>
 
-      <canvas className="confetti absolute top-0 left-0 z-50 h-full w-full" />
+      <footer className="mx-auto w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-4 pb-6">
+        <Footer />
+      </footer>
     </>
   );
 };

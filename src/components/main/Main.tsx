@@ -5,7 +5,6 @@ import Card from "./Card";
 import ChartContainer from "./ChartContainer";
 import BarChart from "./BlocksFoundChart";
 import MaxHashratesChart from "./MaxHashratesChart";
-import Footer from "../footer/Footer";
 import { SuperCfbToken } from "../common/sponsor/cfb/CfbToken";
 
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
@@ -76,7 +75,7 @@ const Main: FC<AdvancedModeProps> = ({
   }, [pool_hashrate_ranking, pool_hashrate, monero_network_hashrate]);
 
   return (
-    <main className="w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-8">
+    <>
       <div className="ml-2 md:ml-1 md:mb-2">
         <QubicLogo showTitle={true} />
       </div>
@@ -176,8 +175,7 @@ const Main: FC<AdvancedModeProps> = ({
         value={formatLargeInteger(monero_network_hashrate)}
         loading={isLoadingMiningStats}
       />
-      <Footer />
-    </main>
+    </>
   );
 };
 
