@@ -13,10 +13,7 @@ import type {
   XMRMiningHistory,
   XTMMiningHistory,
 } from "@/types/MiningStats";
-import {
-  QUBIC_SOLO_MINING_HISTORY,
-  TARI_BLOCKS_API_URL,
-} from "@/utils/constants";
+import { QUBIC_SOLO_MINING_HISTORY } from "@/utils/constants";
 
 const getMaxHashrateHistory = (
   history: XMRMiningHistory[],
@@ -39,10 +36,11 @@ const getMaxHashrateHistory = (
 };
 
 const parseCSV = async (stream) => {
-  return await new Promise<any[]>((resolve, reject) => {
+  return new Promise<any[]>((resolve, reject) => {
     let parsedData = [];
     Papa.parse(stream, {
       header: true,
+      worker: true,
       step: function (result) {
         parsedData.push(result.data);
       },
@@ -54,12 +52,6 @@ const parseCSV = async (stream) => {
       },
     });
   });
-};
-
-export const getXTMMiningHistory = async (): Promise<XTMMiningHistory[]> => {
-  const { data, status } =
-    await axios.get<XTMMiningHistory[]>(TARI_BLOCKS_API_URL);
-  return status === 200 ? data : [];
 };
 
 export const getXMRMiningHistory = async () => {
@@ -76,8 +68,6 @@ export default async function handler(
   res: NextApiResponse<CalculatedMiningStats>,
 ) {
   try {
-    // const xtmHistory = await getXTMMiningHistory();
-
     const xmrHistory = await getXMRMiningHistory();
 
     const epoch = Number(xmrHistory.at(-1).qubic_epoch);
