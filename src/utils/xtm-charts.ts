@@ -1,12 +1,12 @@
-import { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
+import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
 
-const calculateTotalXTM = (history: XTMMiningHistory[]) => {
+export const calculateTotalXTM = (history: XTMMiningHistory[]) => {
   return history.reduce((total, item) => total + item.reward, 0);
 };
 
 const getXtmDailyChartHistory = (
   history: XTMMiningHistory[],
-): XTMHistoryCharts["daily"] => {
+): XTMHistoryCharts["blocks_found_chart"]["daily"] => {
   if (!history?.length) {
     return null;
   }
@@ -42,9 +42,10 @@ const getXtmDailyChartHistory = (
     groupedData.push(currentDailyGroup);
   }
 
-  let dailyXtmChartHistory = [] as unknown as XTMHistoryCharts["daily"];
+  let dailyXtmChartHistory =
+    [] as unknown as XTMHistoryCharts["blocks_found_chart"]["daily"];
   for (const subArr of groupedData) {
-    const dayHistory: XTMHistoryCharts["daily"][0] = {
+    const dayHistory: XTMHistoryCharts["blocks_found_chart"]["daily"][0] = {
       timestamp: subArr.at(0).timestamp.split("T")[0],
       reward: calculateTotalXTM(subArr),
       blocks_found: subArr.length,
@@ -57,7 +58,7 @@ const getXtmDailyChartHistory = (
 
 const getXtmWeeklyChartHistory = (
   history: XTMMiningHistory[],
-): XTMHistoryCharts["weekly"] => {
+): XTMHistoryCharts["blocks_found_chart"]["weekly"] => {
   const getWeekStart = (timestamp: string) => {
     const date = new Date(timestamp);
     const day = date.getUTCDay(); // 0 (Sun) - 6 (Sat)
@@ -85,9 +86,10 @@ const getXtmWeeklyChartHistory = (
 
   let epochAtTheStart = 161;
   const groupedArray = Object.values(grouped) as XTMMiningHistory[][];
-  let weeklyXtmChartHistory = [] as unknown as XTMHistoryCharts["weekly"];
+  let weeklyXtmChartHistory =
+    [] as unknown as XTMHistoryCharts["blocks_found_chart"]["weekly"];
   for (const subArr of groupedArray) {
-    const weekHistory: XTMHistoryCharts["weekly"][0] = {
+    const weekHistory: XTMHistoryCharts["blocks_found_chart"]["weekly"][0] = {
       epoch: epochAtTheStart++,
       reward: calculateTotalXTM(subArr),
       blocks_found: subArr.length,
@@ -97,9 +99,13 @@ const getXtmWeeklyChartHistory = (
   return weeklyXtmChartHistory;
 };
 
-export const getXtmChartHistory = (history: XTMMiningHistory[]) => {
+export const getXtmChartHistory = (
+  history: XTMMiningHistory[],
+): Pick<XTMHistoryCharts, "blocks_found_chart"> => {
   return {
-    daily: getXtmDailyChartHistory(history),
-    weekly: getXtmWeeklyChartHistory(history),
+    blocks_found_chart: {
+      daily: getXtmDailyChartHistory(history),
+      weekly: getXtmWeeklyChartHistory(history),
+    },
   };
 };

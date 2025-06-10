@@ -99,18 +99,23 @@ export interface XTMMiningHistory {
 }
 
 export type XTMHistoryCharts = {
-  daily: [
-    {
-      timestamp: string;
-      blocks_found: number;
-      reward: number;
-    },
-  ];
-  weekly: [
-    {
-      epoch: number;
-      blocks_found: number;
-      reward: number;
-    },
-  ];
+  pool_blocks_found: number;
+  last_block_found: string;
+  total_xtm: number;
+  blocks_found_chart: {
+    daily: [
+      {
+        timestamp: string;
+        blocks_found: number;
+        reward: number;
+      },
+    ];
+    weekly: [
+      {
+        epoch: number;
+        blocks_found: number;
+        reward: number;
+      },
+    ];
+  };
 };
