@@ -32,9 +32,9 @@ const Footer: FC = () => {
           </Fragment>
         ))}
       </div>
-      <Link className="underline underline-offset-3" href={DONATE_X_URL}>
+      {/* <Link className="underline underline-offset-3" href={DONATE_X_URL}>
         Donate
-      </Link>
+      </Link> */}
     </div>
   );
 };
