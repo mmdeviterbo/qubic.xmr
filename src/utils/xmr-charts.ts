@@ -1,5 +1,5 @@
-import type { XMRHistoryCharts, XMRMiningHistory } from "@/types/MiningStats";
 import maxBy from "lodash/maxBy";
+import type { XMRHistoryCharts, XMRMiningHistory } from "@/types/MiningStats";
 
 const getBlocksFoundByStartIndexAndEndIndex = (
   startIndex: number,

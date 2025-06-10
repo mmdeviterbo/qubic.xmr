@@ -4,7 +4,7 @@ import {
   TARI_BLOCK_API_URL,
   TARI_BLOCKS_FULL_HISTORY_API_URL,
 } from "@/utils/constants";
-import { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
+import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
 import XTM_HISTORY from "@/utils/history/xtm-history.json";
 import { calculateTotalXTM, getXtmChartHistory } from "@/utils/xtm-charts";
 
