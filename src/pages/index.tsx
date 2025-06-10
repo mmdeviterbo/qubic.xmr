@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import Script from 'next/script'
+import Script from "next/script";
 import Head from "next/head";
 
 import axios from "axios";
@@ -65,7 +65,11 @@ const MainPage: NextPage<{
           name="google-site-verification"
           content="kRyiHx6Z1sxZ0B3fxRZdAeTxI62_Z43GopJIw7Bi3k8"
         />
-        <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1941263261411851" crossOrigin="anonymous" />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1941263261411851"
+          crossOrigin="anonymous"
+        />
       </Head>
 
       <main className="mx-auto md:mt-4 w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 pt-6 md:pt-4">
