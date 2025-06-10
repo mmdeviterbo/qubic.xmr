@@ -12,12 +12,12 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import dayjs from "dayjs";
 import isEmpty from "lodash/isEmpty";
 
-import type { HistoryCharts } from "@/types/MiningStats";
+import type { XMRHistoryCharts } from "@/types/MiningStats";
 import ChartSkeleton from "../common/ChartSkeleton";
 
 interface BarChartProps {
   id: string;
-  blocks_found_chart: HistoryCharts["blocks_found_chart"];
+  blocks_found_chart: XMRHistoryCharts["blocks_found_chart"];
   loading: boolean;
 }
 

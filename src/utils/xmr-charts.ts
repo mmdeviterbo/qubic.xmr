@@ -1,4 +1,4 @@
-import type { HistoryCharts, XMRMiningHistory } from "@/types/MiningStats";
+import type { XMRHistoryCharts, XMRMiningHistory } from "@/types/MiningStats";
 import maxBy from "lodash/maxBy";
 
 const getBlocksFoundByStartIndexAndEndIndex = (
@@ -21,8 +21,8 @@ const getBlocksFoundByStartIndexAndEndIndex = (
 const getDailyBlocksFound = (
   dailyHistory: XMRMiningHistory[],
   history: XMRMiningHistory[],
-): HistoryCharts["blocks_found_chart"]["daily"] => {
-  let charts = [] as unknown as HistoryCharts["blocks_found_chart"]["daily"];
+): XMRHistoryCharts["blocks_found_chart"]["daily"] => {
+  let charts = [] as unknown as XMRHistoryCharts["blocks_found_chart"]["daily"];
   const maxDailyHistoryLength = dailyHistory.length;
   for (let i = 0; i < maxDailyHistoryLength; i++) {
     const startIndex = dailyHistory[i - 1]?.index;
@@ -44,8 +44,9 @@ const getDailyBlocksFound = (
 const getWeeklyBlocksFound = (
   weeklyHistory: XMRMiningHistory[],
   history: XMRMiningHistory[],
-): HistoryCharts["blocks_found_chart"]["weekly"] => {
-  let charts = [] as unknown as HistoryCharts["blocks_found_chart"]["weekly"];
+): XMRHistoryCharts["blocks_found_chart"]["weekly"] => {
+  let charts =
+    [] as unknown as XMRHistoryCharts["blocks_found_chart"]["weekly"];
 
   const maxWeeklyHistoryLength = weeklyHistory.length;
   for (let i = 0; i < maxWeeklyHistoryLength; i++) {
@@ -68,8 +69,8 @@ const getWeeklyBlocksFound = (
 const getMaxHashratesPerEpoch = (
   weeklyHistory: XMRMiningHistory[],
   history: XMRMiningHistory[],
-): HistoryCharts["max_hashrates_chart"] => {
-  let charts = [] as unknown as HistoryCharts["max_hashrates_chart"];
+): XMRHistoryCharts["max_hashrates_chart"] => {
+  let charts = [] as unknown as XMRHistoryCharts["max_hashrates_chart"];
 
   const maxWeeklyHistoryLength = weeklyHistory.length;
   for (let i = 0; i < maxWeeklyHistoryLength; i++) {
@@ -87,7 +88,9 @@ const getMaxHashratesPerEpoch = (
   return charts;
 };
 
-export const getChartHistory = (history: XMRMiningHistory[]): HistoryCharts => {
+export const getChartHistory = (
+  history: XMRMiningHistory[],
+): XMRHistoryCharts => {
   const seenDaily = new Set();
   const indicesDaily = [];
 
@@ -129,7 +132,7 @@ export const getChartHistory = (history: XMRMiningHistory[]): HistoryCharts => {
     historyWithIndexWeekly.push({ ...history.at(-1), index: maxLength });
   }
 
-  const blocks_found_chart: HistoryCharts["blocks_found_chart"] = {
+  const blocks_found_chart: XMRHistoryCharts["blocks_found_chart"] = {
     daily: getDailyBlocksFound(historyWithIndexDaily, history),
     weekly: getWeeklyBlocksFound(historyWithIndexWeekly, history),
   };

@@ -40,7 +40,6 @@ const parseCSV = async (stream) => {
     let parsedData = [];
     Papa.parse(stream, {
       header: true,
-      worker: true,
       step: function (result) {
         parsedData.push(result.data);
       },

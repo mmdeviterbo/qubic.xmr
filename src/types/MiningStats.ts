@@ -57,13 +57,6 @@ export interface XMRMiningHistory {
   // qubic_epoch: '162'
 }
 
-export interface XTMMiningHistory {
-  blocks: number[];
-  blocks_found_this_epoch: number;
-  last_scanned_height: number;
-  total_found: number;
-}
-
 export type CalculatedMiningStats = Pick<
   MiningStats,
   | "daily_blocks_found"
@@ -73,10 +66,10 @@ export type CalculatedMiningStats = Pick<
   | "max_hashrate_last_update"
   | "max_hashrate_last_epoch"
 > & {
-  historyCharts: HistoryCharts;
+  historyCharts: XMRHistoryCharts;
 };
 
-export type HistoryCharts = {
+export type XMRHistoryCharts = {
   blocks_found_chart: {
     daily: [
       {
@@ -91,10 +84,33 @@ export type HistoryCharts = {
       },
     ];
   };
-  max_hashrates_chart: [
+  max_hashrates_chart?: [
     {
       max_hashrate: number;
       epoch: number;
+    },
+  ];
+};
+
+export interface XTMMiningHistory {
+  block: number;
+  timestamp: string;
+  reward: number;
+}
+
+export type XTMHistoryCharts = {
+  daily: [
+    {
+      timestamp: string;
+      blocks_found: number;
+      reward: number;
+    },
+  ];
+  weekly: [
+    {
+      epoch: number;
+      blocks_found: number;
+      reward: number;
     },
   ];
 };

@@ -11,13 +11,13 @@ import isEmpty from "lodash/isEmpty";
 import Chart from "chart.js/auto";
 
 import ChartSkeleton from "../common/ChartSkeleton";
-import type { HistoryCharts } from "@/types/MiningStats";
+import type { XMRHistoryCharts } from "@/types/MiningStats";
 import { formatLargeInteger } from "@/utils/numbers";
 import { Labels } from "@/utils/constants";
 
 interface MaxHashratesChartProps {
   id: string;
-  max_hashrates_chart: HistoryCharts["max_hashrates_chart"];
+  max_hashrates_chart: XMRHistoryCharts["max_hashrates_chart"];
   loading: boolean;
 }
 
