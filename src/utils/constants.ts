@@ -1,6 +1,5 @@
 export const ABOUT_ME_NOTE =
   "Made by Marty De Viterbo habang nagkakape sa SM Dasma wahahaha -- May 18, 2025";
-
 export const DONATE_X_URL =
   "https://x.com/cryptokendefi/status/1926657151927267699";
 
@@ -13,15 +12,16 @@ export const QUBIC_XMR_STREAMLIT_APP_URL =
 
 export const MONERO_MINING_LATEST_BLOCK_FOUND_URL = (seconds?: number) =>
   `https://${MONERO_MINING_POOLS_STATS_BASE_URL}/data/time?t=${seconds}`;
-
 export const MONERO_MINING_POOLS_STATS_URL = (seconds: number) =>
   `https://data.${MONERO_MINING_POOLS_STATS_BASE_URL}/data/monero.js?t=${seconds}`;
 
 export const QUBIC_SOLO_MINING_HISTORY =
   "http://66.179.92.83/data/qpool_V1.csv";
 
-export const TARI_BLOCKS_API_URL =
-  "https://tari-qubic-scanner.onrender.com/api/found_blocks";
+export const TARI_BLOCKS_FULL_HISTORY_API_URL =
+  "https://core.tari.jagtech.io/winners_full_chain.txt";
+export const TARI_BLOCK_API_URL = (block: number) =>
+  `https://textexplore.tari.com/blocks/${block}?json`;
 
 export const moneroTicker = "XMR";
 export const blockToXMRConversion = 0.6;
