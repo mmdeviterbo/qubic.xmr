@@ -102,8 +102,6 @@ export const getChartHistory = (history: XMRMiningHistory[]): HistoryCharts => {
 
     const days = date.getUTCDay();
     const hours = date.getUTCHours();
-    const minutes = date.getUTCMinutes();
-    const seconds = date.getUTCSeconds();
 
     const isBeforeDayEnds = hours < 24;
     if (!seenDaily.has(utcDateStr) && isBeforeDayEnds) {
