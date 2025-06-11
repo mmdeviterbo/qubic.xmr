@@ -131,7 +131,7 @@ const Main: FC<AdvancedModeProps> = ({
       />
 
       <ChartContainer
-        title={"XMR ".concat(Labels.BLOCKS_FOUND)}
+        title={"Monero ".concat(Labels.BLOCKS_FOUND)}
         leftSubtitle={{
           label: formatLatestBlockFoundSubValue(last_block_found),
           sublabel: formatPoolBlocksFoundSubValue(pool_blocks_found),
