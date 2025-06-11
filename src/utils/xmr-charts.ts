@@ -88,22 +88,66 @@ const getMaxHashratesPerEpoch = (
   return charts;
 };
 
-export const getChartHistory = (
-  history: XMRMiningHistory[],
-): XMRHistoryCharts => {
+const getXmrWeeklyIndeces = (history: XMRMiningHistory[]): number[] => {
+  const weekMap = {}; // weekKey -> { index, timestamp }
+
+  history.forEach((item, index) => {
+    const timestamp = new Date(item.timestamp.concat("Z"));
+
+    // Get the start of the ISO week (Monday)
+    const day = timestamp.getUTCDay(); // Sunday = 0, Monday = 1, ..., Saturday = 6
+    const diffToMonday = (day + 6) % 7; // days to subtract to reach Monday
+    const monday = new Date(
+      Date.UTC(
+        timestamp.getUTCFullYear(),
+        timestamp.getUTCMonth(),
+        timestamp.getUTCDate() - diffToMonday,
+        0,
+        0,
+        0,
+        0,
+      ),
+    );
+
+    // Get Wednesday 12:00 UTC of that week
+    const wednesdayNoon = new Date(monday);
+    wednesdayNoon.setUTCDate(monday.getUTCDate() + 2); // Wednesday
+    wednesdayNoon.setUTCHours(12, 0, 0, 0);
+
+    const weekKey = `${monday.getUTCFullYear()}-${monday.getUTCMonth()}-${monday.getUTCDate()}`;
+
+    if (timestamp < wednesdayNoon) {
+      const currentBest = weekMap[weekKey];
+
+      // Keep only the one closest to Wednesday 12:00 UTC
+      if (
+        !currentBest ||
+        new Date(history[currentBest.index].timestamp) < timestamp
+      ) {
+        weekMap[weekKey] = { index, timestamp };
+      }
+    }
+  });
+
+  const weeklyIndeces: number[] = Object.values(weekMap).map(
+    (entry) => (entry as any).index,
+  );
+  if (weeklyIndeces.at(-1) !== history.length - 1) {
+    weeklyIndeces.push(history.length - 1);
+  }
+  return weeklyIndeces;
+};
+
+const getXmrDailyIndeces = (history: XMRMiningHistory[]): number[] => {
   const seenDaily = new Set();
   const indicesDaily = [];
 
-  const seenWeekly = new Set();
-  const indicesWeekly = [];
-
   const maxLength = history.length - 1;
-  for (let i = maxLength - 1; i >= 0; i--) {
+  for (let i = maxLength; i >= 0; i--) {
     const ts = history[i]?.timestamp;
     const date = new Date(ts.concat("Z"));
     const utcDateStr = date.toISOString().split("T")[0]; // 'YYYY-MM-DD'
 
-    const days = date.getUTCDay();
     const hours = date.getUTCHours();
 
     const isBeforeDayEnds = hours < 24;
@@ -111,34 +155,24 @@ export const getChartHistory = (
       seenDaily.add(utcDateStr);
       indicesDaily.push(i);
     }
-
-    const isBeforeWednesdayNoon = days === 3 && hours < 12;
-    if (!seenWeekly.has(utcDateStr) && isBeforeWednesdayNoon) {
-      seenWeekly.add(utcDateStr);
-      indicesWeekly.push(i);
-    }
   }
-
   const sortedIndecesDaily = indicesDaily.reverse();
-  const historyWithIndexDaily: XMRMiningHistory[] = sortedIndecesDaily.map(
-    (i) => ({ ...history[i], index: i }),
-  );
+  return sortedIndecesDaily;
+};
 
-  const sortedIndecesWeekly = indicesWeekly.reverse();
-  const historyWithIndexWeekly: XMRMiningHistory[] = sortedIndecesWeekly.map(
-    (i) => ({ ...history[i], index: i }),
-  );
+export const getChartHistory = (
+  history: XMRMiningHistory[],
+): XMRHistoryCharts => {
+  const historyWithIndexWeekly = getXmrWeeklyIndeces(history).map((i) => ({
+    ...history[i],
+    index: i,
+  }));
+  const weekly = getWeeklyBlocksFound(historyWithIndexWeekly, history);
 
-  const last1 = historyWithIndexWeekly.at(-1).timestamp.split("T")[0];
-  const last2 = history.at(-1).timestamp.split("T")[0] 
-  // if (last1 !== last2) {
-  //   historyWithIndexWeekly.push({ ...history.at(-1), index: maxLength });
-  // }
-
-  const blocks_found_chart: XMRHistoryCharts["blocks_found_chart"] = {
-    daily: getDailyBlocksFound(historyWithIndexDaily, history),
-    weekly: getWeeklyBlocksFound(historyWithIndexWeekly, history),
-  };
+  const historyWithIndexDaily: XMRMiningHistory[] = getXmrDailyIndeces(
+    history,
+  ).map((i) => ({ ...history[i], index: i }));
+  const daily = getDailyBlocksFound(historyWithIndexDaily, history);
 
   const max_hashrates_chart = getMaxHashratesPerEpoch(
     historyWithIndexWeekly,
@@ -146,7 +180,10 @@ export const getChartHistory = (
   );
 
   return {
-    blocks_found_chart,
+    blocks_found_chart: {
+      weekly,
+      daily,
+    },
     max_hashrates_chart,
   };
 };
