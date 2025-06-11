@@ -74,8 +74,15 @@ const MainPage: NextPage<{
           isLoadingMiningStats={
             isEmpty(miningStatsProps) && isLoadingMiningStats
           }
-          calculatedMiningStats={calculatedMiningStats}
-          isLoadingCalculatedMiningStats={isLoadingCalculatedMiningStats}
+          calculatedMiningStats={
+            isLoadingCalculatedMiningStats
+              ? calculatedMiningStatsProps
+              : calculatedMiningStats
+          }
+          isLoadingCalculatedMiningStats={
+            isEmpty(calculatedMiningStatsProps) &&
+            isLoadingCalculatedMiningStats
+          }
         />
         <canvas className="confetti absolute top-0 left-0 z-50 h-full w-full" />
       </main>

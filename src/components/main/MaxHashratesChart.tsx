@@ -47,7 +47,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
     }
 
     const ctx: HTMLCanvasElement = document.querySelector(`canvas#${id}`);
-    if(!ctx) {
+    if (!ctx) {
       return;
     }
 

@@ -63,7 +63,7 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
     }
 
     const ctx: HTMLCanvasElement = document.querySelector(`canvas#${id}`);
-    if(!ctx) {
+    if (!ctx) {
       return;
     }
 
