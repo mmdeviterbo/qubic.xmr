@@ -67,6 +67,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
         ],
       },
       options: {
+        animation: false,
         responsive: true,
         maintainAspectRatio: true,
         aspectRatio: 1.8,
@@ -92,7 +93,6 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
         },
       },
     });
-    lineChart.update('none');
     setChart(lineChart);
     return () => {
       lineChart.destroy();

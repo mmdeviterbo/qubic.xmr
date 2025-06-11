@@ -81,6 +81,7 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
         ],
       },
       options: {
+        animation: false,
         responsive: true,
         plugins: {
           datalabels: {
@@ -93,7 +94,6 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
       },
     });
     setChart(barChart);
-    barChart.update('none');
     setChart(barChart);
     return () => {
       barChart.destroy();
