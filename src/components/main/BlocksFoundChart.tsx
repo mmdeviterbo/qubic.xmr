@@ -63,6 +63,10 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
     }
 
     const ctx: HTMLCanvasElement = document.querySelector(`canvas#${id}`);
+    if(!ctx) {
+      return;
+    }
+
     const barChart = new Chart(ctx, {
       plugins: [ChartDataLabels],
       type: "bar",
@@ -92,7 +96,7 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
     return () => {
       barChart.destroy();
     };
-  }, [xy]);
+  }, [xy, id]);
 
   useLayoutEffect(() => {
     if (isEmpty(chart)) {

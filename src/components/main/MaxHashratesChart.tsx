@@ -47,6 +47,10 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
     }
 
     const ctx: HTMLCanvasElement = document.querySelector(`canvas#${id}`);
+    if(!ctx) {
+      return;
+    }
+
     const lineChart = new Chart(ctx, {
       type: "line",
       data: {
@@ -92,7 +96,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
     return () => {
       lineChart.destroy();
     };
-  }, [xy]);
+  }, [xy, id]);
 
   useLayoutEffect(() => {
     if (isEmpty(chart)) {
