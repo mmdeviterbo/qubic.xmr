@@ -92,6 +92,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
         },
       },
     });
+    lineChart.update('none');
     setChart(lineChart);
     return () => {
       lineChart.destroy();

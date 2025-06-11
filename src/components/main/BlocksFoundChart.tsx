@@ -93,6 +93,8 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
       },
     });
     setChart(barChart);
+    barChart.update('none');
+    setChart(barChart);
     return () => {
       barChart.destroy();
     };
