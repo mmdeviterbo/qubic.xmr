@@ -87,6 +87,29 @@ const MainPage: NextPage<{
   );
 };
 
+// export const getServerSideProps = async (ctx) => {
+//   try {
+//     ctx.res.setHeader("Cache-Control", "public, max-age=15");
+//     ctx.res.setHeader("CDN-Cache-Control", "public, max-age=25");
+//     ctx.res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=35");
+
+//     const baseUrl = process.env.BASE_URL;
+
+//     const miningStatsResponse = await axios.get<MiningStats>(
+//       `${baseUrl}/api/mining-stats`,
+//     );
+
+//     let miningStatsProps: MiningStats;
+//     if (miningStatsResponse.status === 200) {
+//       miningStatsProps = miningStatsResponse?.data;
+//     }
+
+//     return { props: { miningStatsProps } };
+//   } catch (e) {
+//     return { props: {} };
+//   }
+// };
+
 export const getStaticProps = async () => {
   try {
     const baseUrl = process.env.BASE_URL;
