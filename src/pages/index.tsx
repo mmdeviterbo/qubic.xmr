@@ -16,7 +16,8 @@ import Footer from "@/components/footer/Footer";
 
 const MainPage: NextPage<{
   miningStatsProps?: MiningStats;
-}> = ({ miningStatsProps }) => {
+  calculatedMiningStatsProps?: CalculatedMiningStats;
+}> = ({ miningStatsProps, calculatedMiningStatsProps }) => {
   const {
     data: miningStats = miningStatsProps,
     isLoading: isLoadingMiningStats,
@@ -32,7 +33,7 @@ const MainPage: NextPage<{
   );
 
   const {
-    data: calculatedMiningStats,
+    data: calculatedMiningStats = calculatedMiningStatsProps,
     isLoading: isLoadingCalculatedMiningStats,
   } = useSWR<CalculatedMiningStats>(
     CALCULATED_MINING_STATS_URL,
@@ -86,24 +87,36 @@ const MainPage: NextPage<{
   );
 };
 
-export const getServerSideProps = async (ctx) => {
+export const getStaticProps = async () => {
   try {
-    ctx.res.setHeader("Cache-Control", "public, max-age=15");
-    ctx.res.setHeader("CDN-Cache-Control", "public, max-age=25");
-    ctx.res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=35");
-
     const baseUrl = process.env.BASE_URL;
 
     const miningStatsResponse = await axios.get<MiningStats>(
       `${baseUrl}/api/mining-stats`,
     );
 
+    const calculatedMiningStatsResponse =
+      await axios.get<CalculatedMiningStats>(
+        `${baseUrl}/api/calculated-mining-stats`,
+      );
+
     let miningStatsProps: MiningStats;
     if (miningStatsResponse.status === 200) {
       miningStatsProps = miningStatsResponse?.data;
     }
 
-    return { props: { miningStatsProps } };
+    let calculatedMiningStatsProps: CalculatedMiningStats;
+    if (calculatedMiningStatsResponse.status === 200) {
+      calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
+    }
+
+    return {
+      props: {
+        miningStatsProps,
+        calculatedMiningStatsProps,
+      },
+      revalidate: 30,
+    };
   } catch (e) {
     return { props: {} };
   }
