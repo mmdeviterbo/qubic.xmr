@@ -36,7 +36,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
     if (isEmpty(max_hashrates_chart)) {
       return;
     }
-    const x = max_hashrates_chart.map((i) => `Epoch ${i.epoch}`);
+    const x = max_hashrates_chart.map((i) => String(i.epoch));
     const y = max_hashrates_chart.map((i) => Number(i.max_hashrate));
     setXY({ x, y });
   }, [max_hashrates_chart]);
@@ -57,7 +57,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
         labels: xy.x,
         datasets: [
           {
-            label: Labels.PEAK_HASHRATE,
+            label: Labels.PEAK_HASHRATE.concat(" per Epoch"),
             data: xy.y,
             borderWidth: 1,
             pointRadius: 5,
@@ -72,6 +72,24 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
         maintainAspectRatio: true,
         aspectRatio: 1.8,
         plugins: {
+          tooltip: {
+            callbacks: {
+              title: (tooltipItems) => {
+                const label = "Epoch ".concat(tooltipItems[0].label);
+                return label;
+              },
+              label: (ctx) => {
+                let label =
+                  ctx.dataset.label.replace("per Epoch", "").concat(": ") || "";
+                let value = ctx.parsed.y;
+
+                if (!isNaN(value)) {
+                  return label.concat(formatLargeInteger(Number(value)));
+                }
+                return label.concat(`: ${value.toString()}`);
+              },
+            },
+          },
           legend: {
             labels: {
               usePointStyle: true,

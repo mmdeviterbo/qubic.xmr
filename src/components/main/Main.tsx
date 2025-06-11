@@ -1,8 +1,8 @@
 import { memo, useMemo, type FC, type ReactNode } from "react";
 
 import QubicLogo from "../common/logos/QubicLogo";
-import Card from "./Card";
-import ChartContainer from "./ChartContainer";
+import Card from "../common/Card";
+import ChartContainer from "../common/ChartContainer";
 import BarChart from "./BlocksFoundChart";
 import MaxHashratesChart from "./MaxHashratesChart";
 import { SuperCfbToken } from "../common/sponsor/cfb/CfbToken";

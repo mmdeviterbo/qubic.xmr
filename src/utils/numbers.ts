@@ -1,4 +1,4 @@
-export const formatLargeInteger = (value: number, scale = 2) => {
+export const formatLargeInteger = (value: number, scale = 2): string => {
   if (!isValidValue(value)) {
     return "-";
   }
@@ -13,7 +13,7 @@ export const formatLargeInteger = (value: number, scale = 2) => {
     return (value / 1000).toFixed(scale).replace(/\.0$/, "") + " KH/s";
   }
   if (value === 0) {
-    return value;
+    return value.toString();
   }
   return value?.toFixed(scale).toLocaleString().concat(" H/s");
 };

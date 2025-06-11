@@ -49,9 +49,7 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
 
     const isDailyTimeFrame = timeframe === Timeframe.DAILY;
     const x = (isDailyTimeFrame ? daily : weekly).map((i) =>
-      isDailyTimeFrame
-        ? dayjs(i.timestamp).format("MMM D")
-        : "Epoch ".concat(i.epoch),
+      isDailyTimeFrame ? dayjs(i.timestamp).format("MMM D") : String(i.epoch),
     );
     const y = (isDailyTimeFrame ? daily : weekly).map((i) => i.blocks_found);
     setXY({ x, y });
@@ -84,6 +82,14 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
         animation: false,
         responsive: true,
         plugins: {
+          tooltip: {
+            callbacks: {
+              title: (tooltipItems) => {
+                const label = "Epoch ".concat(tooltipItems[0].label);
+                return label;
+              },
+            },
+          },
           datalabels: {
             color: "white",
           },

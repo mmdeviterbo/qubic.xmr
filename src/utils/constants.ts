@@ -34,7 +34,7 @@ export const enum Labels {
   HASHRATE = "Hashrate",
   HASHRATE_PERFORMANCE = "Hashrate Performance",
   ATH_HASHRATE = "ATH",
-  PEAK_HASHRATE = "Peak hashrate",
+  PEAK_HASHRATE = "Max Hashrate",
   AVG_1H_HASHRATE = "Avg 1H",
   AVG_7D_HASHRATE = "Avg 7D",
   BLOCKS_FOUND = "Blocks Found",
