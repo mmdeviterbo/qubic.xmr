@@ -128,9 +128,12 @@ export const getChartHistory = (
   const historyWithIndexWeekly: XMRMiningHistory[] = sortedIndecesWeekly.map(
     (i) => ({ ...history[i], index: i }),
   );
-  if (historyWithIndexWeekly.at(-1).timestamp !== history.at(-1).timestamp) {
-    historyWithIndexWeekly.push({ ...history.at(-1), index: maxLength });
-  }
+
+  const last1 = historyWithIndexWeekly.at(-1).timestamp.split("T")[0];
+  const last2 = history.at(-1).timestamp.split("T")[0] 
+  // if (last1 !== last2) {
+  //   historyWithIndexWeekly.push({ ...history.at(-1), index: maxLength });
+  // }
 
   const blocks_found_chart: XMRHistoryCharts["blocks_found_chart"] = {
     daily: getDailyBlocksFound(historyWithIndexDaily, history),
