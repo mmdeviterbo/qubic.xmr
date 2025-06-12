@@ -148,6 +148,7 @@ export const getStaticProps = async () => {
       revalidate: 12,
     };
   } catch (e) {
+    console.log("Error get static props: ", e);
     return { props: {} };
   }
 };

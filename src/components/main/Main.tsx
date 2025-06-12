@@ -52,7 +52,7 @@ const Main: FC<AdvancedModeProps> = ({
     monero_history_charts: {
       blocks_found_chart: monero_blocks_found_chart,
       max_hashrates_chart,
-    },
+    } = {},
     tari_blocks_found,
     tari_history_charts,
   } = calculatedMiningStats ?? {};

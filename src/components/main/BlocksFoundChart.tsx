@@ -157,7 +157,7 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
         <ChartSkeleton />
       ) : (
         <div className="flex flex-col">
-          <div className="mb-4 flex gap-2">
+          <div className="mb-4 mt-1 md:mt-2 flex gap-2">
             <button
               onClick={() => setTimeframe(Timeframe.WEEKLY)}
               className={`z-100 cursor-pointer inline-flex items-center rounded-md px-2 py-1 text-xs ${timeframe === Timeframe.WEEKLY ? "ring-1 ring-gray-500/10 ring-inset bg-gray-800 text-gray-400" : "text-gray-600"}`}

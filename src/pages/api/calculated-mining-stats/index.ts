@@ -100,7 +100,7 @@ export default async function handler(
       tari_blocks_found,
     });
   } catch (e) {
-    console.log("error: ", e);
+    console.log("Error calculated mining stats: ", e);
     res.status(400);
   }
 }
