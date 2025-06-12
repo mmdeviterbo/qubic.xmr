@@ -72,7 +72,7 @@ const MainPage: NextPage<{
         <Main
           miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}
           isLoadingMiningStats={
-            isEmpty(miningStatsProps) && isLoadingMiningStats
+            isEmpty(miningStatsProps) || isLoadingMiningStats
           }
           calculatedMiningStats={
             isLoadingCalculatedMiningStats
@@ -80,7 +80,7 @@ const MainPage: NextPage<{
               : calculatedMiningStats
           }
           isLoadingCalculatedMiningStats={
-            isEmpty(calculatedMiningStatsProps) &&
+            isEmpty(calculatedMiningStatsProps) ||
             isLoadingCalculatedMiningStats
           }
         />
@@ -145,10 +145,9 @@ export const getStaticProps = async () => {
         miningStatsProps,
         calculatedMiningStatsProps,
       },
-      revalidate: 15,
+      revalidate: 20,
     };
   } catch (e) {
-    console.log("Error get static props: ", e);
     return { props: {} };
   }
 };

@@ -31,9 +31,7 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
       },
       blocks_found_chart,
     };
-  } catch (error) {
-    console.log("Error xtm stats: ", error);
-  }
+  } catch (error) {}
 };
 
 export default getTariMiningStats;
