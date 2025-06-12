@@ -33,19 +33,22 @@ const ChartContainer: FC<ChartContainerProps> = ({
       <p className="font-space text-sm text-gray-50 mb-1 md:mb-2">{title}</p>
 
       <div className="flex justify-between items-end w-full">
-        <div>
-          <div className="flex items-center gap-1">
-            <span
-              className={`${leftSubtitle?.properties?.bounce ? "animate-bounce" : ""} text-lg md:text-2xl`}
-            >
-              {leftSubtitle.value}
-            </span>
-            <span className="ml-1 font-space text-sm text-gray-50">
-              {leftSubtitle?.sublabel}
-            </span>
+        {!loading && (
+          <div>
+            <div className="flex items-center gap-1">
+              <span
+                className={`${leftSubtitle?.properties?.bounce ? "animate-bounce" : ""} text-lg md:text-2xl`}
+              >
+                {leftSubtitle.value}
+              </span>
+              <span className="ml-1 font-space text-sm text-gray-50">
+                {leftSubtitle?.sublabel}
+              </span>
+            </div>
+
+            <p className="text-gray-50 text-xs">{leftSubtitle.label}</p>
           </div>
-          <p className="text-gray-50 text-xs">{leftSubtitle.label}</p>
-        </div>
+        )}
 
         <div className="w-fit gap-0 text-xs md:text-sm">
           {rightSubtitles.map((r) => (

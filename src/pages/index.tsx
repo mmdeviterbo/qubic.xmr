@@ -71,18 +71,13 @@ const MainPage: NextPage<{
         <p className="text-xs opacity-0 absolute">Made by Marty De Viterbo</p>
         <Main
           miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}
-          isLoadingMiningStats={
-            isEmpty(miningStatsProps) || isLoadingMiningStats
-          }
+          isLoadingMiningStats={isEmpty(miningStatsProps)}
           calculatedMiningStats={
             isLoadingCalculatedMiningStats
               ? calculatedMiningStatsProps
               : calculatedMiningStats
           }
-          isLoadingCalculatedMiningStats={
-            isEmpty(calculatedMiningStatsProps) ||
-            isLoadingCalculatedMiningStats
-          }
+          isLoadingCalculatedMiningStats={isEmpty(calculatedMiningStatsProps)}
         />
         <canvas className="confetti absolute top-0 left-0 z-50 h-full w-full" />
       </main>
