@@ -71,31 +71,31 @@ export type CalculatedMiningStats = Pick<
 
 export type XMRHistoryCharts = {
   blocks_found_chart: {
-    daily: [
-      {
-        timestamp: string;
-        blocks_found: number;
-      },
-    ];
-    weekly: [
-      {
-        blocks_found: number;
-        epoch: number;
-      },
-    ];
-  };
-  max_hashrates_chart?: [
-    {
-      max_hashrate: number;
+    daily: {
+      timestamp: string;
+      blocks_found: number;
+    }[];
+    weekly: {
+      blocks_found: number;
       epoch: number;
-    },
-  ];
+    }[];
+  };
+  max_hashrates_chart?: {
+    max_hashrate: number;
+    epoch: number;
+  }[];
 };
 
 export interface XTMMiningHistory {
-  block: number;
-  timestamp: string;
-  reward: number;
+  blocks: {
+    block_height: number;
+    timestamp: string;
+    reward: number;
+  }[];
+  blocks_found_this_epoch: number;
+  last_scanned_height: number;
+  reward_this_epoch: number;
+  total_found: number;
 }
 
 export type XTMHistoryCharts = {
@@ -103,19 +103,15 @@ export type XTMHistoryCharts = {
   last_block_found: string;
   total_xtm: number;
   blocks_found_chart: {
-    daily: [
-      {
-        timestamp: string;
-        blocks_found: number;
-        reward: number;
-      },
-    ];
-    weekly: [
-      {
-        epoch: number;
-        blocks_found: number;
-        reward: number;
-      },
-    ];
+    daily: {
+      timestamp: string;
+      blocks_found: number;
+      reward: number;
+    }[];
+    weekly: {
+      epoch: number;
+      blocks_found: number;
+      reward: number;
+    }[];
   };
 };

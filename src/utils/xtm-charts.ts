@@ -1,66 +1,33 @@
+import groupBy from "lodash/groupBy";
+
 import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
 
-export const calculateTotalXTM = (history: XTMMiningHistory[]) => {
+export const calculateTotalXTM = (history: XTMMiningHistory["blocks"]) => {
   return history.reduce((total, item) => total + item.reward, 0);
 };
 
 const getXtmDailyChartHistory = (
-  history: XTMMiningHistory[],
+  blocks: XTMMiningHistory["blocks"],
 ): XTMHistoryCharts["blocks_found_chart"]["daily"] => {
-  if (!history?.length) {
-    return null;
+  const groupedBasedOnDate = groupBy(blocks, (i) => i.timestamp.split(" ")[0]);
+
+  const daily_history: XTMHistoryCharts["blocks_found_chart"]["daily"] = [];
+  for (const groupedDailyBlock of Object.entries(groupedBasedOnDate)) {
+    const [timestamp, daily_blocks] = groupedDailyBlock;
+    daily_history.push({
+      timestamp,
+      blocks_found: daily_blocks.length,
+      reward: calculateTotalXTM(daily_blocks),
+    });
   }
-
-  const groupedData = [] as unknown as XTMMiningHistory[][];
-
-  let currentDailyGroup = [] as unknown as XTMMiningHistory[];
-  let currentDailyTimeframeStartMs = null;
-
-  history.forEach((item) => {
-    const itemTimestamp = new Date(item.timestamp);
-
-    const startOfItemUTCDay = new Date(itemTimestamp);
-    startOfItemUTCDay.setUTCHours(0, 0, 0, 0);
-
-    const startOfItemUTCDayMs = startOfItemUTCDay.getTime();
-
-    if (
-      currentDailyTimeframeStartMs === null ||
-      startOfItemUTCDayMs !== currentDailyTimeframeStartMs
-    ) {
-      if (currentDailyGroup.length > 0) {
-        groupedData.push(currentDailyGroup);
-      }
-      currentDailyGroup = [item];
-      currentDailyTimeframeStartMs = startOfItemUTCDayMs;
-    } else {
-      currentDailyGroup.push(item);
-    }
-  });
-
-  if (currentDailyGroup.length > 0) {
-    groupedData.push(currentDailyGroup);
-  }
-
-  let dailyXtmChartHistory =
-    [] as unknown as XTMHistoryCharts["blocks_found_chart"]["daily"];
-  for (const subArr of groupedData) {
-    const dayHistory: XTMHistoryCharts["blocks_found_chart"]["daily"][0] = {
-      timestamp: subArr.at(0).timestamp.split("T")[0],
-      reward: calculateTotalXTM(subArr),
-      blocks_found: subArr.length,
-    };
-    dailyXtmChartHistory.push(dayHistory);
-  }
-
-  return dailyXtmChartHistory;
+  return daily_history;
 };
 
 const getXtmWeeklyChartHistory = (
-  history: XTMMiningHistory[],
+  blocks: XTMMiningHistory["blocks"],
 ): XTMHistoryCharts["blocks_found_chart"]["weekly"] => {
   const getWeekStart = (timestamp: string) => {
-    const date = new Date(timestamp);
+    const date = new Date(timestamp.concat("Z"));
     const day = date.getUTCDay(); // 0 (Sun) - 6 (Sat)
     const hours = date.getUTCHours();
 
@@ -76,16 +43,16 @@ const getXtmWeeklyChartHistory = (
   };
 
   const grouped = {};
-  history.forEach((item) => {
-    const weekStart = getWeekStart(item.timestamp);
+  blocks.forEach((block) => {
+    const weekStart = getWeekStart(block.timestamp);
     if (!grouped[weekStart]) {
       grouped[weekStart] = [];
     }
-    grouped[weekStart].push(item);
+    grouped[weekStart].push(block);
   });
 
   let epochAtTheStart = 161;
-  const groupedArray = Object.values(grouped) as XTMMiningHistory[][];
+  const groupedArray = Object.values(grouped) as XTMMiningHistory["blocks"][];
   let weeklyXtmChartHistory =
     [] as unknown as XTMHistoryCharts["blocks_found_chart"]["weekly"];
   for (const subArr of groupedArray) {
@@ -100,12 +67,13 @@ const getXtmWeeklyChartHistory = (
 };
 
 export const getXtmChartHistory = (
-  history: XTMMiningHistory[],
+  blocks: XTMMiningHistory["blocks"],
 ): Pick<XTMHistoryCharts, "blocks_found_chart"> => {
+  blocks.reverse();
   return {
     blocks_found_chart: {
-      daily: getXtmDailyChartHistory(history),
-      weekly: getXtmWeeklyChartHistory(history),
+      daily: getXtmDailyChartHistory(blocks),
+      weekly: getXtmWeeklyChartHistory(blocks),
     },
   };
 };

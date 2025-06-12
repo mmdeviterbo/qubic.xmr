@@ -3,7 +3,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import axios from "axios";
 import Papa from "papaparse";
-// import meanBy from "lodash/meanBy";
 import maxBy from "lodash/maxBy";
 
 import CHECKPOINTS from "@/utils/checkpoints.json";
@@ -11,7 +10,6 @@ import CHECKPOINTS from "@/utils/checkpoints.json";
 import type {
   CalculatedMiningStats,
   XMRMiningHistory,
-  XTMMiningHistory,
 } from "@/types/MiningStats";
 import { QUBIC_SOLO_MINING_HISTORY } from "@/utils/constants";
 
@@ -21,7 +19,7 @@ const getMaxHashrateHistory = (
   // console.log("latestIndex: ", history.length - 1);
   // console.log(
   //   "latestMaxHashrateIndex: ",
-  //   history.findIndex((i) => Number(i.pool_hashrate) === 438803704),
+  //   history.findIndex((i) => Number(i.pool_hashrate) === 549633109),
   // );
 
   const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
