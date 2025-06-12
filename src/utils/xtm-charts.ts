@@ -3,7 +3,7 @@ import groupBy from "lodash/groupBy";
 import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
 
 export const calculateTotalXTM = (history: XTMMiningHistory["blocks"]) => {
-  return history.reduce((total, item) => total + item.reward, 0);
+  return Math.trunc(history.reduce((total, item) => total + item.reward, 0));
 };
 
 const getXtmDailyChartHistory = (

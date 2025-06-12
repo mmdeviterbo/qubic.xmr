@@ -5,35 +5,17 @@ export type About = {
 export type MiningStats = About & {
   pool_hashrate: number;
   pool_hashrate_ranking: number | null;
-  round_hashes: number;
   network_hashrate: number;
-  network_difficulty: number;
-  network_height: number;
-  last_template_fetched: number;
-  last_block_found: number;
-  pool_blocks_found: number;
-  payment_threshold: number;
-  pool_fee: number;
-  pool_port: number;
-  pool_ssl_port: number;
-  allow_self_select: number;
   connected_miners: number;
-  miner_hashrate: number;
-  miner_hashrate_stats: [number, number, number, number, number, number];
-  miner_balance: number;
-  worker_count: number;
-  mined_block_info: {
-    last_20_mined_blocks: number[];
-    last_update: number;
+  monero_blocks_found: {
+    last_block_found: number;
+    pool_blocks_found: number;
+    total_rewards: number;
   };
-  hashrate_average_1h: number;
-  hashrate_average_7d: number;
-  max_hashrate: number;
-  max_hashrate_last_update: string;
-  max_hashrate_last_epoch: number;
-  daily_blocks_found: number;
-  epoch_blocks_found: number;
-  epoch: number;
+  hashrate_averages: {
+    hashrate_average_1h: number;
+    hashrate_average_7d: number;
+  };
 };
 
 export interface XMRMiningHistory {
@@ -57,28 +39,34 @@ export interface XMRMiningHistory {
   // qubic_epoch: '162'
 }
 
-export type CalculatedMiningStats = Pick<
-  MiningStats,
-  | "daily_blocks_found"
-  | "epoch_blocks_found"
-  | "epoch"
-  | "max_hashrate"
-  | "max_hashrate_last_update"
-  | "max_hashrate_last_epoch"
-> & {
-  historyCharts: XMRHistoryCharts;
+export type CalculatedMiningStats = {
+  epoch: number;
+  max_hashrate_stats: {
+    max_hashrate: number;
+    max_hashrate_last_update: string;
+    max_hashrate_last_epoch: number;
+  };
+  monero_history_charts: XMRHistoryCharts;
+  tari_blocks_found: XTMHistoryCharts["tari_blocks_found"];
+  tari_history_charts: XTMHistoryCharts["blocks_found_chart"];
 };
+
+interface DailyChart {
+  timestamp: string;
+  blocks_found: number;
+  reward: number;
+}
+
+interface WeeklyChart {
+  blocks_found: number;
+  epoch: number;
+  reward: number;
+}
 
 export type XMRHistoryCharts = {
   blocks_found_chart: {
-    daily: {
-      timestamp: string;
-      blocks_found: number;
-    }[];
-    weekly: {
-      blocks_found: number;
-      epoch: number;
-    }[];
+    daily: DailyChart[];
+    weekly: WeeklyChart[];
   };
   max_hashrates_chart?: {
     max_hashrate: number;
@@ -99,19 +87,13 @@ export interface XTMMiningHistory {
 }
 
 export type XTMHistoryCharts = {
-  pool_blocks_found: number;
-  last_block_found: string;
-  total_xtm: number;
+  tari_blocks_found: {
+    pool_blocks_found: number;
+    last_block_found: string;
+    total_rewards: number;
+  };
   blocks_found_chart: {
-    daily: {
-      timestamp: string;
-      blocks_found: number;
-      reward: number;
-    }[];
-    weekly: {
-      epoch: number;
-      blocks_found: number;
-      reward: number;
-    }[];
+    daily: DailyChart[];
+    weekly: WeeklyChart[];
   };
 };

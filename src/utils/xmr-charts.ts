@@ -1,5 +1,6 @@
 import maxBy from "lodash/maxBy";
 import type { XMRHistoryCharts, XMRMiningHistory } from "@/types/MiningStats";
+import { blockToXMRConversion } from "./constants";
 
 const getBlocksFoundByStartIndexAndEndIndex = (
   startIndex: number,
@@ -36,6 +37,7 @@ const getDailyBlocksFound = (
     charts.push({
       timestamp: history.at(endIndex).timestamp.split(" ")[0],
       blocks_found,
+      reward: blocks_found * blockToXMRConversion,
     });
   }
   return charts;
@@ -61,6 +63,7 @@ const getWeeklyBlocksFound = (
     charts.push({
       blocks_found,
       epoch: Number(history.at(endIndex).qubic_epoch),
+      reward: blocks_found * blockToXMRConversion,
     });
   }
   return charts;

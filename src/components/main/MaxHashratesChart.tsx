@@ -1,5 +1,5 @@
 import {
-  FC,
+  type FC,
   memo,
   useCallback,
   useEffect,
@@ -12,7 +12,7 @@ import Chart from "chart.js/auto";
 
 import ChartSkeleton from "../common/ChartSkeleton";
 import type { XMRHistoryCharts } from "@/types/MiningStats";
-import { formatLargeInteger } from "@/utils/numbers";
+import { formatHashrate } from "@/utils/numbers";
 import { Labels } from "@/utils/constants";
 
 interface MaxHashratesChartProps {
@@ -84,9 +84,9 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
                 let value = ctx.parsed.y;
 
                 if (!isNaN(value)) {
-                  return label.concat(formatLargeInteger(Number(value)));
+                  return ` ${label.concat(formatHashrate(Number(value)))}`;
                 }
-                return label.concat(`: ${value.toString()}`);
+                return ` ${label.concat(`: ${value.toString()}`)}`;
               },
             },
           },
@@ -103,7 +103,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
           y: {
             ticks: {
               callback: function (value) {
-                return formatLargeInteger(Number(value), 0);
+                return formatHashrate(Number(value), 0);
               },
             },
             beginAtZero: true,

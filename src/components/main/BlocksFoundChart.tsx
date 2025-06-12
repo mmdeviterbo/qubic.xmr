@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useState,
 } from "react";
 
@@ -14,6 +15,8 @@ import isEmpty from "lodash/isEmpty";
 
 import type { XMRHistoryCharts } from "@/types/MiningStats";
 import ChartSkeleton from "../common/ChartSkeleton";
+import { formatLargeNumber } from "@/utils/numbers";
+import { moneroTicker, tariTicker } from "@/utils/constants";
 
 interface BarChartProps {
   id: string;
@@ -27,6 +30,11 @@ enum Timeframe {
 }
 
 const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
+  const ticker = useMemo(
+    () => (id?.includes("monero") ? moneroTicker : tariTicker),
+    [id],
+  );
+
   const [chart, setChart] = useState<Chart>();
 
   const [timeframe, setTimeframe] = useState<Timeframe>(Timeframe.WEEKLY);
@@ -34,6 +42,22 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
   const [xy, setXY] = useState<{ x: string[]; y: number[] }>();
 
   const handleResize = useCallback(() => chart?.resize(), [chart]);
+
+  const getTotalReward = useCallback(
+    (index: number, timeframe: Timeframe): string => {
+      let totalReward = "0";
+      if (timeframe === Timeframe.DAILY) {
+        totalReward =
+          blocks_found_chart?.daily?.at(index)?.reward?.toString() ?? "";
+      } else {
+        totalReward =
+          blocks_found_chart?.weekly?.at(index)?.reward?.toString() ?? "";
+      }
+      totalReward = `${formatLargeNumber(Number(totalReward))} ${ticker}`;
+      return totalReward;
+    },
+    [blocks_found_chart],
+  );
 
   useEffect(() => {
     if (isEmpty(blocks_found_chart)) {
@@ -75,6 +99,7 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
             label: "Blocks found",
             data: xy.y,
             borderWidth: 1,
+            borderRadius: timeframe === Timeframe.DAILY ? 3 : 5,
           },
         ],
       },
@@ -87,6 +112,14 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
               title: (tooltipItems) => {
                 const label = "Epoch ".concat(tooltipItems[0].label);
                 return label;
+              },
+              label: (tooltipItem) => {
+                const label = tooltipItem.dataset.label;
+                const index = tooltipItem.dataIndex;
+                const value = tooltipItem.formattedValue.concat(
+                  ` ≈ ${getTotalReward(index, timeframe)}`,
+                );
+                return ` ${label.concat(`: ${value}`)}`;
               },
             },
           },

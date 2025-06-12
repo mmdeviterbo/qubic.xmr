@@ -18,10 +18,12 @@ export const MONERO_MINING_POOLS_STATS_URL = (seconds: number) =>
 export const QUBIC_SOLO_MINING_HISTORY =
   "http://66.179.92.83/data/qpool_V1.csv";
 
-export const TARI_BLOCKS_HISTORY_API_URL =
-  "https://tari-qubic-scanner.onrender.com/api/found_blocks";
+export const TARI_BLOCKS_HISTORY_URL =
+  "https://tari-qubic-scanner.onrender.com";
+export const TARI_BLOCKS_HISTORY_API_URL = `${TARI_BLOCKS_HISTORY_URL}/api/found_blocks`;
 
 export const moneroTicker = "XMR";
+export const tariTicker = "XTM";
 export const blockToXMRConversion = 0.6;
 
 export const cfbTokenStorageId = "cfb-image";

@@ -1,4 +1,11 @@
-export const formatLargeInteger = (value: number, scale = 2): string => {
+export const formatLargeNumber = (value: number, scale = 2): string => {
+  if (!isValidValue(value)) {
+    return "-";
+  }
+  return value?.toLocaleString();
+};
+
+export const formatHashrate = (value: number, scale = 2): string => {
   if (!isValidValue(value)) {
     return "-";
   }
@@ -15,7 +22,7 @@ export const formatLargeInteger = (value: number, scale = 2): string => {
   if (value === 0) {
     return value.toString();
   }
-  return value?.toFixed(scale).toLocaleString().concat(" H/s");
+  return formatLargeNumber(value, scale).concat(" H/s");
 };
 
 export const isValidValue = (value: number, isZeroAllowed = true) => {

@@ -5,6 +5,7 @@ import orderBy from "lodash/orderBy";
 import type { MiningStats } from "@/types/MiningStats";
 import {
   ABOUT_ME_NOTE,
+  blockToXMRConversion,
   MONERO_MINING_LATEST_BLOCK_FOUND_URL,
   MONERO_MINING_POOLS_STATS_URL,
   QUBIC_XMR_STATS_API_URL,
@@ -56,16 +57,32 @@ export default async function handler(
   res: NextApiResponse<MiningStats>,
 ) {
   try {
-    let newMiningStats: MiningStats = (await axios.get(QUBIC_XMR_STATS_API_URL))
-      .data;
+    let {
+      pool_hashrate,
+      network_hashrate,
+      connected_miners,
+      last_block_found,
+      pool_blocks_found,
+    } = (await axios.get(QUBIC_XMR_STATS_API_URL)).data;
 
-    const averagesAndRanking = await getMiningAveragesAndRanking(
-      newMiningStats.pool_hashrate,
-    );
+    let newMiningStats: MiningStats;
+
+    const averagesAndRanking = await getMiningAveragesAndRanking(pool_hashrate);
     if (averagesAndRanking) {
       newMiningStats = {
-        ...newMiningStats,
-        ...(averagesAndRanking ? averagesAndRanking : {}),
+        pool_hashrate,
+        network_hashrate,
+        connected_miners,
+        monero_blocks_found: {
+          pool_blocks_found,
+          last_block_found,
+          total_rewards: pool_blocks_found * blockToXMRConversion,
+        },
+        hashrate_averages: {
+          hashrate_average_1h: averagesAndRanking?.hashrate_average_1h ?? 0,
+          hashrate_average_7d: averagesAndRanking?.hashrate_average_7d ?? 0,
+        },
+        pool_hashrate_ranking: averagesAndRanking?.pool_hashrate_ranking ?? 0,
         developer: ABOUT_ME_NOTE,
       };
     }

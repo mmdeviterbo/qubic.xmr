@@ -11,14 +11,15 @@ import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import {
   formatLatestBlockFoundSubValue,
   formatPeakHashrateDateDifference,
-  formatPoolBlocksFoundSubValue,
+  formatMoneroBlocksFoundSubValue,
   formatPoolHashrateSubValue,
+  formatTariBlocksFoundSubValue,
 } from "@/utils/transformers";
 
 import { useConfettiBlocksFound } from "@/hooks/useConfettiBlocksFound";
 import { Labels } from "@/utils/constants";
 import {
-  formatLargeInteger,
+  formatHashrate,
   isWarningBounceForPoolBlocksFounds,
 } from "@/utils/numbers";
 import { isValidValue } from "@/utils/numbers";
@@ -38,23 +39,41 @@ const Main: FC<AdvancedModeProps> = ({
 }) => {
   const {
     pool_hashrate,
-    pool_blocks_found,
-    last_block_found,
-    hashrate_average_1h,
-    hashrate_average_7d,
-    connected_miners,
-    network_hashrate: monero_network_hashrate,
     pool_hashrate_ranking,
+    network_hashrate: monero_network_hashrate,
+    connected_miners,
+    monero_blocks_found: { last_block_found, pool_blocks_found } = {},
+    hashrate_averages: { hashrate_average_1h, hashrate_average_7d } = {},
   } = miningStats ?? {};
 
   const {
-    daily_blocks_found,
-    epoch_blocks_found,
     epoch,
-    max_hashrate,
-    max_hashrate_last_update,
-    historyCharts: { blocks_found_chart, max_hashrates_chart } = {},
+    max_hashrate_stats: { max_hashrate, max_hashrate_last_update } = {},
+    monero_history_charts: {
+      blocks_found_chart: monero_blocks_found_chart,
+      max_hashrates_chart,
+    },
+    tari_blocks_found,
+    tari_history_charts,
   } = calculatedMiningStats ?? {};
+
+  const monero_daily_blocks_found = useMemo(
+    () => monero_blocks_found_chart?.daily?.at(-1).blocks_found,
+    [monero_blocks_found_chart?.daily?.at(-1)],
+  );
+  const monero_weekly_blocks_found = useMemo(
+    () => monero_blocks_found_chart?.weekly?.at(-1).blocks_found,
+    [monero_blocks_found_chart?.weekly?.at(-1)],
+  );
+
+  const tari_daily_blocks_found = useMemo(
+    () => tari_history_charts?.daily?.at(-1).blocks_found,
+    [tari_history_charts?.daily?.at(-1)],
+  );
+  const tari_weekly_blocks_found = useMemo(
+    () => tari_history_charts?.weekly?.at(-1).blocks_found,
+    [tari_history_charts?.weekly?.at(-1)],
+  );
 
   useConfettiBlocksFound(pool_blocks_found);
 
@@ -74,6 +93,17 @@ const Main: FC<AdvancedModeProps> = ({
     );
   }, [pool_hashrate_ranking, pool_hashrate, monero_network_hashrate]);
 
+  const epochLabel = useMemo(
+    () =>
+      Labels.EPOCH_BLOCKS_FOUND.replace(
+        "<number>",
+        isLoadingCalculatedMiningStats || !isValidValue(epoch, false)
+          ? ""
+          : epoch?.toString(),
+      ),
+    [epoch, isLoadingCalculatedMiningStats],
+  );
+
   return (
     <>
       <div className="ml-2 md:ml-1 md:mb-2">
@@ -83,7 +113,7 @@ const Main: FC<AdvancedModeProps> = ({
       <Card
         index={0}
         label={Labels.HASHRATE}
-        value={formatLargeInteger(pool_hashrate)}
+        value={formatHashrate(pool_hashrate)}
         subValue={hashrateRanking}
         loading={isLoadingMiningStats}
         properties={{
@@ -108,17 +138,17 @@ const Main: FC<AdvancedModeProps> = ({
           ).join(""),
           value: isLoadingCalculatedMiningStats
             ? ""
-            : formatLargeInteger(max_hashrate),
+            : formatHashrate(max_hashrate),
         }}
         loading={isLoadingMiningStats}
         rightSubtitles={[
           {
             label: Labels.AVG_1H_HASHRATE,
-            value: formatLargeInteger(hashrate_average_1h),
+            value: formatHashrate(hashrate_average_1h),
           },
           {
             label: Labels.AVG_7D_HASHRATE,
-            value: formatLargeInteger(hashrate_average_7d),
+            value: formatHashrate(hashrate_average_7d),
           },
         ]}
         chart={
@@ -134,7 +164,7 @@ const Main: FC<AdvancedModeProps> = ({
         title={"Monero ".concat(Labels.BLOCKS_FOUND)}
         leftSubtitle={{
           label: formatLatestBlockFoundSubValue(last_block_found),
-          sublabel: formatPoolBlocksFoundSubValue(pool_blocks_found),
+          sublabel: formatMoneroBlocksFoundSubValue(pool_blocks_found),
           value: isValidValue(pool_blocks_found, false)
             ? pool_blocks_found?.toLocaleString()
             : "-",
@@ -145,35 +175,62 @@ const Main: FC<AdvancedModeProps> = ({
         rightSubtitles={[
           {
             label: Labels.DAILY_BLOCKS_FOUND,
-            value: isValidValue(daily_blocks_found)
-              ? daily_blocks_found?.toLocaleString()
+            value: isValidValue(monero_daily_blocks_found)
+              ? monero_daily_blocks_found?.toLocaleString()
               : "-",
           },
           {
-            label: Labels.EPOCH_BLOCKS_FOUND.replace(
-              "<number>",
-              isLoadingCalculatedMiningStats || !isValidValue(epoch, false)
-                ? ""
-                : epoch?.toString(),
-            ),
-            value: isValidValue(epoch_blocks_found)
-              ? epoch_blocks_found?.toLocaleString()
+            label: epochLabel,
+            value: isValidValue(monero_weekly_blocks_found)
+              ? monero_weekly_blocks_found?.toLocaleString()
               : "-",
           },
         ]}
         loading={isLoadingCalculatedMiningStats}
         chart={
           <BarChart
-            id="xmr-blocks-found-bar-chart"
-            blocks_found_chart={blocks_found_chart}
+            id="monero-blocks-found-bar-chart"
+            blocks_found_chart={monero_blocks_found_chart}
             loading={isLoadingCalculatedMiningStats}
           />
         }
       />
-      <Card
-        label={Labels.MONERO_NETWORK_HASHRATE}
-        value={formatLargeInteger(monero_network_hashrate)}
-        loading={isLoadingMiningStats}
+
+      <ChartContainer
+        title={"Tari ".concat(Labels.BLOCKS_FOUND)}
+        leftSubtitle={{
+          label: formatLatestBlockFoundSubValue(
+            tari_blocks_found?.last_block_found,
+          ),
+          sublabel: formatTariBlocksFoundSubValue(
+            tari_blocks_found?.total_rewards,
+          ),
+          value: isValidValue(tari_blocks_found?.pool_blocks_found, false)
+            ? tari_blocks_found?.pool_blocks_found?.toLocaleString()
+            : "-",
+        }}
+        rightSubtitles={[
+          {
+            label: Labels.DAILY_BLOCKS_FOUND,
+            value: isValidValue(tari_daily_blocks_found)
+              ? tari_daily_blocks_found?.toLocaleString()
+              : "-",
+          },
+          {
+            label: epochLabel,
+            value: isValidValue(tari_weekly_blocks_found)
+              ? tari_weekly_blocks_found?.toLocaleString()
+              : "-",
+          },
+        ]}
+        loading={isLoadingCalculatedMiningStats}
+        chart={
+          <BarChart
+            id="tari-blocks-found-bar-chart"
+            blocks_found_chart={tari_history_charts}
+            loading={isLoadingCalculatedMiningStats}
+          />
+        }
       />
     </>
   );

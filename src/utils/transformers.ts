@@ -1,5 +1,10 @@
-import { isValidValue } from "./numbers";
-import { blockToXMRConversion, Labels, moneroTicker } from "./constants";
+import { formatLargeNumber, isValidValue } from "./numbers";
+import {
+  blockToXMRConversion,
+  Labels,
+  moneroTicker,
+  tariTicker,
+} from "./constants";
 import datetimeDifference, {
   type DateTimeDifference,
 } from "datetime-difference";
@@ -24,12 +29,19 @@ export const formatPoolHashrateSubValue = (
   return `${percentage}%`;
 };
 
-export const formatPoolBlocksFoundSubValue = (pool_blocks_found: number) => {
+export const formatMoneroBlocksFoundSubValue = (pool_blocks_found: number) => {
   if (!isValidValue(pool_blocks_found, false)) {
     return "";
   }
   const totalXMR = blockToXMRConversion * pool_blocks_found;
-  return `≈ ${totalXMR.toFixed(2)} ${moneroTicker}`;
+  return `≈ ${formatLargeNumber(totalXMR)} ${moneroTicker}`;
+};
+
+export const formatTariBlocksFoundSubValue = (total_rewards: number) => {
+  if (!isValidValue(total_rewards, false)) {
+    return "";
+  }
+  return `≈ ${formatLargeNumber(total_rewards, 0)} ${tariTicker}`;
 };
 
 export const formatPeakHashrateDateDifference = (date: string) => {
@@ -91,12 +103,18 @@ export const getTimeUnitShortVersion = (time: string) => {
   return timeShortForm;
 };
 
-export const formatLatestBlockFoundSubValue = (last_block_found: number) => {
-  if (!isValidValue(last_block_found, false)) {
+export const formatLatestBlockFoundSubValue = (
+  last_block_found: number | string,
+) => {
+  const isAlreadyInDateFormat = typeof last_block_found === "string";
+
+  if (!isAlreadyInDateFormat && !isValidValue(last_block_found, false)) {
     return "";
   }
 
-  const latestBlockFound = Number(`${last_block_found}000`);
+  const latestBlockFound = isAlreadyInDateFormat
+    ? last_block_found
+    : Number(`${last_block_found}000`);
 
   const difference = datetimeDifference(new Date(latestBlockFound), new Date());
 

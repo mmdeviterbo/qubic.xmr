@@ -5,13 +5,14 @@ import axios from "axios";
 import Papa from "papaparse";
 import maxBy from "lodash/maxBy";
 
-import CHECKPOINTS from "@/utils/checkpoints.json";
-
+import getTariMiningStats from "../../../apis/calculated-xtm-stats";
 import type {
   CalculatedMiningStats,
   XMRMiningHistory,
 } from "@/types/MiningStats";
+
 import { QUBIC_SOLO_MINING_HISTORY } from "@/utils/constants";
+import CHECKPOINTS from "@/utils/checkpoints.json";
 
 const getMaxHashrateHistory = (
   history: XMRMiningHistory[],
@@ -77,27 +78,29 @@ export default async function handler(
     const max_hashrate_last_update = maxHashrateHistory.timestamp;
     const max_hashrate_last_epoch = Number(maxHashrateHistory.qubic_epoch);
 
-    const { weekly: weeklyChart, daily: dailyChart } = blocks_found_chart;
-    const epoch_blocks_found = weeklyChart.at(-1).blocks_found;
-    const daily_blocks_found = dailyChart.at(-1).blocks_found;
+    const { blocks_found_chart: tari_history_charts, tari_blocks_found } =
+      await getTariMiningStats();
 
     res.setHeader("Cache-Control", "public, max-age=120, s-maxage=180");
     res.setHeader("CDN-Cache-Control", "public, s-maxage=270");
     res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=360");
 
     res.status(200).json({
-      daily_blocks_found,
-      epoch_blocks_found,
       epoch,
-      max_hashrate,
-      max_hashrate_last_update,
-      max_hashrate_last_epoch,
-      historyCharts: {
+      max_hashrate_stats: {
+        max_hashrate,
+        max_hashrate_last_update,
+        max_hashrate_last_epoch,
+      },
+      monero_history_charts: {
         blocks_found_chart,
         max_hashrates_chart,
       },
+      tari_history_charts,
+      tari_blocks_found,
     });
   } catch (e) {
+    console.log("error: ", e);
     res.status(400);
   }
 }
