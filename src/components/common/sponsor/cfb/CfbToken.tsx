@@ -36,7 +36,7 @@ export const SuperCfbToken: FC<{ customClass?: string; showFire: boolean }> = ({
       <Fire show={showFire} />
       <div
         id="cfb-token-container"
-        className={`absolute z-100 right-8 md:right-12 ${customClass}`}
+        className={`absolute z-100 right-4 md:right-6 ${customClass}`}
       >
         <Image
           id="cfb-token"

@@ -12,7 +12,7 @@ const CfbMarquee: FC = () => {
       gradientColor="rgb(16 24 32 / var(--tw-bg-opacity))"
       gradientWidth={25}
       autoFill
-      className="cfb-token-text tracking-wide grid items-center text-sm sm:text-lg md:text-xl"
+      className="cfb-token-text tracking-wider grid items-center text-sm sm:text-lg md:text-xl"
     >
       <span onClick={openCfbTokenSite} className="cursor-pointer">
         Powered by&nbsp;
