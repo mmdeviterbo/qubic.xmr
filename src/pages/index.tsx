@@ -145,7 +145,7 @@ export const getStaticProps = async () => {
         miningStatsProps,
         calculatedMiningStatsProps,
       },
-      revalidate: 12,
+      revalidate: 15,
     };
   } catch (e) {
     console.log("Error get static props: ", e);
