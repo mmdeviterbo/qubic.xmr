@@ -21,7 +21,7 @@ const Card: FC<CardProps> = ({
   properties,
 }) => {
   return (
-    <div className="relative flex flex-col gap-1 rounded-xl px-4 md:px-8 py-4 md:py-6 border-1 border-primary-60 bg-primary-70">
+    <div className="relative flex flex-col gap-1 rounded-xl px-5 md:px-8 py-4 md:py-6 border-1 border-primary-60 bg-primary-70">
       {properties?.cfbToken}
 
       <div className="font-space text-sm text-gray-50">{label}</div>

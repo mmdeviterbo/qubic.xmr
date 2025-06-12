@@ -67,7 +67,7 @@ const MainPage: NextPage<{
         />
       </Head>
 
-      <main className="mx-auto md:mt-4 w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 pt-6 md:pt-4">
+      <main className="mx-auto md:mt-2 w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 pt-6 md:pt-4">
         <p className="text-xs opacity-0 absolute">Made by Marty De Viterbo</p>
         <Main
           miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}

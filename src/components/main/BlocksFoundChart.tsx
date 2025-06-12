@@ -99,7 +99,7 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
             label: "Blocks found",
             data: xy.y,
             borderWidth: 1,
-            borderRadius: timeframe === Timeframe.DAILY ? 3 : 5,
+            borderRadius: timeframe === Timeframe.DAILY ? 1 : 2,
           },
         ],
       },

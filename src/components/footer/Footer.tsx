@@ -11,15 +11,15 @@ const Footer: FC = () => {
   const links = useMemo(() => {
     return [
       {
-        label: "Qubic Official stats",
+        label: "Qubic Official Stats",
         href: QUBIC_XMR_STATS_URL,
       },
       {
-        label: "Qubic-Tari live stats",
+        label: "Qubic-Tari Live Stats",
         href: TARI_BLOCKS_HISTORY_URL,
       },
       {
-        label: "Qubic-Monero detailed stats",
+        label: "Qubic-Monero Detailed Stats",
         href: QUBIC_XMR_STREAMLIT_APP_URL,
       },
       {

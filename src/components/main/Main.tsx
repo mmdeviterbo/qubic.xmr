@@ -23,6 +23,7 @@ import {
   isWarningBounceForPoolBlocksFounds,
 } from "@/utils/numbers";
 import { isValidValue } from "@/utils/numbers";
+import CfbMarquee from "../common/sponsor/cfb/CfbMarquee";
 
 export interface AdvancedModeProps {
   miningStats: MiningStats;
@@ -129,6 +130,8 @@ const Main: FC<AdvancedModeProps> = ({
           ),
         }}
       />
+
+      <CfbMarquee />
 
       <ChartContainer
         title={Labels.HASHRATE_PERFORMANCE}

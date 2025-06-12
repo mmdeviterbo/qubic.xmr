@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -65,7 +66,7 @@ img[id^=cfb-token] {
   transform-origin: 100% 100%;
 
   /* shiny effect */
-  mask: linear-gradient(-60deg, #ffffff 60%, rgba(177, 177, 177, 0.8), #bdbdbd 70%) right/500% 100%;
+  mask: linear-gradient(-60deg, #ffffff 60%, rgba(177, 177, 177, 0.6), #bdbdbd 70%) right/500% 100%;
   animation: shimmer 2.5s infinite;
 }
 
@@ -77,4 +78,10 @@ img[id^=cfb-token]:hover {
   100% {
     mask-position: left
   }
+}
+
+.cfb-token-text {
+  font-family: "Bungee", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
