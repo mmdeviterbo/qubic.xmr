@@ -159,13 +159,13 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
           <div className="mb-4 mt-1 md:mt-2 flex gap-2">
             <button
               onClick={() => setTimeframe(Timeframe.WEEKLY)}
-              className={`z-100 cursor-pointer inline-flex items-center rounded-md px-2 py-1 text-xs ${timeframe === Timeframe.WEEKLY ? "ring-1 ring-gray-500/10 ring-inset bg-gray-800 text-gray-400" : "text-gray-600"}`}
+              className={`z-100 cursor-pointer inline-flex items-center rounded-md px-2 py-1 text-xs ${timeframe === Timeframe.WEEKLY ? "ring-1 ring-gray-500/10 ring-inset bg-gray-800 text-gray-400" : "text-gray-600 hover:bg-gray-800 hover:shadow-md"}`}
             >
               Epoch
             </button>
             <button
               onClick={() => setTimeframe(Timeframe.DAILY)}
-              className={`z-100 cursor-pointer inline-flex items-center rounded-md px-2 py-1 text-xs ${timeframe === Timeframe.DAILY ? "ring-1 ring-gray-500/10 ring-inset bg-gray-800 text-gray-400" : "text-gray-600"}`}
+              className={`z-100 cursor-pointer inline-flex items-center rounded-md px-2 py-1 text-xs ${timeframe === Timeframe.DAILY ? "ring-1 ring-gray-500/10 ring-inset bg-gray-800 text-gray-400" : "text-gray-600 hover:bg-gray-800 hover:shadow-md"}`}
             >
               1d
             </button>
