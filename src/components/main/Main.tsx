@@ -3,7 +3,7 @@ import { memo, useMemo, type FC, type ReactNode } from "react";
 import QubicLogo from "../common/logos/QubicLogo";
 import Card from "../common/Card";
 import ChartContainer from "../common/ChartContainer";
-import BarChart from "./BlocksFoundChart";
+import BarChart from "./BlocksChart";
 import MaxHashratesChart from "./MaxHashratesChart";
 import { SuperCfbToken } from "../common/sponsor/cfb/CfbToken";
 
@@ -20,6 +20,7 @@ import { Labels } from "@/utils/constants";
 import { formatHashrate } from "@/utils/numbers";
 import { isValidValue } from "@/utils/numbers";
 import CfbMarquee from "../common/sponsor/cfb/CfbMarquee";
+import Tab from "../common/Tab";
 
 export interface AdvancedModeProps {
   miningStats: MiningStats;
@@ -183,10 +184,23 @@ const Main: FC<AdvancedModeProps> = ({
         ]}
         loading={isLoadingCalculatedMiningStats}
         chart={
-          <BarChart
-            id="monero-blocks-found-bar-chart"
-            blocks_found_chart={monero_blocks_found_chart}
-            loading={isLoadingCalculatedMiningStats}
+          <Tab
+            tabs={[
+              {
+                label: Labels.BLOCKS_FOUND,
+                child: (
+                  <BarChart
+                    id="monero-blocks-bar-chart"
+                    blocks_found_chart={monero_blocks_found_chart}
+                    loading={isLoadingCalculatedMiningStats}
+                  />
+                ),
+              },
+              {
+                label: Labels.BLOCKS_DISTRIBUTION,
+                child: null,
+              },
+            ]}
           />
         }
       />
@@ -220,10 +234,23 @@ const Main: FC<AdvancedModeProps> = ({
         ]}
         loading={isLoadingCalculatedMiningStats}
         chart={
-          <BarChart
-            id="tari-blocks-found-bar-chart"
-            blocks_found_chart={tari_history_charts}
-            loading={isLoadingCalculatedMiningStats}
+          <Tab
+            tabs={[
+              {
+                label: Labels.BLOCKS_FOUND,
+                child: (
+                  <BarChart
+                    id="tari-blocks-bar-chart"
+                    blocks_found_chart={tari_history_charts}
+                    loading={isLoadingCalculatedMiningStats}
+                  />
+                ),
+              },
+              {
+                label: Labels.BLOCKS_DISTRIBUTION,
+                child: null,
+              },
+            ]}
           />
         }
       />

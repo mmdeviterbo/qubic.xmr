@@ -17,6 +17,7 @@ import type { XMRHistoryCharts } from "@/types/MiningStats";
 import ChartSkeleton from "../common/ChartSkeleton";
 import { formatLargeNumber } from "@/utils/numbers";
 import { moneroTicker, tariTicker } from "@/utils/constants";
+import FilterButtons from "../common/FilterButtons";
 
 interface BarChartProps {
   id: string;
@@ -25,8 +26,8 @@ interface BarChartProps {
 }
 
 enum Timeframe {
+  EPOCH,
   DAILY,
-  WEEKLY,
 }
 
 const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
@@ -37,7 +38,7 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
 
   const [chart, setChart] = useState<Chart>();
 
-  const [timeframe, setTimeframe] = useState<Timeframe>(Timeframe.WEEKLY);
+  const [timeframe, setTimeframe] = useState<Timeframe>(Timeframe.EPOCH);
 
   const [xy, setXY] = useState<{ x: string[]; y: number[] }>();
 
@@ -156,20 +157,20 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
         <ChartSkeleton />
       ) : (
         <div className="flex flex-col">
-          <div className="mb-4 mt-1 md:mt-2 flex gap-2">
-            <button
-              onClick={() => setTimeframe(Timeframe.WEEKLY)}
-              className={`z-100 cursor-pointer inline-flex items-center rounded-md px-2 py-1 text-xs ${timeframe === Timeframe.WEEKLY ? "ring-1 ring-gray-500/10 ring-inset bg-gray-800 text-gray-400" : "text-gray-600 hover:bg-gray-800 hover:shadow-md"}`}
-            >
-              Epoch
-            </button>
-            <button
-              onClick={() => setTimeframe(Timeframe.DAILY)}
-              className={`z-100 cursor-pointer inline-flex items-center rounded-md px-2 py-1 text-xs ${timeframe === Timeframe.DAILY ? "ring-1 ring-gray-500/10 ring-inset bg-gray-800 text-gray-400" : "text-gray-600 hover:bg-gray-800 hover:shadow-md"}`}
-            >
-              1d
-            </button>
-          </div>
+          <FilterButtons
+            buttons={[
+              {
+                label: "Epoch",
+                onClick: () => setTimeframe(Timeframe.EPOCH),
+                isActive: Timeframe.EPOCH === timeframe,
+              },
+              {
+                label: "1d",
+                onClick: () => setTimeframe(Timeframe.DAILY),
+                isActive: Timeframe.DAILY === timeframe,
+              },
+            ]}
+          />
           <canvas id={id} />
         </div>
       )}

@@ -65,7 +65,7 @@ const ChartContainer: FC<ChartContainerProps> = ({
         </div>
       </div>
 
-      <div className="my-2">{chart}</div>
+      <div className="my-2 mt-4">{chart}</div>
     </div>
   );
 };

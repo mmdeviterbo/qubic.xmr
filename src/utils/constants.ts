@@ -38,6 +38,7 @@ export const enum Labels {
   AVG_1H_HASHRATE = "Avg 1H",
   AVG_7D_HASHRATE = "Avg 7D",
   BLOCKS_FOUND = "Blocks Found",
+  BLOCKS_DISTRIBUTION = "Blocks Distribution",
   TOTAL_BLOCKS_FOUND = "Total blocks found",
   TOTAL_BLOCKS_FOUND_SHORT = "Total",
   DAILY_BLOCKS_FOUND = "Daily blocks",
