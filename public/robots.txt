@@ -1,4 +1,2 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://qubic-xmr.vercel.app/sitemap.xml
