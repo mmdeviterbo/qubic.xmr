@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 
@@ -13,7 +14,6 @@ import {
   SWR_HOOK_DEFAULTS,
 } from "@/utils/constants";
 import Footer from "@/components/footer/Footer";
-import { useEffect, useState } from "react";
 
 const MINING_STATS_DELAY = 8000;
 const CALCULATED_MINING_STATS_DELAY = 90000;
@@ -75,7 +75,7 @@ const MainPage: NextPage<{
         <meta
           name="description"
           content={
-            "Qubic Custom Mining as the first to execute Useful Proof of Work (UPoW). UI made by Marty de Viterbo."
+            "Qubic Custom Mining (PoC) as the first to execute Useful Proof of Work (UPoW). Sponsored by $CFB - a first memecoin on Qubic. UI made by Marty de Viterbo."
           }
         />
         <meta

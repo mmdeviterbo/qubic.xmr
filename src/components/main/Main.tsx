@@ -5,6 +5,8 @@ import Card from "../common/Card";
 import ChartContainer from "../common/ChartContainer";
 import BarChart from "./BlocksChart";
 import MaxHashratesChart from "./MaxHashratesChart";
+import CfbMarquee from "../common/sponsor/cfb/CfbMarquee";
+import Tab from "../common/Tab";
 import { SuperCfbToken } from "../common/sponsor/cfb/CfbToken";
 
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
@@ -19,8 +21,6 @@ import {
 import { Labels } from "@/utils/constants";
 import { formatHashrate } from "@/utils/numbers";
 import { isValidValue } from "@/utils/numbers";
-import CfbMarquee from "../common/sponsor/cfb/CfbMarquee";
-import Tab from "../common/Tab";
 
 export interface AdvancedModeProps {
   miningStats: MiningStats;
