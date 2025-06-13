@@ -14,6 +14,7 @@ import ChartSkeleton from "../common/ChartSkeleton";
 import type { XMRHistoryCharts } from "@/types/MiningStats";
 import { formatHashrate } from "@/utils/numbers";
 import { Labels } from "@/utils/constants";
+import useBreakpoints from "@/hooks/useBreakpoints";
 
 interface MaxHashratesChartProps {
   id: string;
@@ -26,6 +27,8 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
   max_hashrates_chart,
   loading,
 }) => {
+  const { isSm } = useBreakpoints();
+
   const [chart, setChart] = useState<Chart>();
 
   const [xy, setXY] = useState<{ x: string[]; y: number[] }>();
@@ -69,8 +72,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
       options: {
         animation: false,
         responsive: true,
-        maintainAspectRatio: true,
-        aspectRatio: 1.8,
+        maintainAspectRatio: false,
         plugins: {
           tooltip: {
             callbacks: {
@@ -94,7 +96,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
             labels: {
               usePointStyle: true,
               font: {
-                size: 12,
+                size: 11.5,
               },
             },
           },
@@ -115,7 +117,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
     return () => {
       lineChart.destroy();
     };
-  }, [xy, id]);
+  }, [xy]);
 
   useLayoutEffect(() => {
     if (isEmpty(chart)) {
@@ -130,7 +132,10 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
   }, [chart]);
 
   return (
-    <div className="w-full relative z-100">
+    <div
+      className="w-full relative z-100"
+      style={{ minHeight: isSm ? "35dvh" : "50dvh" }}
+    >
       {loading ? <ChartSkeleton /> : <canvas id={id} />}
     </div>
   );

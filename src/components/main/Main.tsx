@@ -108,7 +108,7 @@ const Main: FC<AdvancedModeProps> = ({
 
   return (
     <>
-      <div className="ml-2 md:ml-1 md:mb-2">
+      <div className="ml-2 md:ml-1 md:mb-2 z-100">
         <QubicLogo showTitle={true} />
       </div>
 

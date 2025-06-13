@@ -1,22 +1,25 @@
 import { useLayoutEffect, useState } from "react";
 
 interface UseBreakpoints {
-  isXs: boolean;
+  isSm: boolean;
+  isMd: boolean;
 }
 
 const useBreakpoints = (): UseBreakpoints => {
-  const [isXs, setIsXs] = useState(false);
+  const [isSm, setIsSm] = useState(false);
+  const [isMd, setIsMd] = useState(false);
 
   useLayoutEffect(() => {
     function handleResize() {
-      setIsXs(window.innerWidth < 460);
+      setIsSm(window.innerWidth < 460);
+      setIsMd(window.innerWidth >= 460 && window.innerWidth < 768);
     }
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return { isXs };
+  return { isSm, isMd };
 };
 
 export default useBreakpoints;
