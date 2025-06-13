@@ -13,22 +13,42 @@ import {
   SWR_HOOK_DEFAULTS,
 } from "@/utils/constants";
 import Footer from "@/components/footer/Footer";
+import { useEffect, useState } from "react";
+
+const MINING_STATS_DELAY = 15000;
+const CALCULATED_MINING_STATS_DELAY = 90000;
 
 const MainPage: NextPage<{
   miningStatsProps?: MiningStats;
   calculatedMiningStatsProps?: CalculatedMiningStats;
 }> = ({ miningStatsProps, calculatedMiningStatsProps }) => {
+  const [enableFetchMiningStats, setEnableFetchMiningStats] = useState(false);
+  const [
+    enableFetchCalculatedhMiningStats,
+    setEnableFetchCalculatedhMiningStats,
+  ] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setEnableFetchMiningStats(true);
+    }, MINING_STATS_DELAY);
+
+    setTimeout(() => {
+      setEnableFetchCalculatedhMiningStats(true);
+    }, CALCULATED_MINING_STATS_DELAY);
+  }, []);
+
   const {
     data: miningStats = miningStatsProps,
     isLoading: isLoadingMiningStats,
   } = useSWR<MiningStats>(
-    MINING_STATS_URL,
+    enableFetchMiningStats ? MINING_STATS_URL : null,
     async () => (await fetch(MINING_STATS_URL)).json(),
     {
       ...SWR_HOOK_DEFAULTS,
-      refreshInterval: 15000,
-      focusThrottleInterval: 15000,
-      dedupingInterval: 15000,
+      refreshInterval: MINING_STATS_DELAY,
+      focusThrottleInterval: MINING_STATS_DELAY,
+      dedupingInterval: MINING_STATS_DELAY,
     },
   );
 
@@ -36,13 +56,13 @@ const MainPage: NextPage<{
     data: calculatedMiningStats = calculatedMiningStatsProps,
     isLoading: isLoadingCalculatedMiningStats,
   } = useSWR<CalculatedMiningStats>(
-    CALCULATED_MINING_STATS_URL,
+    enableFetchCalculatedhMiningStats ? CALCULATED_MINING_STATS_URL : null,
     async () => (await fetch(CALCULATED_MINING_STATS_URL)).json(),
     {
       ...SWR_HOOK_DEFAULTS,
-      refreshInterval: 90000,
-      focusThrottleInterval: 90000,
-      dedupingInterval: 90000,
+      refreshInterval: CALCULATED_MINING_STATS_DELAY,
+      focusThrottleInterval: CALCULATED_MINING_STATS_DELAY,
+      dedupingInterval: CALCULATED_MINING_STATS_DELAY,
     },
   );
 
