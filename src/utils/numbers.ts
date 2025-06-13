@@ -28,30 +28,3 @@ export const formatHashrate = (value: number, scale = 2): string => {
 export const isValidValue = (value: number, isZeroAllowed = true) => {
   return !isNaN(value) && (isZeroAllowed ? value >= 0 : value > 0);
 };
-
-export const getNearestFloor = (value: number) => {
-  if (value >= 1000) {
-    return Math.floor(value / 1000) * 1000;
-  }
-  return Math.floor(value / 100) * 100;
-};
-
-export const isWarningBounceForPoolBlocksFounds = (
-  pool_blocks_found?: number,
-) => {
-  if (!isValidValue(pool_blocks_found, false)) {
-    return;
-  }
-
-  let nearestCeiling = 0;
-
-  if (pool_blocks_found >= 1000) {
-    nearestCeiling = Math.ceil(pool_blocks_found / 1000) * 1000;
-  } else {
-    nearestCeiling = Math.ceil(pool_blocks_found / 100) * 100;
-  }
-  return (
-    nearestCeiling - pool_blocks_found <= 5 &&
-    nearestCeiling - pool_blocks_found >= 1
-  );
-};

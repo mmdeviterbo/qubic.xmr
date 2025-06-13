@@ -99,7 +99,6 @@ const MainPage: NextPage<{
           }
           isLoadingCalculatedMiningStats={isEmpty(calculatedMiningStatsProps)}
         />
-        <canvas className="confetti absolute top-0 left-0 z-50 h-full w-full" />
       </main>
 
       <footer className="mx-auto w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-4 pb-6">

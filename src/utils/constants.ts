@@ -29,10 +29,6 @@ export const moneroTicker = "XMR";
 export const tariTicker = "XTM";
 export const blockToXMRConversion = 0.6;
 
-export const cfbTokenStorageId = "cfb-image";
-export const getConfettiStorageId = (pool_block_found: number) =>
-  `confetti-blocks-found-${pool_block_found}`;
-
 export const enum Labels {
   HASHRATE = "Hashrate",
   HASHRATE_PERFORMANCE = "Hashrate Performance",

@@ -1,14 +1,9 @@
 import { memo, type FC, type ReactNode } from "react";
 
-type Properties = {
-  bounce?: boolean;
-};
-
 type Subtitle = {
   label: string;
   sublabel?: string;
   value: string | number;
-  properties?: Properties;
 };
 
 interface ChartContainerProps {
@@ -36,11 +31,7 @@ const ChartContainer: FC<ChartContainerProps> = ({
         {!loading && (
           <div>
             <div className="flex items-center gap-1">
-              <span
-                className={`${leftSubtitle?.properties?.bounce ? "animate-bounce" : ""} text-lg md:text-2xl`}
-              >
-                {leftSubtitle.value}
-              </span>
+              <span className="text-lg md:text-2xl">{leftSubtitle.value}</span>
               <span className="ml-1 font-space text-sm text-gray-50">
                 {leftSubtitle?.sublabel}
               </span>

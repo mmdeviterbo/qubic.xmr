@@ -16,12 +16,8 @@ import {
   formatTariBlocksFoundSubValue,
 } from "@/utils/transformers";
 
-import { useConfettiBlocksFound } from "@/hooks/useConfettiBlocksFound";
 import { Labels } from "@/utils/constants";
-import {
-  formatHashrate,
-  isWarningBounceForPoolBlocksFounds,
-} from "@/utils/numbers";
+import { formatHashrate } from "@/utils/numbers";
 import { isValidValue } from "@/utils/numbers";
 import CfbMarquee from "../common/sponsor/cfb/CfbMarquee";
 
@@ -76,8 +72,6 @@ const Main: FC<AdvancedModeProps> = ({
     () => tari_history_charts?.weekly?.at(-1).blocks_found,
     [tari_history_charts?.weekly?.at(-1)],
   );
-
-  useConfettiBlocksFound(pool_blocks_found);
 
   const hashrateRanking = useMemo<ReactNode>(() => {
     return (
@@ -172,9 +166,6 @@ const Main: FC<AdvancedModeProps> = ({
           value: isValidValue(pool_blocks_found, false)
             ? pool_blocks_found?.toLocaleString()
             : "-",
-          properties: {
-            bounce: isWarningBounceForPoolBlocksFounds(pool_blocks_found),
-          },
         }}
         rightSubtitles={[
           {
