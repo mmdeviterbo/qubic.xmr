@@ -17,7 +17,7 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
   try {
     let xtmHistory = await getXtmBlocksHistory();
 
-    const { blocks_found_chart } = getXtmChartHistory(xtmHistory.blocks);
+    const { blocks_found_chart } = await getXtmChartHistory(xtmHistory.blocks);
 
     const pool_blocks_found = xtmHistory.total_found;
     const last_block_found = xtmHistory.blocks.at(-1).timestamp.concat("Z");

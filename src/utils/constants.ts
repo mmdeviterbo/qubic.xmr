@@ -4,9 +4,10 @@ export const DONATE_X_URL =
   "https://x.com/cryptokendefi/status/1926657151927267699";
 
 export const QUBIC_URL = "qubic.org";
+export const QUBIC_LIVE_STATS_URL = `https://rpc.${QUBIC_URL}/v1/latest-stats`;
 export const QUBIC_XMR_STATS_URL = `https://xmr-stats.${QUBIC_URL}`;
 export const QUBIC_XMR_STATS_API_URL = `${QUBIC_XMR_STATS_URL}/stats`;
-export const EXPLORER_QUBIC_URL = "https://explorer.qubic.org/network";
+export const EXPLORER_QUBIC_URL = `https://explorer.${QUBIC_URL}/network`;
 const MONERO_MINING_POOLS_STATS_BASE_URL = "miningpoolstats.stream";
 export const QUBIC_XMR_STREAMLIT_APP_URL =
   "https://qubic-xmr-stats.streamlit.app";

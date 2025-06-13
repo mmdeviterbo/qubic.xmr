@@ -1,6 +1,8 @@
 import groupBy from "lodash/groupBy";
 
 import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
+import axios from "axios";
+import { QUBIC_LIVE_STATS_URL } from "./constants";
 
 export const calculateTotalXTM = (history: XTMMiningHistory["blocks"]) => {
   return Math.trunc(history.reduce((total, item) => total + item.reward, 0));
@@ -35,9 +37,9 @@ const getXtmDailyChartHistory = (
   return daily_history;
 };
 
-const getXtmWeeklyChartHistory = (
+const getXtmWeeklyChartHistory = async (
   blocks: XTMMiningHistory["blocks"],
-): XTMHistoryCharts["blocks_found_chart"]["weekly"] => {
+): Promise<XTMHistoryCharts["blocks_found_chart"]["weekly"]> => {
   const getWeekStart = (timestamp: string) => {
     const date = new Date(timestamp.concat("Z"));
     const day = date.getUTCDay(); // 0 (Sun) - 6 (Sat)
@@ -75,17 +77,32 @@ const getXtmWeeklyChartHistory = (
     };
     weeklyXtmChartHistory.push(weekHistory);
   }
+
+  //Handle if latest block is still from previous epoch
+  const latestBlockFound = weeklyXtmChartHistory.at(-1).epoch;
+  const currentEpoch = (await axios.get(QUBIC_LIVE_STATS_URL))?.data?.data
+    ?.epoch;
+
+  if (latestBlockFound !== currentEpoch) {
+    weeklyXtmChartHistory.push({
+      blocks_found: 0,
+      epoch: currentEpoch,
+      reward: 0,
+    });
+  }
+
   return weeklyXtmChartHistory;
 };
 
-export const getXtmChartHistory = (
+export const getXtmChartHistory = async (
   blocks: XTMMiningHistory["blocks"],
-): Pick<XTMHistoryCharts, "blocks_found_chart"> => {
+): Promise<Pick<XTMHistoryCharts, "blocks_found_chart">> => {
   blocks.reverse();
+
+  const daily = getXtmDailyChartHistory(blocks);
+  const weekly = await getXtmWeeklyChartHistory(blocks);
+
   return {
-    blocks_found_chart: {
-      daily: getXtmDailyChartHistory(blocks),
-      weekly: getXtmWeeklyChartHistory(blocks),
-    },
+    blocks_found_chart: { daily, weekly },
   };
 };
