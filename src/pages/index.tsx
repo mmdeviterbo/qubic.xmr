@@ -15,7 +15,7 @@ import {
 import Footer from "@/components/footer/Footer";
 import { useEffect, useState } from "react";
 
-const MINING_STATS_DELAY = 15000;
+const MINING_STATS_DELAY = 8000;
 const CALCULATED_MINING_STATS_DELAY = 90000;
 
 const MainPage: NextPage<{
@@ -31,7 +31,7 @@ const MainPage: NextPage<{
   useEffect(() => {
     setTimeout(() => {
       setEnableFetchMiningStats(true);
-    }, MINING_STATS_DELAY);
+    }, MINING_STATS_DELAY - 5000);
 
     setTimeout(() => {
       setEnableFetchCalculatedhMiningStats(true);

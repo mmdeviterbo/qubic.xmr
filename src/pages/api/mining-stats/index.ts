@@ -115,9 +115,9 @@ export default async function handler(
       developer: ABOUT_ME_NOTE,
     };
 
-    res.setHeader("Cache-Control", "public, max-age=15");
-    res.setHeader("CDN-Cache-Control", "public, max-age=30");
-    res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=60");
+    res.setHeader("Cache-Control", "public, max-age=10");
+    res.setHeader("CDN-Cache-Control", "public, max-age=20");
+    res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=40");
 
     res.status(200).json(newMiningStats);
   } catch (error) {
