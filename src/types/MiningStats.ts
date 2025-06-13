@@ -16,6 +16,24 @@ export type MiningStats = About & {
     hashrate_average_1h: number;
     hashrate_average_7d: number;
   };
+  blockDistributions: {
+    last1000Blocks: number;
+    last100Blocks: number;
+  };
+};
+
+export type MoneroBlockDistribution = {
+  distribution: {
+    interval: 1000;
+    urls: {
+      url: string;
+      count: number;
+    }[];
+  };
+  urls: {
+    url: string;
+    count: number;
+  }[];
 };
 
 export interface XMRMiningHistory {

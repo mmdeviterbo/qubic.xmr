@@ -45,6 +45,7 @@ const Main: FC<AdvancedModeProps> = ({
     connected_miners,
     monero_blocks_found: { last_block_found, pool_blocks_found } = {},
     hashrate_averages: { hashrate_average_1h, hashrate_average_7d } = {},
+    blockDistributions = {},
   } = miningStats ?? {};
 
   const {

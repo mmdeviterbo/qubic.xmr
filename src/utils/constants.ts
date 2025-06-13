@@ -3,10 +3,11 @@ export const ABOUT_ME_NOTE =
 export const DONATE_X_URL =
   "https://x.com/cryptokendefi/status/1926657151927267699";
 
-export const QUBIC_XMR_STATS_URL = "https://xmr-stats.qubic.org";
+export const QUBIC_URL = "qubic.org";
+export const QUBIC_XMR_STATS_URL = `https://xmr-stats.${QUBIC_URL}`;
 export const QUBIC_XMR_STATS_API_URL = `${QUBIC_XMR_STATS_URL}/stats`;
 export const EXPLORER_QUBIC_URL = "https://explorer.qubic.org/network";
-export const MONERO_MINING_POOLS_STATS_BASE_URL = "miningpoolstats.stream";
+const MONERO_MINING_POOLS_STATS_BASE_URL = "miningpoolstats.stream";
 export const QUBIC_XMR_STREAMLIT_APP_URL =
   "https://qubic-xmr-stats.streamlit.app";
 
@@ -14,6 +15,8 @@ export const MONERO_MINING_LATEST_BLOCK_FOUND_URL = (seconds?: number) =>
   `https://${MONERO_MINING_POOLS_STATS_BASE_URL}/data/time?t=${seconds}`;
 export const MONERO_MINING_POOLS_STATS_URL = (seconds: number) =>
   `https://data.${MONERO_MINING_POOLS_STATS_BASE_URL}/data/monero.js?t=${seconds}`;
+export const MONERO_MINING_BLOCK_DISTRIBUTION_URL = (seconds: number) =>
+  `https://data.${MONERO_MINING_POOLS_STATS_BASE_URL}/data/blocks/monero.js?t=${seconds}`;
 
 export const QUBIC_SOLO_MINING_HISTORY =
   "http://66.179.92.83/data/qpool_V1.csv";
