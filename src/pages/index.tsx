@@ -156,7 +156,7 @@ export const getStaticProps = async () => {
         miningStatsProps,
         calculatedMiningStatsProps,
       },
-      revalidate: 20,
+      revalidate: 15,
     };
   } catch (e) {
     return { props: {} };
