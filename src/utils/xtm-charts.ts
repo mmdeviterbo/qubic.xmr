@@ -20,6 +20,18 @@ const getXtmDailyChartHistory = (
       reward: calculateTotalXTM(daily_blocks),
     });
   }
+
+  //Handle if latest block is still from yesterday's
+  const todayInUTC = new Date().toISOString().split("T")[0];
+  const latestBlockFound = daily_history.at(-1).timestamp;
+  if (todayInUTC !== latestBlockFound) {
+    daily_history.push({
+      blocks_found: 0,
+      reward: 0,
+      timestamp: todayInUTC,
+    });
+  }
+
   return daily_history;
 };
 

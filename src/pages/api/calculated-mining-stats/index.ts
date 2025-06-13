@@ -20,7 +20,7 @@ const getMaxHashrateHistory = (
   // console.log("latestIndex: ", history.length - 1);
   // console.log(
   //   "latestMaxHashrateIndex: ",
-  //   history.findIndex((i) => Number(i.pool_hashrate) === 549633109),
+  //   history.findIndex((i) => Number(i.pool_hashrate) === 566267095),
   // );
 
   const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
