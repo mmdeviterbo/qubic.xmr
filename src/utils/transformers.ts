@@ -41,7 +41,7 @@ export const formatTariBlocksFoundSubValue = (total_rewards: number) => {
   if (!isValidValue(total_rewards, false)) {
     return "";
   }
-  return `≈ ${formatLargeNumber(total_rewards, 0)} ${tariTicker}`;
+  return `≈ ${formatLargeNumber(total_rewards)} ${tariTicker}`;
 };
 
 export const formatPeakHashrateDateDifference = (date: string) => {
