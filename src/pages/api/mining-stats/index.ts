@@ -121,6 +121,7 @@ export default async function handler(
 
     res.status(200).json(newMiningStats);
   } catch (error) {
+    console.log("/api/mining-stats: ", error);
     res.status(400);
   }
 }

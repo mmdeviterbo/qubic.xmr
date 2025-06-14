@@ -104,6 +104,7 @@ export default async function handler(
       tari_block_distributions,
     });
   } catch (e) {
+    console.log("/api/calculated-mining-stats: ", e);
     res.status(400);
   }
 }
