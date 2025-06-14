@@ -136,7 +136,7 @@ export const getStaticProps = async () => {
       revalidate: 10,
     };
   } catch (e) {
-    console.log("Static props error: ", e);
+    console.log("getStaticProps error: ", e);
     return { props: {} };
   }
 };
@@ -164,8 +164,6 @@ export const getStaticProps = async () => {
 //       calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
 //     }
 
-//     console.log("Client response: ", calculatedMiningStatsProps);
-
 //     return {
 //       props: {
 //         miningStatsProps,
@@ -173,7 +171,6 @@ export const getStaticProps = async () => {
 //       },
 //     };
 //   } catch (e) {
-//     console.log("Error client: ", e);
 //     return { props: {} };
 //   }
 // };

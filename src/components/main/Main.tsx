@@ -58,8 +58,6 @@ const Main: FC<MainProps> = ({
     tari_block_distributions,
   } = calculatedMiningStats ?? {};
 
-  console.log("client tari_block_distributions: ", tari_block_distributions)
-
   const monero_daily_blocks_found = useMemo(
     () => monero_blocks_found_chart?.daily?.at(-1).blocks_found,
     [monero_blocks_found_chart?.daily?.at(-1)],
@@ -244,29 +242,34 @@ const Main: FC<MainProps> = ({
         ]}
         loading={isLoadingCalculatedMiningStats}
         chart={
-          <Tab
-            tabs={[
-              {
-                label: Labels.BLOCKS_FOUND,
-                child: (
-                  <BlocksChart
-                    id="tari-blocks-bar-chart"
-                    blocks_found_chart={tari_history_charts}
-                    loading={isLoadingCalculatedMiningStats}
-                  />
-                ),
-              },
-              {
-                label: Labels.BLOCKS_DISTRIBUTION,
-                child: (
-                  <DistributionChart
-                    id="tari-distribution-chart"
-                    block_distributions={tari_block_distributions}
-                    loading={isLoadingCalculatedMiningStats}
-                  />
-                ),
-              },
-            ]}
+          // <Tab
+          //   tabs={[
+          //     {
+          //       label: Labels.BLOCKS_FOUND,
+          //       child: (
+          //         <BlocksChart
+          //           id="tari-blocks-bar-chart"
+          //           blocks_found_chart={tari_history_charts}
+          //           loading={isLoadingCalculatedMiningStats}
+          //         />
+          //       ),
+          //     },
+          //     {
+          //       label: Labels.BLOCKS_DISTRIBUTION,
+          //       child: (
+          //         <DistributionChart
+          //           id="tari-distribution-chart"
+          //           block_distributions={tari_block_distributions}
+          //           loading={isLoadingCalculatedMiningStats}
+          //         />
+          //       ),
+          //     },
+          //   ]}
+          // />
+          <BlocksChart
+            id="tari-blocks-bar-chart"
+            blocks_found_chart={tari_history_charts}
+            loading={isLoadingCalculatedMiningStats}
           />
         }
       />

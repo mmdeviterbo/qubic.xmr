@@ -72,7 +72,7 @@ const DistributionChart: FC<DistributionChartProps> = ({
       options: {
         animation: false,
         responsive: true,
-        aspectRatio: 1,
+        maintainAspectRatio: false,
         plugins: {
           tooltip: {
             callbacks: {
@@ -120,7 +120,7 @@ const DistributionChart: FC<DistributionChartProps> = ({
             ]}
           />
 
-          <div className="relative p-6 grid place-items-center md:h-[30rem]">
+          <div className="relative grid place-items-center md:h-[25rem]">
             <canvas id={id} />
           </div>
         </div>
