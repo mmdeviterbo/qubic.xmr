@@ -1,7 +1,7 @@
-import { type FC, Fragment, memo, useMemo } from "react";
-import Link from "next/link";
+import { type FC, memo, useMemo } from "react";
 import {
   BUY_CFB_TOKEN_URL,
+  CFB_DISCORD_URL,
   CFB_TOKEN_URL,
   CFB_TOKEN_X_URL,
   DONATE_X_URL,
@@ -38,6 +38,10 @@ const Footer: FC = () => {
   const rightLinks = useMemo(() => {
     return [
       {
+        label: "Buy $CFB",
+        href: BUY_CFB_TOKEN_URL,
+      },
+      {
         label: "$CFB Offical Webpage",
         href: CFB_TOKEN_URL,
       },
@@ -46,8 +50,8 @@ const Footer: FC = () => {
         href: CFB_TOKEN_X_URL,
       },
       {
-        label: "Buy $CFB",
-        href: BUY_CFB_TOKEN_URL,
+        label: "$CFB Discord",
+        href: CFB_DISCORD_URL,
       },
     ];
   }, []);

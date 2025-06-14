@@ -30,6 +30,7 @@ export const CFB_TOKEN_URL = "https://cfbtoken.com";
 export const BUY_CFB_TOKEN_URL =
   "https://safetrade.com/exchange/CFB-USDT?type=basic";
 export const CFB_TOKEN_X_URL = "https://x.com/c_f_b_token";
+export const CFB_DISCORD_URL = "https://discord.com/invite/cAbXK8Kx35";
 
 export const moneroTicker = "XMR";
 export const tariTicker = "XTM";
