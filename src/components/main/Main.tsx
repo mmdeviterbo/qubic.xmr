@@ -58,7 +58,7 @@ const Main: FC<MainProps> = ({
     tari_block_distributions,
   } = calculatedMiningStats ?? {};
 
-  console.log("tari_block_distributions: ", tari_block_distributions)
+  console.log("client tari_block_distributions: ", tari_block_distributions)
 
   const monero_daily_blocks_found = useMemo(
     () => monero_blocks_found_chart?.daily?.at(-1).blocks_found,
