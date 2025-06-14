@@ -78,8 +78,11 @@ export default async function handler(
     const max_hashrate_last_update = maxHashrateHistory.timestamp;
     const max_hashrate_last_epoch = Number(maxHashrateHistory.qubic_epoch);
 
-    const { blocks_found_chart: tari_history_charts, tari_blocks_found } =
-      await getTariMiningStats();
+    const {
+      blocks_found_chart: tari_history_charts,
+      tari_blocks_found,
+      tari_block_distributions,
+    } = await getTariMiningStats();
 
     res.setHeader("Cache-Control", "public, max-age=120, s-maxage=180");
     res.setHeader("CDN-Cache-Control", "public, s-maxage=270");
@@ -98,6 +101,7 @@ export default async function handler(
       },
       tari_history_charts,
       tari_blocks_found,
+      tari_block_distributions,
     });
   } catch (e) {
     res.status(400);

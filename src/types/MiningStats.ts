@@ -67,6 +67,7 @@ export type CalculatedMiningStats = {
   monero_history_charts: XMRHistoryCharts;
   tari_blocks_found: XTMHistoryCharts["tari_blocks_found"];
   tari_history_charts: XTMHistoryCharts["blocks_found_chart"];
+  tari_block_distributions: XTMHistoryCharts["tari_block_distributions"];
 };
 
 interface DailyChart {
@@ -113,5 +114,9 @@ export type XTMHistoryCharts = {
   blocks_found_chart: {
     daily: DailyChart[];
     weekly: WeeklyChart[];
+  };
+  tari_block_distributions: {
+    last1000Blocks: number;
+    last100Blocks: number;
   };
 };

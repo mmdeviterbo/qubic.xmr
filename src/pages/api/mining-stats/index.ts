@@ -26,7 +26,7 @@ const getMiningPoolsStats = async () => {
   return poolsStats;
 };
 
-const getMiningBlockDistributions = async () => {
+const getBlockDistributions = async () => {
   const latestBlockFoundTime: number = (
     await axios.get(MONERO_MINING_LATEST_BLOCK_FOUND_URL())
   )?.data;
@@ -95,7 +95,7 @@ export default async function handler(
 
     const hashrateRanking = getRankingByHashrate(poolsStats, pool_hashrate);
 
-    const monero_block_distributions = await getMiningBlockDistributions();
+    const monero_block_distributions = await getBlockDistributions();
 
     const newMiningStats: MiningStats = {
       pool_hashrate,

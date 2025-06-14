@@ -23,14 +23,14 @@ import { Labels } from "@/utils/constants";
 import { formatHashrate } from "@/utils/numbers";
 import { isValidValue } from "@/utils/numbers";
 
-export interface AdvancedModeProps {
+export interface MainProps {
   miningStats: MiningStats;
   isLoadingMiningStats: boolean;
   calculatedMiningStats: CalculatedMiningStats;
   isLoadingCalculatedMiningStats: boolean;
 }
 
-const Main: FC<AdvancedModeProps> = ({
+const Main: FC<MainProps> = ({
   miningStats,
   isLoadingMiningStats,
   calculatedMiningStats,
@@ -55,6 +55,7 @@ const Main: FC<AdvancedModeProps> = ({
     } = {},
     tari_blocks_found,
     tari_history_charts,
+    tari_block_distributions,
   } = calculatedMiningStats ?? {};
 
   const monero_daily_blocks_found = useMemo(
@@ -255,7 +256,13 @@ const Main: FC<AdvancedModeProps> = ({
               },
               {
                 label: Labels.BLOCKS_DISTRIBUTION,
-                child: null,
+                child: (
+                  <DistributionChart
+                    id="tari-distribution-chart"
+                    block_distributions={tari_block_distributions}
+                    loading={isLoadingCalculatedMiningStats}
+                  />
+                ),
               },
             ]}
           />
@@ -265,4 +272,4 @@ const Main: FC<AdvancedModeProps> = ({
   );
 };
 
-export default memo<AdvancedModeProps>(Main);
+export default memo<MainProps>(Main);

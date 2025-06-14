@@ -1,5 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-
 import axios from "axios";
 
 import { TARI_BLOCKS_HISTORY_API_URL } from "@/utils/constants";
@@ -13,6 +11,33 @@ const getXtmBlocksHistory = async (): Promise<XTMMiningHistory> => {
   return status === 200 ? data : null;
 };
 
+const getBlockDistributions = (xtmHistory: XTMMiningHistory) => {
+  const latestBlock = xtmHistory.last_scanned_height;
+  const startOf100Blocks = latestBlock - 99;
+  const startOf1000Blocks = latestBlock - 999;
+
+  let count100Blocks = 0;
+  for (let i = latestBlock; i >= startOf100Blocks; i--) {
+    const isExist = xtmHistory.blocks.find((b) => b.block_height === i);
+    if (isExist) {
+      count100Blocks++;
+    }
+  }
+
+  let count1000Blocks = count100Blocks;
+  for (let i = startOf100Blocks - 1; i >= startOf1000Blocks; i--) {
+    const isExist = xtmHistory.blocks.find((b) => b.block_height === i);
+    if (isExist) {
+      count1000Blocks++;
+    }
+  }
+
+  return {
+    last100Blocks: count100Blocks,
+    last1000Blocks: count1000Blocks,
+  };
+};
+
 const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
   try {
     let xtmHistory = await getXtmBlocksHistory();
@@ -22,6 +47,7 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
     const pool_blocks_found = xtmHistory.total_found;
     const last_block_found = xtmHistory.blocks.at(-1).timestamp.concat("Z");
     const total_rewards = calculateTotalXTM(xtmHistory.blocks);
+    const tari_block_distributions = getBlockDistributions(xtmHistory);
 
     return {
       tari_blocks_found: {
@@ -30,6 +56,7 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
         last_block_found,
       },
       blocks_found_chart,
+      tari_block_distributions,
     };
   } catch (error) {}
 };
