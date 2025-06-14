@@ -6,15 +6,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  let referer = request.headers.get("referer"); // Full client page URL
-  if (referer?.endsWith("/")) {
-    referer = referer.slice(0, referer.length - 1);
-  }
+  // let referer = request.headers.get("referer"); // Full client page URL
+  // if (referer?.endsWith("/")) {
+  //   referer = referer.slice(0, referer.length - 1);
+  // }
 
-  const allowedBaseUrl = process.env.BASE_URL;
-  if (!referer || !referer?.includes(allowedBaseUrl)) {
-    return NextResponse.json({});
-  }
+  // const allowedBaseUrl = process.env.BASE_URL;
+  // if (!referer || !referer?.includes(allowedBaseUrl)) {
+  //   return NextResponse.json({});
+  // }
 
   return NextResponse.next();
 }
