@@ -1,9 +1,10 @@
 import { type FC, useLayoutEffect, useState } from "react";
 import Image from "next/image";
 import Fire from "@/components/effects/Fire";
+import { CFB_TOKEN_URL } from "@/utils/constants";
 
 export const openCfbTokenSite = () =>
-  window.open("https://cfbtoken.com", "_blank", "noopener");
+  window.open(CFB_TOKEN_URL, "_blank", "noopener");
 
 export const SuperCfbToken: FC<{ customClass?: string; showFire: boolean }> = ({
   customClass = "bottom-0",

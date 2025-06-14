@@ -26,6 +26,11 @@ export const TARI_BLOCKS_HISTORY_URL =
   "https://tari-qubic-scanner.onrender.com";
 export const TARI_BLOCKS_HISTORY_API_URL = `${TARI_BLOCKS_HISTORY_URL}/api/found_blocks`;
 
+export const CFB_TOKEN_URL = "https://cfbtoken.com";
+export const BUY_CFB_TOKEN_URL =
+  "https://safetrade.com/exchange/CFB-USDT?type=basic";
+export const CFB_TOKEN_X_URL = "https://x.com/c_f_b_token";
+
 export const moneroTicker = "XMR";
 export const tariTicker = "XTM";
 export const blockToXMRConversion = 0.6;
