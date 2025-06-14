@@ -57,7 +57,7 @@ const BlockChart: FC<BlockChartProps> = ({
       totalReward = `${formatLargeNumber(Number(totalReward))} ${ticker}`;
       return totalReward;
     },
-    [blocks_found_chart],
+    [blocks_found_chart, ticker],
   );
 
   useEffect(() => {

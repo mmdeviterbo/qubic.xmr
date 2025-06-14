@@ -105,7 +105,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
     return () => {
       lineChart.destroy();
     };
-  }, [xy]);
+  }, [id, xy]);
 
   return (
     <div
