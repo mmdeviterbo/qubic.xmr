@@ -37,7 +37,7 @@ const TabItem: FC<TabItemProps> = ({
   >
     <div
       className={`
-        block pr-2 py-2 
+        pr-2 py-2 
         transition-colors duration-100 
         cursor-pointer
         ${isActive ? "text-gray" : "text-gray-600 hover:text-gray-500"}
@@ -71,7 +71,7 @@ const Tab: FC<{ tabs: TabProps[] }> = ({ tabs }) => {
   return (
     <>
       <div className="relative mb-3 md:mb-4">
-        <ul className="flex text-sm gap-2 text-gray-400" role="tablist">
+        <ul className="flex text-xs gap-2 text-gray-400" role="tablist">
           {tabs.map((tab, index) => (
             <TabItem
               key={index.toString()}
