@@ -3,7 +3,8 @@ import { memo, useMemo, type FC, type ReactNode } from "react";
 import QubicLogo from "../common/logos/QubicLogo";
 import Card from "../common/Card";
 import ChartContainer from "../common/ChartContainer";
-import BarChart from "./BlocksChart";
+import BlocksChart from "./BlocksChart";
+import DistributionChart from "./DistributionChart";
 import MaxHashratesChart from "./MaxHashratesChart";
 import CfbMarquee from "../common/sponsor/cfb/CfbMarquee";
 import Tab from "../common/Tab";
@@ -42,7 +43,7 @@ const Main: FC<AdvancedModeProps> = ({
     connected_miners,
     monero_blocks_found: { last_block_found, pool_blocks_found } = {},
     hashrate_averages: { hashrate_average_1h, hashrate_average_7d } = {},
-    blockDistributions = {},
+    monero_block_distributions,
   } = miningStats ?? {};
 
   const {
@@ -160,7 +161,7 @@ const Main: FC<AdvancedModeProps> = ({
       />
 
       <ChartContainer
-        title={"Monero ".concat(Labels.BLOCKS_FOUND)}
+        title={"Monero ".concat(Labels.BLOCKS)}
         leftSubtitle={{
           label: formatLatestBlockFoundSubValue(last_block_found),
           sublabel: formatMoneroBlocksFoundSubValue(pool_blocks_found),
@@ -189,7 +190,7 @@ const Main: FC<AdvancedModeProps> = ({
               {
                 label: Labels.BLOCKS_FOUND,
                 child: (
-                  <BarChart
+                  <BlocksChart
                     id="monero-blocks-bar-chart"
                     blocks_found_chart={monero_blocks_found_chart}
                     loading={isLoadingCalculatedMiningStats}
@@ -198,7 +199,13 @@ const Main: FC<AdvancedModeProps> = ({
               },
               {
                 label: Labels.BLOCKS_DISTRIBUTION,
-                child: null,
+                child: (
+                  <DistributionChart
+                    id="monero-distribution-chart"
+                    block_distributions={monero_block_distributions}
+                    loading={isLoadingMiningStats}
+                  />
+                ),
               },
             ]}
           />
@@ -206,7 +213,7 @@ const Main: FC<AdvancedModeProps> = ({
       />
 
       <ChartContainer
-        title={"Tari ".concat(Labels.BLOCKS_FOUND)}
+        title={"Tari ".concat(Labels.BLOCKS)}
         leftSubtitle={{
           label: formatLatestBlockFoundSubValue(
             tari_blocks_found?.last_block_found,
@@ -239,7 +246,7 @@ const Main: FC<AdvancedModeProps> = ({
               {
                 label: Labels.BLOCKS_FOUND,
                 child: (
-                  <BarChart
+                  <BlocksChart
                     id="tari-blocks-bar-chart"
                     blocks_found_chart={tari_history_charts}
                     loading={isLoadingCalculatedMiningStats}

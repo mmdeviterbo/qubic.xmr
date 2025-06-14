@@ -6,8 +6,11 @@ import {
   QUBIC_XMR_STREAMLIT_APP_URL,
   TARI_BLOCKS_HISTORY_URL,
 } from "@/utils/constants";
+import useBreakpoints from "@/hooks/useBreakpoints";
 
 const Footer: FC = () => {
+  const { isMd, isLg } = useBreakpoints();
+
   const links = useMemo(() => {
     return [
       {
@@ -30,7 +33,10 @@ const Footer: FC = () => {
   }, []);
 
   return (
-    <div className="px-1 md:px-0 flex flex-col md:flex-row gap-2 justify-center mt-8 text-gray-50 text-xs">
+    <div
+      className="px-1 md:px-0 flex flex-col md:flex-row gap-2 justify-center mt-6 text-gray-50"
+      style={{ fontSize: isMd || isLg ? "0.75rem" : "0.5rem" }}
+    >
       {links.map((l, i) => (
         <Fragment key={l.label}>
           <Link className="underline underline-offset-2" href={l.href}>

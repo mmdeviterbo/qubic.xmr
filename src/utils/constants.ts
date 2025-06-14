@@ -37,6 +37,7 @@ export const enum Labels {
   PEAK_HASHRATE = "Max Hashrate",
   AVG_1H_HASHRATE = "Avg 1H",
   AVG_7D_HASHRATE = "Avg 7D",
+  BLOCKS = "Blocks",
   BLOCKS_FOUND = "Blocks Found",
   BLOCKS_DISTRIBUTION = "Blocks Distribution",
   TOTAL_BLOCKS_FOUND = "Total blocks found",

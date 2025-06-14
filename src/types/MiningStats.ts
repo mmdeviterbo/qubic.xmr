@@ -16,7 +16,7 @@ export type MiningStats = About & {
     hashrate_average_1h: number;
     hashrate_average_7d: number;
   };
-  blockDistributions: {
+  monero_block_distributions: {
     last1000Blocks: number;
     last100Blocks: number;
   };

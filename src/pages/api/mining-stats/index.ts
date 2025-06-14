@@ -95,7 +95,7 @@ export default async function handler(
 
     const hashrateRanking = getRankingByHashrate(poolsStats, pool_hashrate);
 
-    const blockDistributions = await getMiningBlockDistributions();
+    const monero_block_distributions = await getMiningBlockDistributions();
 
     const newMiningStats: MiningStats = {
       pool_hashrate,
@@ -110,7 +110,7 @@ export default async function handler(
         hashrate_average_1h: hashrateAverages?.hashrate_average_1h ?? 0,
         hashrate_average_7d: hashrateAverages?.hashrate_average_7d ?? 0,
       },
-      blockDistributions,
+      monero_block_distributions,
       pool_hashrate_ranking: hashrateRanking ?? 0,
       developer: ABOUT_ME_NOTE,
     };

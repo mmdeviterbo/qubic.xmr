@@ -1,11 +1,4 @@
-import {
-  type FC,
-  memo,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import { type FC, memo, useEffect, useLayoutEffect, useState } from "react";
 
 import isEmpty from "lodash/isEmpty";
 import Chart from "chart.js/auto";
@@ -29,11 +22,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
 }) => {
   const { isSm } = useBreakpoints();
 
-  const [chart, setChart] = useState<Chart>();
-
   const [xy, setXY] = useState<{ x: string[]; y: number[] }>();
-
-  const handleResize = useCallback(() => chart?.resize(), [chart]);
 
   useEffect(() => {
     if (isEmpty(max_hashrates_chart)) {
@@ -113,27 +102,14 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
         },
       },
     });
-    setChart(lineChart);
     return () => {
       lineChart.destroy();
     };
   }, [xy]);
 
-  useLayoutEffect(() => {
-    if (isEmpty(chart)) {
-      return;
-    }
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("orientationchange", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("orientationchange", handleResize);
-    };
-  }, [chart]);
-
   return (
     <div
-      className="w-full relative z-100"
+      className="w-full relative"
       style={{ minHeight: isSm ? "35dvh" : "50dvh" }}
     >
       {loading ? <ChartSkeleton /> : <canvas id={id} />}

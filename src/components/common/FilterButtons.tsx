@@ -8,7 +8,7 @@ interface FilterButtonsProps {
 
 const FilterButtons: FC<{ buttons: FilterButtonsProps[] }> = ({ buttons }) => {
   return (
-    <div className="mb-4 mt-1 md:mt-2 flex gap-2">
+    <div className="mb-4 mt-2 flex gap-2">
       {buttons.map((b) => (
         <button
           key={b.label}

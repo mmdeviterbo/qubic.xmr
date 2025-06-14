@@ -19,7 +19,7 @@ import { formatLargeNumber } from "@/utils/numbers";
 import { moneroTicker, tariTicker } from "@/utils/constants";
 import FilterButtons from "../common/FilterButtons";
 
-interface BarChartProps {
+interface BlockChartProps {
   id: string;
   blocks_found_chart: XMRHistoryCharts["blocks_found_chart"];
   loading: boolean;
@@ -30,19 +30,19 @@ enum Timeframe {
   DAILY,
 }
 
-const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
+const BlockChart: FC<BlockChartProps> = ({
+  id,
+  blocks_found_chart,
+  loading,
+}) => {
   const ticker = useMemo(
     () => (id?.includes("monero") ? moneroTicker : tariTicker),
     [id],
   );
 
-  const [chart, setChart] = useState<Chart>();
-
   const [timeframe, setTimeframe] = useState<Timeframe>(Timeframe.EPOCH);
 
   const [xy, setXY] = useState<{ x: string[]; y: number[] }>();
-
-  const handleResize = useCallback(() => chart?.resize(), [chart]);
 
   const getTotalReward = useCallback(
     (index: number, timeframe: Timeframe): string => {
@@ -101,6 +101,11 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
             data: xy.y,
             borderWidth: 1,
             borderRadius: timeframe === Timeframe.DAILY ? 1 : 2,
+            datalabels: {
+              font: {
+                size: timeframe === Timeframe.DAILY ? 10 : 12,
+              },
+            },
           },
         ],
       },
@@ -133,26 +138,13 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
         },
       },
     });
-    setChart(barChart);
     return () => {
       barChart.destroy();
     };
   }, [xy, id]);
 
-  useLayoutEffect(() => {
-    if (isEmpty(chart)) {
-      return;
-    }
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("orientationchange", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("orientationchange", handleResize);
-    };
-  }, [chart]);
-
   return (
-    <div className="w-full relative z-100">
+    <div className="w-full relative">
       {loading ? (
         <ChartSkeleton />
       ) : (
@@ -178,4 +170,4 @@ const BarChart: FC<BarChartProps> = ({ id, blocks_found_chart, loading }) => {
   );
 };
 
-export default memo<BarChartProps>(BarChart);
+export default memo<BlockChartProps>(BlockChart);
