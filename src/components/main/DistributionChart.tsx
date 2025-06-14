@@ -1,16 +1,8 @@
-import {
-  type FC,
-  memo,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from "react";
+import { type FC, memo, useLayoutEffect, useMemo, useState } from "react";
 
+import isNull from "lodash/isNull";
 import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import dayjs from "dayjs";
 import isEmpty from "lodash/isEmpty";
 
 import type { MiningStats, XMRHistoryCharts } from "@/types/MiningStats";
@@ -54,7 +46,7 @@ const DistributionChart: FC<DistributionChartProps> = ({
   }, [isThousanDistributionType, block_distributions]);
 
   useLayoutEffect(() => {
-    if (!countByDistributionType) {
+    if (isNull(countByDistributionType)) {
       return;
     }
 
@@ -95,10 +87,7 @@ const DistributionChart: FC<DistributionChartProps> = ({
           },
           datalabels: {
             color: "white",
-            formatter: (value) => String(value).concat("%"),
-          },
-          legend: {
-            // display: false
+            formatter: (value: number) => String(value.toFixed(1)).concat("%"),
           },
         },
       },
