@@ -12,7 +12,7 @@ const getXtmBlocksHistory = async (): Promise<XTMMiningHistory> => {
   return status === 200 ? data : null;
 };
 
-const getBlockDistributions = (xtmHistory: XTMMiningHistory) => {
+const getBlockDistributions = async (xtmHistory: XTMMiningHistory): Promise<XTMHistoryCharts["tari_block_distributions"]> => {
   if (isEmpty(xtmHistory)) {
     return null;
   }
@@ -53,7 +53,7 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
     const last_block_found = xtmHistory.blocks.at(-1).timestamp.concat("Z");
     const total_rewards = calculateTotalXTM(xtmHistory.blocks);
 
-    const tari_block_distributions = getBlockDistributions(xtmHistory);
+    const tari_block_distributions = await getBlockDistributions(xtmHistory);
 
     return {
       tari_blocks_found: {
@@ -62,7 +62,7 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
         last_block_found,
       },
       blocks_found_chart,
-      tari_block_distributions,
+      tari_block_distributions
     };
   } catch (error) {
     console.log("/api/calculated-xtm-stats: ", error);
