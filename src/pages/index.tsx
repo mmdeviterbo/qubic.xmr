@@ -31,7 +31,7 @@ const MainPage: NextPage<{
   useEffect(() => {
     setTimeout(() => {
       setEnableFetchMiningStats(true);
-    }, MINING_STATS_DELAY - 5000);
+    }, MINING_STATS_DELAY - 4000);
 
     setTimeout(() => {
       setEnableFetchCalculatedhMiningStats(true);
@@ -128,42 +128,7 @@ const MainPage: NextPage<{
 //   }
 // };
 
-export const getStaticProps = async () => {
-  try {
-    const baseUrl = process.env.BASE_URL;
-
-    const miningStatsResponse = await axios.get<MiningStats>(
-      `${baseUrl}/api/mining-stats`,
-    );
-
-    const calculatedMiningStatsResponse =
-      await axios.get<CalculatedMiningStats>(
-        `${baseUrl}/api/calculated-mining-stats`,
-      );
-
-    let miningStatsProps: MiningStats;
-    if (miningStatsResponse.status === 200) {
-      miningStatsProps = miningStatsResponse?.data;
-    }
-
-    let calculatedMiningStatsProps: CalculatedMiningStats;
-    if (calculatedMiningStatsResponse.status === 200) {
-      calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
-    }
-
-    return {
-      props: {
-        miningStatsProps,
-        calculatedMiningStatsProps,
-      },
-      revalidate: 10,
-    };
-  } catch (e) {
-    return { props: {} };
-  }
-};
-
-// export const getServerSideProps = async () => {
+// export const getStaticProps = async () => {
 //   try {
 //     const baseUrl = process.env.BASE_URL;
 
@@ -191,10 +156,45 @@ export const getStaticProps = async () => {
 //         miningStatsProps,
 //         calculatedMiningStatsProps,
 //       },
+//       revalidate: 10,
 //     };
 //   } catch (e) {
 //     return { props: {} };
 //   }
 // };
+
+export const getServerSideProps = async () => {
+  try {
+    const baseUrl = process.env.BASE_URL;
+
+    const miningStatsResponse = await axios.get<MiningStats>(
+      `${baseUrl}/api/mining-stats`,
+    );
+
+    const calculatedMiningStatsResponse =
+      await axios.get<CalculatedMiningStats>(
+        `${baseUrl}/api/calculated-mining-stats`,
+      );
+
+    let miningStatsProps: MiningStats;
+    if (miningStatsResponse.status === 200) {
+      miningStatsProps = miningStatsResponse?.data;
+    }
+
+    let calculatedMiningStatsProps: CalculatedMiningStats;
+    if (calculatedMiningStatsResponse.status === 200) {
+      calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
+    }
+
+    return {
+      props: {
+        miningStatsProps,
+        calculatedMiningStatsProps,
+      },
+    };
+  } catch (e) {
+    return { props: {} };
+  }
+};
 
 export default MainPage;
