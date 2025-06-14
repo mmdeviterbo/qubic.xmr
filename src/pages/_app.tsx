@@ -10,6 +10,11 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <title>Qubic Custom Mining</title>
         <link rel="icon" href="/favicon.ico" />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1941263261411851"
+          crossOrigin="anonymous"
+        />
       </Head>
       <Script
         strategy="afterInteractive"
