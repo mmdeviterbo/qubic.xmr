@@ -3,6 +3,7 @@ import axios from "axios";
 import { TARI_BLOCKS_HISTORY_API_URL } from "@/utils/constants";
 import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
 import { calculateTotalXTM, getXtmChartHistory } from "@/utils/xtm-charts";
+import { isEmpty } from "lodash";
 
 const getXtmBlocksHistory = async (): Promise<XTMMiningHistory> => {
   const { data, status } = await axios.get<XTMMiningHistory>(
@@ -12,6 +13,10 @@ const getXtmBlocksHistory = async (): Promise<XTMMiningHistory> => {
 };
 
 const getBlockDistributions = (xtmHistory: XTMMiningHistory) => {
+  if(isEmpty(xtmHistory)) {
+    return null;
+  }
+
   const latestBlock = xtmHistory.last_scanned_height;
   const startOf100Blocks = latestBlock - 99;
   const startOf1000Blocks = latestBlock - 999;
@@ -47,7 +52,10 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
     const pool_blocks_found = xtmHistory.total_found;
     const last_block_found = xtmHistory.blocks.at(-1).timestamp.concat("Z");
     const total_rewards = calculateTotalXTM(xtmHistory.blocks);
+    
+    console.log("1");
     const tari_block_distributions = getBlockDistributions(xtmHistory);
+    console.log("2: ", tari_block_distributions);
 
     return {
       tari_blocks_found: {

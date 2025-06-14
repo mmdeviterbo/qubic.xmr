@@ -105,65 +105,7 @@ const MainPage: NextPage<{
   );
 };
 
-// export const getServerSideProps = async (ctx) => {
-//   try {
-//     ctx.res.setHeader("Cache-Control", "public, max-age=15");
-//     ctx.res.setHeader("CDN-Cache-Control", "public, max-age=25");
-//     ctx.res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=35");
-
-//     const baseUrl = process.env.BASE_URL;
-
-//     const miningStatsResponse = await axios.get<MiningStats>(
-//       `${baseUrl}/api/mining-stats`,
-//     );
-
-//     let miningStatsProps: MiningStats;
-//     if (miningStatsResponse.status === 200) {
-//       miningStatsProps = miningStatsResponse?.data;
-//     }
-
-//     return { props: { miningStatsProps } };
-//   } catch (e) {
-//     return { props: {} };
-//   }
-// };
-
-// export const getStaticProps = async () => {
-//   try {
-//     const baseUrl = process.env.BASE_URL;
-
-//     const miningStatsResponse = await axios.get<MiningStats>(
-//       `${baseUrl}/api/mining-stats`,
-//     );
-
-//     const calculatedMiningStatsResponse =
-//       await axios.get<CalculatedMiningStats>(
-//         `${baseUrl}/api/calculated-mining-stats`,
-//       );
-
-//     let miningStatsProps: MiningStats;
-//     if (miningStatsResponse.status === 200) {
-//       miningStatsProps = miningStatsResponse?.data;
-//     }
-
-//     let calculatedMiningStatsProps: CalculatedMiningStats;
-//     if (calculatedMiningStatsResponse.status === 200) {
-//       calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
-//     }
-
-//     return {
-//       props: {
-//         miningStatsProps,
-//         calculatedMiningStatsProps,
-//       },
-//       revalidate: 10,
-//     };
-//   } catch (e) {
-//     return { props: {} };
-//   }
-// };
-
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
   try {
     const baseUrl = process.env.BASE_URL;
 
@@ -186,18 +128,54 @@ export const getServerSideProps = async () => {
       calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
     }
 
-    console.log("Client response: ", calculatedMiningStatsProps);
-
     return {
       props: {
         miningStatsProps,
         calculatedMiningStatsProps,
       },
+      revalidate: 10,
     };
   } catch (e) {
-    console.log("Error client: ", e);
+    console.log("Static props error: ", e);
     return { props: {} };
   }
 };
+
+// export const getServerSideProps = async () => {
+//   try {
+//     const baseUrl = process.env.BASE_URL;
+
+//     const miningStatsResponse = await axios.get<MiningStats>(
+//       `${baseUrl}/api/mining-stats`,
+//     );
+
+//     const calculatedMiningStatsResponse =
+//       await axios.get<CalculatedMiningStats>(
+//         `${baseUrl}/api/calculated-mining-stats`,
+//       );
+
+//     let miningStatsProps: MiningStats;
+//     if (miningStatsResponse.status === 200) {
+//       miningStatsProps = miningStatsResponse?.data;
+//     }
+
+//     let calculatedMiningStatsProps: CalculatedMiningStats;
+//     if (calculatedMiningStatsResponse.status === 200) {
+//       calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
+//     }
+
+//     console.log("Client response: ", calculatedMiningStatsProps);
+
+//     return {
+//       props: {
+//         miningStatsProps,
+//         calculatedMiningStatsProps,
+//       },
+//     };
+//   } catch (e) {
+//     console.log("Error client: ", e);
+//     return { props: {} };
+//   }
+// };
 
 export default MainPage;
