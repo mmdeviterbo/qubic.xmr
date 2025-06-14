@@ -11,10 +11,8 @@ export function middleware(request: NextRequest) {
     referer = referer.slice(0, referer.length - 1);
   }
 
-  console.log("Referrer: ", referer);
   const allowedBaseUrl = process.env.BASE_URL;
-  console.log("allowedBaseUrl: ", allowedBaseUrl);
-  if (!referer || referer?.includes(allowedBaseUrl)) {
+  if (!referer || !referer?.includes(allowedBaseUrl)) {
     return NextResponse.json({});
   }
 
