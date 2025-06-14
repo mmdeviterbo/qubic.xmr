@@ -105,6 +105,6 @@ export default async function handler(
     });
   } catch (e) {
     console.log("/api/calculated-mining-stats: ", e);
-    res.status(400);
+    res.status(401);
   }
 }
