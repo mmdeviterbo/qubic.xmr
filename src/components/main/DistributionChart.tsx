@@ -45,13 +45,16 @@ const DistributionChart: FC<DistributionChartProps> = ({
   );
 
   const countByDistributionType = useMemo(() => {
+    if (isEmpty(block_distributions)) {
+      return null;
+    }
     return isThousanDistributionType
       ? (block_distributions.last1000Blocks / 1000) * 100
       : block_distributions.last100Blocks;
-  }, [isThousanDistributionType]);
+  }, [isThousanDistributionType, block_distributions]);
 
   useLayoutEffect(() => {
-    if (isEmpty(block_distributions)) {
+    if (!countByDistributionType) {
       return;
     }
 
@@ -104,7 +107,7 @@ const DistributionChart: FC<DistributionChartProps> = ({
     return () => {
       pieChart.destroy();
     };
-  }, [id, countByDistributionType]);
+  }, [id, isThousanDistributionType, countByDistributionType]);
 
   return (
     <div className="w-full relative">
