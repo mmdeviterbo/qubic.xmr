@@ -78,10 +78,6 @@ const MainPage: NextPage<{
             "Qubic Custom Mining (PoC) as the first to execute Useful Proof of Work (UPoW). Sponsored by $CFB - a first memecoin on Qubic. UI made by Marty de Viterbo."
           }
         />
-        <meta
-          name="google-site-verification"
-          content="kRyiHx6Z1sxZ0B3fxRZdAeTxI62_Z43GopJIw7Bi3k8"
-        />
       </Head>
 
       <main className="mx-auto mt-1.5 md:mt-8 w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 pt-6 md:pt-4">
