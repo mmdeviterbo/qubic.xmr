@@ -186,6 +186,8 @@ export const getServerSideProps = async () => {
       calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
     }
 
+    console.log("Client response: ", calculatedMiningStatsProps);
+
     return {
       props: {
         miningStatsProps,
@@ -193,6 +195,7 @@ export const getServerSideProps = async () => {
       },
     };
   } catch (e) {
+    console.log("Error client: ", e);
     return { props: {} };
   }
 };
