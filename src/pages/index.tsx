@@ -14,6 +14,9 @@ import {
   SWR_HOOK_DEFAULTS,
 } from "@/utils/constants";
 import Footer from "@/components/footer/Footer";
+import { SeoMeta } from "@/components/analytics/SEO";
+import { GoogleAdsenseMeta } from "@/components/analytics/GoogleAdsense";
+import { HorizontalGoogleAds } from "@/components/analytics/HorizontalGoogleAds";
 
 const MINING_STATS_DELAY = 8000;
 const CALCULATED_MINING_STATS_DELAY = 90000;
@@ -69,16 +72,8 @@ const MainPage: NextPage<{
   return (
     <>
       <Head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="google-adsense-account" content="ca-pub-1941263261411851" />
-        <meta name="robots" content="index, follow" />
-        <meta
-          name="description"
-          content={
-            "Qubic Custom Mining (PoC) as the first to execute Useful Proof of Work (UPoW). Sponsored by $CFB - a first memecoin on Qubic. UI made by Marty de Viterbo."
-          }
-        />
+        <SeoMeta />
+        <GoogleAdsenseMeta />
       </Head>
 
       <main className="mx-auto mt-1.5 md:mt-8 w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 pt-6 md:pt-4">
@@ -98,6 +93,8 @@ const MainPage: NextPage<{
       <footer className="mx-auto w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-4 pb-6">
         <Footer />
       </footer>
+
+      <HorizontalGoogleAds />
     </>
   );
 };
