@@ -4,10 +4,16 @@ import dynamic from "next/dynamic";
 
 import { GoogleAdsenseScript } from "@/components/analytics/GoogleAdsense";
 import "@/styles/globals.css";
-import { GoogleAnalyticsScript } from "@/components/analytics/GoogleAnalytics";
 
 const HorizontalGoogleAds = dynamic(
   () => import("@/components/analytics/HorizontalGoogleAds"),
+  {
+    ssr: false,
+  },
+);
+
+const GoogleAnalyticsScript = dynamic(
+  () => import("@/components/analytics/GoogleAnalytics"),
   {
     ssr: false,
   },

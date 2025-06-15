@@ -1,7 +1,8 @@
+"use client";
 import { type FC } from "react";
 import Script from "next/script";
 
-export const GoogleAnalyticsScript: FC = () => {
+const GoogleAnalyticsScript: FC = () => {
   return (
     <>
       <Script
@@ -25,3 +26,5 @@ export const GoogleAnalyticsScript: FC = () => {
     </>
   );
 };
+
+export default GoogleAnalyticsScript;
