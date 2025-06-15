@@ -12,7 +12,7 @@ export default function HorizontalAds() {
       />
       <ins
         className="adsbygoogle"
-        style={{ display: 'block' }}
+        style={{ display: "block" }}
         data-ad-client="ca-pub-1941263261411851"
         data-ad-slot="6720393341"
         data-ad-format="auto"
