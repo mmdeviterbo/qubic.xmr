@@ -1,4 +1,11 @@
-import { type FC, type ReactNode, useEffect, useRef, useState } from "react";
+import {
+  type FC,
+  type ReactNode,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 interface IndicatorStyle {
   left: number;
@@ -57,7 +64,7 @@ const Tab: FC<{ tabs: TabProps[] }> = ({ tabs }) => {
   });
   const [activeTab, setActiveTab] = useState(0);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const activeTabElement = tabsRef.current[activeTab];
     if (activeTabElement) {
       const { offsetLeft, offsetWidth } = activeTabElement;
@@ -66,7 +73,7 @@ const Tab: FC<{ tabs: TabProps[] }> = ({ tabs }) => {
         width: offsetWidth - 9,
       });
     }
-  }, [activeTab]);
+  }, [tabsRef, activeTab]);
 
   return (
     <>
