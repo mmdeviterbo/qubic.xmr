@@ -1,10 +1,17 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import Script from "next/script";
+import dynamic from "next/dynamic";
 
 import { GoogleAdsenseScript } from "@/components/analytics/GoogleAdsense";
 import "@/styles/globals.css";
 import { GoogleAnalyticsScript } from "@/components/analytics/GoogleAnalytics";
+
+const HorizontalGoogleAds = dynamic(
+  () => import("@/components/analytics/HorizontalGoogleAds"),
+  {
+    ssr: false,
+  },
+);
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -18,7 +25,8 @@ export default function App({ Component, pageProps }: AppProps) {
       <GoogleAnalyticsScript />
 
       <Component {...pageProps} />
-      {/* <Analytics /> */}
+
+      <HorizontalGoogleAds />
     </>
   );
 }

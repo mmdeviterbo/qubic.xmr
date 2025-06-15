@@ -1,6 +1,7 @@
+"use client";
 import { type FC } from "react";
 
-export const HorizontalGoogleAds: FC = () => {
+const HorizontalGoogleAds: FC = () => {
   return (
     <div className="mt-8">
       <script
@@ -16,7 +17,15 @@ export const HorizontalGoogleAds: FC = () => {
         data-ad-format="auto"
         data-full-width-responsive="true"
       />
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          `,
+        }}
+      />
     </div>
   );
 };
+
+export default HorizontalGoogleAds;
