@@ -15,7 +15,6 @@ import {
 } from "@/utils/constants";
 import Footer from "@/components/footer/Footer";
 import { SeoMeta } from "@/components/analytics/Seo";
-import { GoogleAdsenseMeta } from "@/components/analytics/GoogleAdsense";
 
 const MINING_STATS_DELAY = 8000;
 const CALCULATED_MINING_STATS_DELAY = 90000;
@@ -72,7 +71,6 @@ const MainPage: NextPage<{
     <>
       <Head>
         <SeoMeta />
-        <GoogleAdsenseMeta />
       </Head>
 
       <main className="mx-auto mt-1.5 md:mt-8 w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 pt-6 md:pt-4">

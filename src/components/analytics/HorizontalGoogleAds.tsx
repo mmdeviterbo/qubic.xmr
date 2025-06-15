@@ -2,10 +2,7 @@
 import { type FC } from "react";
 
 const HorizontalGoogleAds: FC = () => {
-  return (
-    <>
-    </>
-  );
+  return <></>;
 };
 
 export default HorizontalGoogleAds;
