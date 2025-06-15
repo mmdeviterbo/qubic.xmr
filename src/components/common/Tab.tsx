@@ -1,7 +1,7 @@
+"use client";
 import {
   type FC,
   type ReactNode,
-  useEffect,
   useLayoutEffect,
   useRef,
   useState,
