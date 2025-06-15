@@ -14,7 +14,7 @@ import {
   SWR_HOOK_DEFAULTS,
 } from "@/utils/constants";
 import Footer from "@/components/footer/Footer";
-import { SeoMeta } from "@/components/analytics/SEO";
+import { SeoMeta } from "@/components/analytics/Seo";
 import { GoogleAdsenseMeta } from "@/components/analytics/GoogleAdsense";
 import { HorizontalGoogleAds } from "@/components/analytics/HorizontalGoogleAds";
 
