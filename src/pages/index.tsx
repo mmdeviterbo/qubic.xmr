@@ -88,11 +88,11 @@ const MainPage: NextPage<{
         />
       </main>
 
-      <footer className="mx-auto w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-4 pb-1">
+      <footer className="mx-auto w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-4">
         <Footer />
       </footer>
 
-      <HorizontalAds />
+      {/* <HorizontalAds /> */}
     </>
   );
 };
