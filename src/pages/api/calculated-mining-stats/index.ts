@@ -84,8 +84,8 @@ export default async function handler(
       tari_block_distributions,
     } = await getTariMiningStats();
 
-    res.setHeader("Cache-Control", "public, max-age=120, s-maxage=180");
-    res.setHeader("CDN-Cache-Control", "public, s-maxage=270");
+    res.setHeader("Cache-Control", "public, max-age=90, s-maxage=120");
+    res.setHeader("CDN-Cache-Control", "public, s-maxage=240");
     res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=360");
 
     res.status(200).json({
