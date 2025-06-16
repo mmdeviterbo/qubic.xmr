@@ -58,10 +58,7 @@ const TabItem: FC<TabItemProps> = ({
 const Tab: FC<{ tabs: TabProps[] }> = ({ tabs }) => {
   const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
 
-  const [indicatorStyle, setIndicatorStyle] = useState<IndicatorStyle>({
-    left: 0,
-    width: 0,
-  });
+  const [indicatorStyle, setIndicatorStyle] = useState<IndicatorStyle>();
   const [activeTab, setActiveTab] = useState(0);
 
   useLayoutEffect(() => {
@@ -70,7 +67,7 @@ const Tab: FC<{ tabs: TabProps[] }> = ({ tabs }) => {
       const { offsetLeft, offsetWidth } = activeTabElement;
       setIndicatorStyle({
         left: offsetLeft,
-        width: offsetWidth - 9,
+        width: offsetWidth - (offsetWidth > 9 ? 9 : 0),
       });
     }
   }, [tabsRef, activeTab]);
@@ -93,15 +90,17 @@ const Tab: FC<{ tabs: TabProps[] }> = ({ tabs }) => {
           ))}
         </ul>
 
-        <div
-          className="absolute bottom-0.5 md:bottom-0 transition-all duration-100"
-          style={{
-            left: `${indicatorStyle.left}px`,
-            width: `${indicatorStyle.width}px`,
-            height: "1px",
-            backgroundColor: "white",
-          }}
-        />
+        {indicatorStyle && (
+          <div
+            className="absolute bottom-0.5 md:bottom-0 transition-all duration-100"
+            style={{
+              left: `${indicatorStyle.left}px`,
+              width: `${indicatorStyle.width}px`,
+              height: "1px",
+              backgroundColor: "white",
+            }}
+          />
+        )}
       </div>
       <>{tabs[activeTab].child}</>
     </>

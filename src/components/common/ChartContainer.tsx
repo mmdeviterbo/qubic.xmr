@@ -37,7 +37,7 @@ const ChartContainer: FC<ChartContainerProps> = ({
               </span>
             </div>
 
-            <p className="text-gray-50 text-xs">{leftSubtitle.label}</p>
+            <p className="text-gray-50 text-xs">{leftSubtitle?.label ?? ""}</p>
           </div>
         )}
 

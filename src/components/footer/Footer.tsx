@@ -70,7 +70,7 @@ const Footer: FC = () => {
             href={l.href}
             rel="noopener noreferrer"
           >
-            {l.label}
+            • {l.label}
           </a>
         ))}
       </div>
@@ -83,7 +83,7 @@ const Footer: FC = () => {
             href={l.href}
             rel="noopener noreferrer"
           >
-            {l.label}
+            • {l.label}
           </a>
         ))}
       </div>
