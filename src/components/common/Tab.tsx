@@ -1,11 +1,4 @@
-"use client";
-import {
-  type FC,
-  type ReactNode,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { type FC, type ReactNode, useState } from "react";
 
 interface IndicatorStyle {
   left: number;
@@ -22,19 +15,11 @@ interface TabItemProps {
   index: number;
   isActive: boolean;
   onClick: () => void;
-  ref: (el: HTMLLIElement | null) => void;
 }
 
-const TabItem: FC<TabItemProps> = ({
-  label,
-  index,
-  isActive,
-  onClick,
-  ref,
-}) => (
+const TabItem: FC<TabItemProps> = ({ label, index, isActive, onClick }) => (
   <li
     key={index}
-    ref={ref}
     role="tab"
     aria-selected={isActive}
     aria-controls={`tab-panel-${index}`}
@@ -44,10 +29,10 @@ const TabItem: FC<TabItemProps> = ({
   >
     <div
       className={`
-        pr-2 py-2 
+        mr-2 my-1 py-1 
         transition-colors duration-100 
         cursor-pointer
-        ${isActive ? "text-gray" : "text-gray-600 hover:text-gray-500"}
+        ${isActive ? "text-gray border-b" : "text-gray-600 hover:text-gray-500"}
       `}
     >
       {label}
@@ -56,21 +41,7 @@ const TabItem: FC<TabItemProps> = ({
 );
 
 const Tab: FC<{ tabs: TabProps[] }> = ({ tabs }) => {
-  const tabsRef = useRef<(HTMLLIElement | null)[]>([]);
-
-  const [indicatorStyle, setIndicatorStyle] = useState<IndicatorStyle>();
   const [activeTab, setActiveTab] = useState(0);
-
-  useLayoutEffect(() => {
-    const activeTabElement = tabsRef.current[activeTab];
-    if (activeTabElement) {
-      const { offsetLeft, offsetWidth } = activeTabElement;
-      setIndicatorStyle({
-        left: offsetLeft,
-        width: offsetWidth - (offsetWidth > 9 ? 9 : 0),
-      });
-    }
-  }, [tabsRef, activeTab]);
 
   return (
     <>
@@ -83,24 +54,9 @@ const Tab: FC<{ tabs: TabProps[] }> = ({ tabs }) => {
               index={index}
               isActive={activeTab === index}
               onClick={() => setActiveTab(index)}
-              ref={(el) => {
-                tabsRef.current[index] = el;
-              }}
             />
           ))}
         </ul>
-
-        {indicatorStyle && (
-          <div
-            className="absolute bottom-0.5 md:bottom-0 transition-all duration-100"
-            style={{
-              left: `${indicatorStyle.left}px`,
-              width: `${indicatorStyle.width}px`,
-              height: "1px",
-              backgroundColor: "white",
-            }}
-          />
-        )}
       </div>
       <>{tabs[activeTab].child}</>
     </>
