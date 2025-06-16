@@ -18,6 +18,7 @@ import ChartSkeleton from "../common/ChartSkeleton";
 import { formatLargeNumber } from "@/utils/numbers";
 import { moneroTicker, tariTicker } from "@/utils/constants";
 import FilterButtons from "../common/FilterButtons";
+import useBreakpoints from "@/hooks/useBreakpoints";
 
 interface BlockChartProps {
   id: string;
@@ -35,6 +36,10 @@ const BlockChart: FC<BlockChartProps> = ({
   blocks_found_chart,
   loading,
 }) => {
+  const { isMd, isLg } = useBreakpoints();
+
+  const isWiderScreen = useMemo(() => isMd || isLg, [isMd, isLg]);
+
   const ticker = useMemo(
     () => (id?.includes("monero") ? moneroTicker : tariTicker),
     [id],
@@ -68,9 +73,7 @@ const BlockChart: FC<BlockChartProps> = ({
         if (!total_usdt) {
           return formattedTotalUSDT;
         }
-        formattedTotalUSDT = formatLargeNumber(Number(total_usdt)).concat(
-          " USDT",
-        );
+        formattedTotalUSDT = `$${formatLargeNumber(Number(total_usdt))}`;
       }
       return formattedTotalUSDT;
     },
@@ -114,7 +117,8 @@ const BlockChart: FC<BlockChartProps> = ({
             borderRadius: timeframe === Timeframe.DAILY ? 1 : 2,
             datalabels: {
               font: {
-                size: timeframe === Timeframe.DAILY ? 10 : 12,
+                size:
+                  timeframe === Timeframe.DAILY ? 10 : isWiderScreen ? 12 : 9,
               },
             },
           },
@@ -158,7 +162,7 @@ const BlockChart: FC<BlockChartProps> = ({
                 if (index !== 0) {
                   lines.push(``);
                 }
-                lines.push(`🔥 ${totalUSDT}`);
+                lines.push(`${isWiderScreen ? "🔥" : ""} ${totalUSDT}`);
               }
               return lines;
             },
