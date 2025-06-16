@@ -9,7 +9,7 @@ export const SeoMeta: FC = () => {
       <meta
         name="description"
         content={
-          "Qubic Custom Mining (PoC) as the first to execute Useful Proof of Work (UPoW). Sponsored by $CFB - a first memecoin on Qubic. UI made by Marty de Viterbo."
+          "Qubic Custom Mining (PoC) is the first to execute Useful Proof of Work (UPoW). Powered by $CFB via cfbtoken.com, a first memecoin on Qubic. UI made by Marty de Viterbo."
         }
       />
     </>
