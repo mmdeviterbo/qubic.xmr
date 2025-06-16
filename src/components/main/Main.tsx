@@ -109,57 +109,60 @@ const Main: FC<MainProps> = ({
         <QubicLogo showTitle={true} />
       </div>
 
-      <Card
-        index={0}
-        label={Labels.HASHRATE}
-        value={formatHashrate(pool_hashrate)}
-        subValue={hashrateRanking}
-        loading={isLoadingMiningStats}
-        properties={{
-          isOnline: connected_miners > 0 && pool_blocks_found > 0,
-          cfbToken: (
-            <SuperCfbToken
-              showFire={
-                isValidValue(pool_hashrate) && isValidValue(max_hashrate, false)
-                  ? pool_hashrate >= max_hashrate
-                  : false
-              }
+      <div className="flex flex-col">
+        <Card
+          index={0}
+          label={Labels.HASHRATE}
+          value={formatHashrate(pool_hashrate)}
+          subValue={hashrateRanking}
+          loading={isLoadingMiningStats}
+          properties={{
+            isOnline: connected_miners > 0 && pool_blocks_found > 0,
+            cfbToken: (
+              <SuperCfbToken
+                showFire={
+                  isValidValue(pool_hashrate) &&
+                  isValidValue(max_hashrate, false)
+                    ? pool_hashrate >= max_hashrate
+                    : false
+                }
+              />
+            ),
+          }}
+        />
+
+        <CfbMarquee />
+
+        <ChartContainer
+          title={Labels.HASHRATE_PERFORMANCE}
+          leftSubtitle={{
+            label: formatPeakHashrateDateDifference(
+              max_hashrate_last_update,
+            ).join(""),
+            value: isLoadingCalculatedMiningStats
+              ? ""
+              : formatHashrate(max_hashrate),
+          }}
+          loading={isLoadingMiningStats}
+          rightSubtitles={[
+            {
+              label: Labels.AVG_1H_HASHRATE,
+              value: formatHashrate(hashrate_average_1h),
+            },
+            {
+              label: Labels.AVG_7D_HASHRATE,
+              value: formatHashrate(hashrate_average_7d),
+            },
+          ]}
+          chart={
+            <MaxHashratesChart
+              id="hashrate-line-chart"
+              max_hashrates_chart={max_hashrates_chart}
+              loading={isLoadingCalculatedMiningStats}
             />
-          ),
-        }}
-      />
-
-      <CfbMarquee />
-
-      <ChartContainer
-        title={Labels.HASHRATE_PERFORMANCE}
-        leftSubtitle={{
-          label: formatPeakHashrateDateDifference(
-            max_hashrate_last_update,
-          ).join(""),
-          value: isLoadingCalculatedMiningStats
-            ? ""
-            : formatHashrate(max_hashrate),
-        }}
-        loading={isLoadingMiningStats}
-        rightSubtitles={[
-          {
-            label: Labels.AVG_1H_HASHRATE,
-            value: formatHashrate(hashrate_average_1h),
-          },
-          {
-            label: Labels.AVG_7D_HASHRATE,
-            value: formatHashrate(hashrate_average_7d),
-          },
-        ]}
-        chart={
-          <MaxHashratesChart
-            id="hashrate-line-chart"
-            max_hashrates_chart={max_hashrates_chart}
-            loading={isLoadingCalculatedMiningStats}
-          />
-        }
-      />
+          }
+        />
+      </div>
 
       <ChartContainer
         title={"Monero ".concat(Labels.BLOCKS)}
