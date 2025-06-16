@@ -20,7 +20,7 @@ const getMaxHashrateHistory = (
   // console.log("latestIndex: ", history.length - 1);
   // console.log(
   //   "latestMaxHashrateIndex: ",
-  //   history.findIndex((i) => Number(i.pool_hashrate) === 566267095),
+  //   history.findIndex((i) => Number(i.pool_hashrate) === 667452705),
   // );
 
   const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
@@ -71,7 +71,7 @@ export default async function handler(
     const epoch = Number(xmrHistory.at(-1).qubic_epoch);
 
     const { blocks_found_chart, max_hashrates_chart } =
-      getChartHistory(xmrHistory);
+      await getChartHistory(xmrHistory);
 
     const maxHashrateHistory = getMaxHashrateHistory(xmrHistory);
     const max_hashrate = Number(maxHashrateHistory.pool_hashrate);

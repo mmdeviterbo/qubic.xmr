@@ -60,6 +60,23 @@ const BlockChart: FC<BlockChartProps> = ({
     [blocks_found_chart, ticker],
   );
 
+  const getTotalUSDT = useCallback(
+    (index: number, timeframe: Timeframe): string => {
+      let formattedTotalUSDT = "";
+      if (timeframe === Timeframe.EPOCH) {
+        const total_usdt = blocks_found_chart?.weekly?.at(index)?.total_usdt;
+        if (!total_usdt) {
+          return formattedTotalUSDT;
+        }
+        formattedTotalUSDT = formatLargeNumber(Number(total_usdt)).concat(
+          " USDT",
+        );
+      }
+      return formattedTotalUSDT;
+    },
+    [blocks_found_chart],
+  );
+
   useEffect(() => {
     if (isEmpty(blocks_found_chart)) {
       return;
@@ -116,15 +133,36 @@ const BlockChart: FC<BlockChartProps> = ({
               label: (tooltipItem) => {
                 const label = tooltipItem.dataset.label;
                 const index = tooltipItem.dataIndex;
-                const value = tooltipItem.formattedValue.concat(
-                  ` ≈ ${getTotalReward(index, timeframe)}`,
-                );
-                return ` ${label.concat(`: ${value}`)}`;
+                const value = tooltipItem.formattedValue;
+
+                const totalReward = getTotalReward(index, timeframe);
+                const totalUSDT = getTotalUSDT(index, timeframe);
+                const lines = [
+                  ` ${label.concat(`: ${value}`)}`,
+                  ` ≈ ${totalReward}`,
+                ];
+                if (totalUSDT) {
+                  lines.push(` ≈ ${totalUSDT}`);
+                }
+                return lines;
               },
             },
           },
           datalabels: {
             color: "white",
+            formatter: (value, context) => {
+              const index = context.dataIndex;
+              const totalUSDT = getTotalUSDT(index, timeframe);
+              const lines = [value];
+              if (totalUSDT) {
+                if (index !== 0) {
+                  lines.push(``);
+                }
+                lines.push(`🔥 ${totalUSDT}`);
+              }
+              return lines;
+            },
+            textAlign: "center",
           },
           legend: {
             display: false,

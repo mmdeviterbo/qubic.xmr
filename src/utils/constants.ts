@@ -19,6 +19,31 @@ export const MONERO_MINING_POOLS_STATS_URL = (seconds: number) =>
 export const MONERO_MINING_BLOCK_DISTRIBUTION_URL = (seconds: number) =>
   `https://data.${MONERO_MINING_POOLS_STATS_BASE_URL}/data/blocks/monero.js?t=${seconds}`;
 
+const MEXC_URL = "https://api.mexc.com/api/v3";
+const SAFE_TRADE_URL = "https://safetrade.com/api/v2";
+
+/**
+ * symbol: XMRUSDT
+ * interval: 60m, 4h, 1d, 1w, 1m
+ * startTime & endTime = 13-digit format
+ */
+export const MEXC_KLINES_URL = (
+  symbol: string,
+  interval: MEXCInterval,
+  startTime: number,
+  endTime: number,
+) =>
+  `${MEXC_URL}/klines?symbol=${symbol}&interval=${interval}&startTime=${startTime}&endTime=${endTime}`;
+
+export const SAFE_TRADE_KLINES_URL = (
+  id: string,
+  period: SafeTradePeriod,
+  time_from: number,
+  time_to: number,
+  limit: number,
+) =>
+  `${SAFE_TRADE_URL}/trade/public/markets/${id}/k-line?period=${period}&time_from=${time_from}&time_to=${time_to}&limit=${limit}`;
+
 export const QUBIC_SOLO_MINING_HISTORY =
   "http://66.179.92.83/data/qpool_V1.csv";
 
@@ -53,6 +78,20 @@ export const enum Labels {
   MONERO_NETWORK_HASHRATE = "Monero Network Hashrate",
 }
 
+export const enum MEXCInterval {
+  ONE_HOUR = "60m",
+  FOUR_HOURS = "4h",
+  ONE_DAY = "1d",
+  ONE_WEEK = "1w",
+}
+
+export const enum SafeTradePeriod {
+  ONE_HOUR = 60,
+  FOUR_HOURS = 240,
+  ONE_DAY = 1440,
+  ONE_WEEK = 10080,
+}
+
 //APIs
 export const MINING_STATS_URL = "/api/mining-stats";
 export const CALCULATED_MINING_STATS_URL = "/api/calculated-mining-stats";
@@ -65,3 +104,9 @@ export const SWR_HOOK_DEFAULTS = {
   refreshWhenHidden: false,
   refreshWhenOffline: false,
 };
+
+// NOTE:
+// mexc all trading pairs
+// https://api.mexc.com/api/v3/defaultSymbols
+
+// https://api.mexc.com/api/v3/klines?symbol=XMRUSDT&interval=60m&startTime=1742308800000&endTime=1742312400000

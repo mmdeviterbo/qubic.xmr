@@ -80,6 +80,7 @@ interface WeeklyChart {
   blocks_found: number;
   epoch: number;
   reward: number;
+  total_usdt: number;
 }
 
 export type XMRHistoryCharts = {

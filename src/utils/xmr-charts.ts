@@ -1,6 +1,29 @@
+import axios from "axios";
 import maxBy from "lodash/maxBy";
 import type { XMRHistoryCharts, XMRMiningHistory } from "@/types/MiningStats";
-import { blockToXMRConversion } from "./constants";
+import { roundToHundreds } from "./numbers";
+import {
+  blockToXMRConversion,
+  MEXC_KLINES_URL,
+  MEXCInterval,
+} from "./constants";
+
+const getMEXCXMRPrice = async (
+  args: {
+    interval: MEXCInterval;
+    startTime: number;
+    endTime?: number;
+  }[],
+) => {
+  const apis = [];
+  args.forEach(({ startTime, endTime, interval }) => {
+    apis.push(
+      axios.get(MEXC_KLINES_URL("XMRUSDT", interval, startTime, endTime)),
+    );
+  });
+  const prices = await Promise.all(apis);
+  return prices?.map((p) => p.data[0][4]);
+};
 
 const getBlocksFoundByStartIndexAndEndIndex = (
   startIndex: number,
@@ -43,14 +66,17 @@ const getDailyBlocksFound = (
   return charts;
 };
 
-const getWeeklyBlocksFound = (
+const getWeeklyBlocksFound = async (
   weeklyHistory: XMRMiningHistory[],
   history: XMRMiningHistory[],
-): XMRHistoryCharts["blocks_found_chart"]["weekly"] => {
+): Promise<XMRHistoryCharts["blocks_found_chart"]["weekly"]> => {
   let charts =
     [] as unknown as XMRHistoryCharts["blocks_found_chart"]["weekly"];
 
   const maxWeeklyHistoryLength = weeklyHistory.length;
+
+  const mexcXMRArgs = [];
+
   for (let i = 0; i < maxWeeklyHistoryLength; i++) {
     const startIndex = weeklyHistory[i - 1]?.index;
     const endIndex = weeklyHistory[i].index;
@@ -60,12 +86,35 @@ const getWeeklyBlocksFound = (
       endIndex,
       history,
     );
+
+    const startTime = new Date(
+      weeklyHistory[i].timestamp.concat("Z"),
+    ).getTime();
+    const isLastItem = maxWeeklyHistoryLength === i + 1;
+    mexcXMRArgs.push({
+      startTime: isLastItem ? startTime - 3600000 : startTime,
+      endTime: isLastItem ? startTime : startTime + 3600000,
+      interval: MEXCInterval.ONE_HOUR,
+      symbol: "XMRUSDT",
+    });
+
     charts.push({
       blocks_found,
       epoch: Number(history.at(endIndex).qubic_epoch),
       reward: blocks_found * blockToXMRConversion,
+      total_usdt: 0,
     });
   }
+
+  const mexcXMRPrices = await getMEXCXMRPrice(mexcXMRArgs);
+  const chartLength = charts.length;
+  for (let i = 0; i < chartLength; i++) {
+    const chart = charts[i];
+    chart.total_usdt = roundToHundreds(
+      Math.trunc(mexcXMRPrices[i] * chart.reward),
+    );
+  }
+
   return charts;
 };
 
@@ -163,14 +212,14 @@ const getXmrDailyIndeces = (history: XMRMiningHistory[]): number[] => {
   return sortedIndecesDaily;
 };
 
-export const getChartHistory = (
+export const getChartHistory = async (
   history: XMRMiningHistory[],
-): XMRHistoryCharts => {
+): Promise<XMRHistoryCharts> => {
   const historyWithIndexWeekly = getXmrWeeklyIndeces(history).map((i) => ({
     ...history[i],
     index: i,
   }));
-  const weekly = getWeeklyBlocksFound(historyWithIndexWeekly, history);
+  const weekly = await getWeeklyBlocksFound(historyWithIndexWeekly, history);
 
   const historyWithIndexDaily: XMRMiningHistory[] = getXmrDailyIndeces(
     history,

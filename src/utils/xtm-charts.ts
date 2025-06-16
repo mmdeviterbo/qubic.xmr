@@ -2,10 +2,40 @@ import groupBy from "lodash/groupBy";
 
 import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
 import axios from "axios";
-import { QUBIC_LIVE_STATS_URL } from "./constants";
+import {
+  QUBIC_LIVE_STATS_URL,
+  SAFE_TRADE_KLINES_URL,
+  SafeTradePeriod,
+} from "./constants";
+import { roundToHundreds } from "./numbers";
 
 export const calculateTotalXTM = (history: XTMMiningHistory["blocks"]) => {
   return Math.trunc(history.reduce((total, item) => total + item.reward, 0));
+};
+
+const getSafeTradeXTMPrice = async (
+  args: {
+    period: SafeTradePeriod;
+    time_from: number;
+    time_to: number;
+    limit: number;
+  }[],
+) => {
+  const apis = [];
+  args.forEach(({ period, time_from, time_to, limit }) => {
+    apis.push(
+      fetch(
+        SAFE_TRADE_KLINES_URL("xtmusdt", period, time_from, time_to, limit),
+      ),
+    );
+  });
+  const response = await Promise.all(apis);
+  const prices = [];
+  for await (const data of response) {
+    const price = await data.json();
+    prices.push(price[0][4]);
+  }
+  return prices;
 };
 
 const getXtmDailyChartHistory = (
@@ -65,17 +95,43 @@ const getXtmWeeklyChartHistory = async (
     grouped[weekStart].push(block);
   });
 
+  const safeTradeArgs = [];
+
   let epochAtTheStart = 161;
-  const groupedArray = Object.values(grouped) as XTMMiningHistory["blocks"][];
   let weeklyXtmChartHistory =
     [] as unknown as XTMHistoryCharts["blocks_found_chart"]["weekly"];
-  for (const subArr of groupedArray) {
+
+  const entriesByStartTimestamp =
+    Object.entries<XTMMiningHistory["blocks"]>(grouped);
+  const maxLengthEntriesByStartTimestamp = entriesByStartTimestamp.length;
+  for (let i = 0; i < maxLengthEntriesByStartTimestamp; i++) {
+    let [, subArr] = entriesByStartTimestamp[i];
+
+    let time_from = 0,
+      time_to = 0;
+    if (i + 1 === maxLengthEntriesByStartTimestamp) {
+      time_to = Math.trunc(new Date().getTime() / 1000);
+    } else {
+      time_to = Math.trunc(
+        new Date(entriesByStartTimestamp[i + 1][0]).getTime() / 1000,
+      );
+    }
+    time_from = time_to - 3_600;
+
     const weekHistory: XTMHistoryCharts["blocks_found_chart"]["weekly"][0] = {
       epoch: epochAtTheStart++,
       reward: calculateTotalXTM(subArr),
       blocks_found: subArr.length,
+      total_usdt: 0,
     };
     weeklyXtmChartHistory.push(weekHistory);
+
+    safeTradeArgs.push({
+      period: SafeTradePeriod.ONE_HOUR,
+      time_from,
+      time_to,
+      limit: 1,
+    });
   }
 
   //Handle if latest block is still from previous epoch
@@ -88,9 +144,19 @@ const getXtmWeeklyChartHistory = async (
       blocks_found: 0,
       epoch: currentEpoch,
       reward: 0,
+      total_usdt: 0,
     });
   }
 
+  const safeTradeXTMPrices = await getSafeTradeXTMPrice(safeTradeArgs);
+
+  const chartLength = weeklyXtmChartHistory.length;
+  for (let i = 0; i < chartLength; i++) {
+    const chart = weeklyXtmChartHistory[i];
+    chart.total_usdt = roundToHundreds(
+      Math.trunc(safeTradeXTMPrices[i] * chart.reward),
+    );
+  }
   return weeklyXtmChartHistory;
 };
 
