@@ -4,6 +4,7 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const baseUrl = process.env.BASE_URL;
 
+
   console.log(baseUrl);
 
   const host = request.headers.get('host') || ''
