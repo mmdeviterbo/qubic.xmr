@@ -17,7 +17,7 @@ import Footer from "@/components/footer/Footer";
 import { SeoMeta } from "@/components/analytics/Seo";
 import HorizontalAds from "@/components/analytics/HorizontalGoogleAds";
 
-const MINING_STATS_DELAY = 8000;
+const MINING_STATS_DELAY = 10000;
 const CALCULATED_MINING_STATS_DELAY = 90000;
 
 const MainPage: NextPage<{
@@ -33,7 +33,7 @@ const MainPage: NextPage<{
   useEffect(() => {
     setTimeout(() => {
       setEnableFetchMiningStats(true);
-    }, MINING_STATS_DELAY - 4000);
+    }, MINING_STATS_DELAY - 8000);
 
     setTimeout(() => {
       setEnableFetchCalculatedhMiningStats(true);
@@ -125,7 +125,7 @@ export const getStaticProps = async () => {
         miningStatsProps,
         calculatedMiningStatsProps,
       },
-      revalidate: 10,
+      revalidate: 20,
     };
   } catch (e) {
     console.log("getStaticProps error: ", e);
