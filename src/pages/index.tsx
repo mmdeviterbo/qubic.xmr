@@ -15,7 +15,7 @@ import {
 } from "@/utils/constants";
 import Footer from "@/components/footer/Footer";
 import { SeoMeta } from "@/components/analytics/Seo";
-import HorizontalAds from "@/components/analytics/HorizontalGoogleAds";
+import Ads from "@/components/analytics/Ads";
 
 const MINING_STATS_DELAY = 10000;
 const CALCULATED_MINING_STATS_DELAY = 90000;
@@ -91,8 +91,6 @@ const MainPage: NextPage<{
       <footer className="mx-auto w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-4">
         <Footer />
       </footer>
-
-      {/* <HorizontalAds /> */}
     </>
   );
 };

@@ -173,8 +173,8 @@ const Main: FC<MainProps> = ({
             ? pool_blocks_found?.toLocaleString()
             : "-",
           properties: {
-            animate: pool_blocks_found <= 500
-          }
+            animate: pool_blocks_found <= 500,
+          },
         }}
         rightSubtitles={[
           {
