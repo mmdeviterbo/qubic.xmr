@@ -15,7 +15,6 @@ import {
 } from "@/utils/constants";
 import Footer from "@/components/footer/Footer";
 import { SeoMeta } from "@/components/analytics/Seo";
-import Ads from "@/components/analytics/Ads";
 
 const MINING_STATS_DELAY = 10000;
 const CALCULATED_MINING_STATS_DELAY = 90000;
