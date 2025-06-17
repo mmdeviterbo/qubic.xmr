@@ -1,9 +1,13 @@
 import { memo, type FC, type ReactNode } from "react";
+import Fire from "../effects/Fire";
 
 type Subtitle = {
   label: string;
   sublabel?: string;
   value: string | number;
+  properties?: {
+    animate?: boolean;
+  }
 };
 
 interface ChartContainerProps {
@@ -31,7 +35,7 @@ const ChartContainer: FC<ChartContainerProps> = ({
         {!loading && (
           <div>
             <div className="flex items-center gap-1">
-              <span className="text-lg md:text-2xl">{leftSubtitle.value}</span>
+              <span className={`text-lg md:text-2xl ${leftSubtitle?.properties?.animate ? "animate-spin" : ""}`}>{leftSubtitle.value}</span>
               <span className="ml-1 font-space text-sm text-gray-50">
                 {leftSubtitle?.sublabel}
               </span>
