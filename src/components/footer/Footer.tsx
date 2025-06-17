@@ -10,6 +10,7 @@ import {
   TARI_BLOCKS_HISTORY_URL,
 } from "@/utils/constants";
 import useBreakpoints from "@/hooks/useBreakpoints";
+import CfbTokenMarquee from "../common/sponsor/cfb/CfbTokenMarquee";
 
 const Footer: FC = () => {
   const { isMd, isLg } = useBreakpoints();
@@ -57,35 +58,42 @@ const Footer: FC = () => {
   }, []);
 
   return (
-    <div
-      className="flex items-start justify-evenly my-10 mt-15 text-gray-50"
-      style={{ fontSize: isMd || isLg ? "0.75rem" : "0.65rem" }}
-    >
-      <div className="flex flex-col gap-1.5 justify-center">
-        {leftLinks.map((l, i) => (
-          <a
-            key={l.label}
-            className="w-fit hover:text-white"
-            target="_blank"
-            href={l.href}
-            rel="noopener noreferrer"
-          >
-            • {l.label}
-          </a>
-        ))}
-      </div>
-      <div className="flex flex-col gap-1.5 justify-center">
-        {rightLinks.map((l, i) => (
-          <a
-            key={l.label}
-            className="w-fit hover:text-white"
-            target="_blank"
-            href={l.href}
-            rel="noopener noreferrer"
-          >
-            • {l.label}
-          </a>
-        ))}
+    <div className="flex flex-col mb-1">
+      <CfbTokenMarquee />
+
+      <div
+        className="flex items-start justify-evenly my-4 text-gray-50"
+        style={{
+          fontSize: isMd || isLg ? "0.75rem" : "0.65rem",
+          marginTop: isMd || isLg ? 50 : 40,
+        }}
+      >
+        <div className="flex flex-col gap-1.5 justify-center">
+          {leftLinks.map((l, i) => (
+            <a
+              key={l.label}
+              className="w-fit hover:text-white"
+              target="_blank"
+              href={l.href}
+              rel="noopener noreferrer"
+            >
+              • {l.label}
+            </a>
+          ))}
+        </div>
+        <div className="flex flex-col gap-1.5 justify-center">
+          {rightLinks.map((l, i) => (
+            <a
+              key={l.label}
+              className="w-fit hover:text-white"
+              target="_blank"
+              href={l.href}
+              rel="noopener noreferrer"
+            >
+              • {l.label}
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );

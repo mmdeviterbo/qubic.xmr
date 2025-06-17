@@ -17,7 +17,7 @@ const CfbMarquee: FC = () => {
       gradientColor="rgb(16 24 32 / var(--tw-bg-opacity))"
       gradientWidth={25}
       autoFill
-      className="tracking-wider my-1.5 md:my-2 grid place-items-center text-sm sm:text-lg md:text-xl"
+      className="tracking-wider my-1.5 md:my-2 grid place-items-center text-sm sm:text-lg"
     >
       <span
         onClick={openCfbTokenSite}
