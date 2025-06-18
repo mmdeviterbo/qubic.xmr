@@ -1,14 +1,20 @@
 import { memo, useMemo, type FC, type ReactNode } from "react";
+import dynamic from "next/dynamic";
 
 import QubicLogo from "../common/logos/QubicLogo";
 import Card from "../common/Card";
-import ChartContainer from "../common/ChartContainer";
+// import ChartContainer from
 import BlocksChart from "./BlocksChart";
 import DistributionChart from "./DistributionChart";
 import MaxHashratesChart from "./MaxHashratesChart";
 import CfbMarquee from "../common/sponsor/cfb/CfbMarquee";
 import Tab from "../common/Tab";
 import { SuperCfbToken } from "../common/sponsor/cfb/CfbToken";
+
+const ChartContainer = dynamic(
+  () => import("@/components/common/ChartContainer"),
+  { ssr: false },
+);
 
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import {
@@ -172,9 +178,6 @@ const Main: FC<MainProps> = ({
           value: isValidValue(pool_blocks_found, false)
             ? pool_blocks_found?.toLocaleString()
             : "-",
-          properties: {
-            animate: pool_blocks_found <= 500,
-          },
         }}
         rightSubtitles={[
           {

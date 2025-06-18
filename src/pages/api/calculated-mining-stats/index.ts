@@ -55,7 +55,7 @@ const parseCSV = async (stream) => {
 export const getXMRMiningHistory = async () => {
   const res = await axios.get(QUBIC_SOLO_MINING_HISTORY, {
     responseType: "stream",
-    timeout: 7000,
+    timeout: 12000,
   });
   const historyResponse: XMRMiningHistory[] = await parseCSV(res?.data);
   return historyResponse;

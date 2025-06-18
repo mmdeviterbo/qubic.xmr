@@ -162,7 +162,7 @@ const BlockChart: FC<BlockChartProps> = ({
                 if (index !== 0) {
                   lines.push(``);
                 }
-                lines.push(`${isWiderScreen ? "🔥" : ""} ${totalUSDT}`);
+                lines.push(`${isWiderScreen ? "🔥" : ""}${totalUSDT}`);
               }
               return lines;
             },

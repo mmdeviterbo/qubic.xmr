@@ -23,11 +23,13 @@ const MainPage: NextPage<{
   miningStatsProps?: MiningStats;
   calculatedMiningStatsProps?: CalculatedMiningStats;
 }> = ({ miningStatsProps, calculatedMiningStatsProps }) => {
-  const [enableFetchMiningStats, setEnableFetchMiningStats] = useState(false);
+  const [enableFetchMiningStats, setEnableFetchMiningStats] = useState(
+    isEmpty(miningStatsProps),
+  );
   const [
     enableFetchCalculatedhMiningStats,
     setEnableFetchCalculatedhMiningStats,
-  ] = useState(false);
+  ] = useState(isEmpty(calculatedMiningStatsProps));
 
   useEffect(() => {
     setTimeout(() => {
@@ -73,7 +75,7 @@ const MainPage: NextPage<{
         <SeoMeta />
       </Head>
 
-      <main className="mx-auto mt-1.5 md:mt-8 w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 pt-6 md:pt-4">
+      <main className="mx-auto mt-1.5 md:mt-8 w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] max-w-[1204px] px-3 md:px-12 pt-6 md:pt-4">
         <p className="text-xs opacity-0 absolute">Made by Marty De Viterbo</p>
         <Main
           miningStats={isLoadingMiningStats ? miningStatsProps : miningStats}
@@ -126,7 +128,13 @@ export const getStaticProps = async () => {
     };
   } catch (e) {
     console.log("getStaticProps error: ", e);
-    return { props: {} };
+    return {
+      props: {
+        miningStatsProps: null,
+        calculatedMiningStatsProps: null,
+      },
+      revalidate: 20,
+    };
   }
 };
 
