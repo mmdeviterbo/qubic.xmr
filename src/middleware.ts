@@ -3,20 +3,16 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const host = request.headers.get("host");
-  const url = request.nextUrl.clone();
 
   // Replace with your actual custom domain
-  const customDomain = "https://www.qubic-xmr.live";
-
-  if (host && host.includes("vercel.app")) {
-    // Redirect to the same path but on the custom domain
-    url.hostname = customDomain;
-    return NextResponse.redirect(url, 301);
+  if (host?.includes("vercel.app")) {
+    const customDomain = "https://www.qubic-xmr.live";
+    return NextResponse.redirect(customDomain, 301);
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
