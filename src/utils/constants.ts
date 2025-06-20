@@ -1,7 +1,7 @@
 export const ABOUT_ME_NOTE =
   "Made by Marty De Viterbo habang nagkakape sa SM Dasma wahahaha -- May 18, 2025";
 export const DONATE_X_URL =
-  "https://x.com/cryptokendefi/status/1926657151927267699";
+  "https://explorer.qubic.org/network/address/DWAHBPNMHBEUYCXUCNDPZITBOEBAGKUGIOPFEBZSRDAWTCCHMWSGJZQGIFUM";
 
 export const QUBIC_URL = "qubic.org";
 export const QUBIC_LIVE_STATS_URL = `https://rpc.${QUBIC_URL}/v1/latest-stats`;

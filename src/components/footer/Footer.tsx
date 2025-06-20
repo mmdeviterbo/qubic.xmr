@@ -30,7 +30,7 @@ const Footer: FC = () => {
         href: QUBIC_XMR_STREAMLIT_APP_URL,
       },
       {
-        label: "Donate",
+        label: "Buy me a coffee",
         href: DONATE_X_URL,
       },
     ];
