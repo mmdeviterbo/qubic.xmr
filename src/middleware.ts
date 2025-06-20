@@ -11,8 +11,12 @@ export function middleware(request: NextRequest) {
   if (host && host.includes("vercel.app")) {
     // Redirect to the same path but on the custom domain
     url.hostname = customDomain;
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(url, 301);
   }
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+};
