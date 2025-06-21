@@ -1,5 +1,7 @@
 import axios from "axios";
 import maxBy from "lodash/maxBy";
+
+import { PRICES } from "@/utils/checkpoints.json";
 import type { XMRHistoryCharts, XMRMiningHistory } from "@/types/MiningStats";
 import { roundToHundreds } from "./numbers";
 import {
@@ -13,16 +15,25 @@ const getMEXCXMRPrice = async (
     interval: MEXCInterval;
     startTime: number;
     endTime?: number;
+    epoch: number;
   }[],
 ) => {
+  const prices = [];
   const apis = [];
-  args.forEach(({ startTime, endTime, interval }) => {
-    apis.push(
-      axios.get(MEXC_KLINES_URL("XMRUSDT", interval, startTime, endTime)),
-    );
+  args.forEach(({ startTime, endTime, interval, epoch }) => {
+    const existingPrice = PRICES.XMR.find((t) => t.epoch === epoch)?.price;
+    if (existingPrice) {
+      prices.push(existingPrice);
+    } else {
+      apis.push(
+        axios.get(MEXC_KLINES_URL("XMRUSDT", interval, startTime, endTime)),
+      );
+    }
   });
-  const prices = await Promise.all(apis);
-  return prices?.map((p) => p.data[0][4]);
+
+  const responsePrices = await Promise.all(apis);
+  responsePrices?.forEach((p) => prices.push(Number(p.data[0][4])));
+  return prices;
 };
 
 const getBlocksFoundByStartIndexAndEndIndex = (
@@ -93,17 +104,20 @@ const getWeeklyBlocksFound = async (
     const startTime = new Date(
       weeklyHistory[i].timestamp.concat("Z"),
     ).getTime();
+    const epoch = Number(history.at(endIndex).qubic_epoch);
+
     const isLastItem = maxWeeklyHistoryLength === i + 1;
     mexcXMRArgs.push({
       startTime: isLastItem ? startTime - 3600000 : startTime,
       endTime: isLastItem ? startTime : startTime + 3600000,
       interval: MEXCInterval.ONE_HOUR,
       symbol: "XMRUSDT",
+      epoch,
     });
 
     charts.push({
       blocks_found,
-      epoch: Number(history.at(endIndex).qubic_epoch),
+      epoch,
       reward: blocks_found * blockToXMRConversion,
       total_usdt: 0,
     });

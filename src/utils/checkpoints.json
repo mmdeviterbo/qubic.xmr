@@ -2,5 +2,51 @@
   "MAX_HASHRATE": {
     "latestIndex": 671282,
     "latestMaxHashrateIndex": 665852
+  },
+  "PRICES": {
+    "XMR": [
+      {
+        "epoch": 161,
+        "price": 363.09
+      },
+      {
+        "epoch": 162,
+        "price": 349.78
+      },
+      {
+        "epoch": 163,
+        "price": 338.85
+      },
+      {
+        "epoch": 164,
+        "price": 335.56
+      },
+      {
+        "epoch": 165,
+        "price": 319.58
+      }
+    ],
+    "XTM": [
+      {
+        "epoch": 161,
+        "price": 0.028
+      },
+      {
+        "epoch": 162,
+        "price": 0.0482
+      },
+      {
+        "epoch": 163,
+        "price": 0.0422
+      },
+      {
+        "epoch": 164,
+        "price": 0.0283
+      },
+      {
+        "epoch": 165,
+        "price": 0.0145
+      }
+    ]
   }
 }

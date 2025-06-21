@@ -1,5 +1,6 @@
 import axios from "axios";
 
+import { PRICES } from "@/utils/checkpoints.json";
 import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
 import { roundToHundreds } from "./numbers";
 import {
@@ -18,18 +19,26 @@ const getSafeTradeXTMPrice = async (
     time_from: number;
     time_to: number;
     limit: number;
+    epoch: number;
   }[],
 ) => {
-  const apis = [];
-  args.forEach(({ period, time_from, time_to, limit }) => {
-    apis.push(
-      fetch(
-        SAFE_TRADE_KLINES_URL("xtmusdt", period, time_from, time_to, limit),
-      ),
-    );
-  });
-  const response = await Promise.all(apis);
   const prices = [];
+
+  const apis = [];
+  args.forEach(({ period, time_from, time_to, limit, epoch }) => {
+    const existingPrice = PRICES.XTM.find((t) => t.epoch === epoch)?.price;
+    if (existingPrice) {
+      prices.push(existingPrice);
+    } else {
+      apis.push(
+        fetch(
+          SAFE_TRADE_KLINES_URL("xtmusdt", period, time_from, time_to, limit),
+        ),
+      );
+    }
+  });
+
+  const response = await Promise.all(apis);
   for await (const data of response) {
     const price = await data.json();
     prices.push(price[0][4]);
@@ -150,7 +159,7 @@ const getXtmWeeklyChartHistory = async (
     time_from = time_to - 3_600;
 
     const weekHistory: XTMHistoryCharts["blocks_found_chart"]["weekly"][0] = {
-      epoch: epochAtTheStart++,
+      epoch: epochAtTheStart,
       reward: calculateTotalXTM(subArr),
       blocks_found: subArr.length,
       total_usdt: 0,
@@ -162,6 +171,7 @@ const getXtmWeeklyChartHistory = async (
       time_from,
       time_to,
       limit: 1,
+      epoch: epochAtTheStart++,
     });
   }
 

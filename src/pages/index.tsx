@@ -118,7 +118,7 @@ export const getStaticProps = async () => {
         miningStatsProps,
         calculatedMiningStatsProps,
       },
-      revalidate: 20,
+      revalidate: 25,
     };
   } catch (e) {
     console.log("getStaticProps error: ", e);
@@ -127,7 +127,7 @@ export const getStaticProps = async () => {
         miningStatsProps: null,
         calculatedMiningStatsProps: null,
       },
-      revalidate: 20,
+      revalidate: 25,
     };
   }
 };
