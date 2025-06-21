@@ -49,8 +49,11 @@ const getDailyBlocksFound = (
   let charts = [] as unknown as XMRHistoryCharts["blocks_found_chart"]["daily"];
   const maxDailyHistoryLength = dailyHistory.length;
   for (let i = 0; i < maxDailyHistoryLength; i++) {
-    const startIndex = dailyHistory[i - 1]?.index;
-    const endIndex = dailyHistory[i].index;
+    const startIndex = dailyHistory[i]?.index;
+    const endIndex =
+      i + 1 !== maxDailyHistoryLength
+        ? dailyHistory[i + 1].index
+        : history.length - 1;
 
     const blocks_found = getBlocksFoundByStartIndexAndEndIndex(
       startIndex,
@@ -58,7 +61,7 @@ const getDailyBlocksFound = (
       history,
     );
     charts.push({
-      timestamp: history.at(endIndex).timestamp.split(" ")[0],
+      timestamp: history.at(startIndex).timestamp.split(" ")[0],
       blocks_found,
       reward: blocks_found * blockToXMRConversion,
     });
@@ -190,27 +193,43 @@ const getXmrWeeklyIndeces = (history: XMRMiningHistory[]): number[] => {
   return weeklyIndeces;
 };
 
-const getXmrDailyIndeces = (history: XMRMiningHistory[]): number[] => {
-  const seenDaily = new Set();
-  const indicesDaily = [];
+function getXmrDailyIndeces(history: XMRMiningHistory[]): number[] {
+  const seenDays = new Set();
+  const result = [];
 
-  const maxLength = history.length - 1;
-  for (let i = maxLength; i >= 0; i--) {
-    const ts = history[i]?.timestamp;
-    const date = new Date(ts.concat("Z"));
-    const utcDateStr = date.toISOString().split("T")[0]; // 'YYYY-MM-DD'
+  for (let i = 0; i < history.length; i++) {
+    const ts = new Date(history[i].timestamp.concat("Z"));
 
-    const hours = date.getUTCHours();
+    // Build that day's 12:00 UTC
+    const noonUTC = new Date(
+      Date.UTC(
+        ts.getUTCFullYear(),
+        ts.getUTCMonth(),
+        ts.getUTCDate(),
+        12,
+        0,
+        0,
+      ),
+    );
 
-    const isBeforeDayEnds = hours < 24;
-    if (!seenDaily.has(utcDateStr) && isBeforeDayEnds) {
-      seenDaily.add(utcDateStr);
-      indicesDaily.push(i);
+    // Check if the timestamp is >= that day's noon
+    if (ts >= noonUTC) {
+      const dayKey = noonUTC.toISOString().slice(0, 10); // 'YYYY-MM-DD'
+
+      if (!seenDays.has(dayKey)) {
+        seenDays.add(dayKey);
+        result.push(i);
+      }
     }
   }
-  const sortedIndecesDaily = indicesDaily.reverse();
-  return sortedIndecesDaily;
-};
+
+  console.log(history[result.at(0)]);
+  console.log(history[result.at(1)]);
+  console.log(history[result.at(2)]);
+  console.log(history[result.at(-1)]);
+
+  return result;
+}
 
 export const getChartHistory = async (
   history: XMRMiningHistory[],
