@@ -222,12 +222,6 @@ function getXmrDailyIndeces(history: XMRMiningHistory[]): number[] {
       }
     }
   }
-
-  console.log(history[result.at(0)]);
-  console.log(history[result.at(1)]);
-  console.log(history[result.at(2)]);
-  console.log(history[result.at(-1)]);
-
   return result;
 }
 

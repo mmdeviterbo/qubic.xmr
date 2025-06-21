@@ -131,7 +131,10 @@ const BlockChart: FC<BlockChartProps> = ({
           tooltip: {
             callbacks: {
               title: (tooltipItems) => {
-                const label = "Epoch ".concat(tooltipItems[0].label);
+                const label =
+                  timeframe === Timeframe.EPOCH
+                    ? "Epoch ".concat(tooltipItems[0].label)
+                    : tooltipItems[0].label;
                 return label;
               },
               label: (tooltipItem) => {
