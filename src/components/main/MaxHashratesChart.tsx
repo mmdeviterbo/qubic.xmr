@@ -113,7 +113,8 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
       style={{ minHeight: isSm ? "35dvh" : "50dvh" }}
     >
       <div className="z-1 pl-12 md:pl-16 ml-8 md:ml-10 md:tracking-wide flex items-end opacity-[0.06] h-[45%] absolute text-xs md:text-lg">
-        Powered by $CFB
+        Powered by
+        <span className="cfb-token-text">$CFB</span>
       </div>
 
       {loading ? <ChartSkeleton /> : <canvas id={id} />}
