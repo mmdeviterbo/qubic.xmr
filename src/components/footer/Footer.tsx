@@ -29,10 +29,6 @@ const Footer: FC = () => {
         label: "Qubic-Monero Live Stats",
         href: QUBIC_XMR_STREAMLIT_APP_URL,
       },
-      {
-        label: "Buy me a coffee",
-        href: DONATE_X_URL,
-      },
     ];
   }, []);
 
