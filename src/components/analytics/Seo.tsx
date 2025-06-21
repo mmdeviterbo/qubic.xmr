@@ -1,6 +1,6 @@
-import { type FC } from "react";
+import { type FC, memo } from "react";
 
-export const SeoMeta: FC = () => {
+const Seo: FC = () => {
   return (
     <>
       <title>Qubic Custom Mining</title>
@@ -31,3 +31,5 @@ export const SeoMeta: FC = () => {
     </>
   );
 };
+
+export default memo(Seo);
