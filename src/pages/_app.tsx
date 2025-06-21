@@ -17,7 +17,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Qubic Custom Mining</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" href="/favicon.png" sizes="48x48" />
+        <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32" />
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16" />
       </Head>
 
       <GoogleAnalyticsScript />
