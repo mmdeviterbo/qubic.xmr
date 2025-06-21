@@ -184,7 +184,7 @@ const BlockChart: FC<BlockChartProps> = ({
       {loading ? (
         <ChartSkeleton />
       ) : (
-        <div className="flex flex-col">
+        <div className="relative flex flex-col">
           <FilterButtons
             buttons={[
               {
@@ -199,6 +199,9 @@ const BlockChart: FC<BlockChartProps> = ({
               },
             ]}
           />
+          <div className="pl-12 md:pl-16 md:tracking-wider flex items-end opacity-[0.06] h-[45%] absolute text-xs md:text-lg">
+            Powered by $CFB
+          </div>
           <canvas id={id} />
         </div>
       )}
