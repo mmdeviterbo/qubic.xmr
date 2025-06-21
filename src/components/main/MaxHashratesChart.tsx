@@ -112,7 +112,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
       className="w-full relative"
       style={{ minHeight: isSm ? "35dvh" : "50dvh" }}
     >
-      <div className="pl-12 md:pl-16 ml-8 md:ml-10 md:tracking-wide flex items-end opacity-[0.06] h-[45%] absolute text-xs md:text-lg">
+      <div className="z-1 pl-12 md:pl-16 ml-8 md:ml-10 md:tracking-wide flex items-end opacity-[0.06] h-[45%] absolute text-xs md:text-lg">
         Powered by $CFB
       </div>
 

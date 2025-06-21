@@ -199,7 +199,7 @@ const BlockChart: FC<BlockChartProps> = ({
               },
             ]}
           />
-          <div className="pl-12 md:pl-16 md:tracking-wider flex items-end opacity-[0.06] h-[45%] absolute text-xs md:text-lg">
+          <div className="z-1 pl-12 md:pl-16 md:tracking-wider flex items-end opacity-[0.06] h-[45%] absolute text-xs md:text-lg">
             Powered by $CFB
           </div>
           <canvas id={id} />
