@@ -1,13 +1,12 @@
-import groupBy from "lodash/groupBy";
+import axios from "axios";
 
 import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
-import axios from "axios";
+import { roundToHundreds } from "./numbers";
 import {
   QUBIC_LIVE_STATS_URL,
   SAFE_TRADE_KLINES_URL,
   SafeTradePeriod,
 } from "./constants";
-import { roundToHundreds } from "./numbers";
 
 export const calculateTotalXTM = (history: XTMMiningHistory["blocks"]) => {
   return Math.trunc(history.reduce((total, item) => total + item.reward, 0));
@@ -38,33 +37,65 @@ const getSafeTradeXTMPrice = async (
   return prices;
 };
 
+function getLatestNoonUTC() {
+  const now = new Date();
+
+  const utcYear = now.getUTCFullYear();
+  const utcMonth = now.getUTCMonth();
+  const utcDate = now.getUTCDate();
+
+  // Create today's 12:00 UTC
+  const noonUTC = new Date(Date.UTC(utcYear, utcMonth, utcDate, 12, 0, 0));
+
+  // If now is after or exactly 12:00 UTC, return today's noon
+  if (now >= noonUTC) {
+    return noonUTC;
+  }
+
+  // Otherwise, return yesterday's noon
+  return new Date(noonUTC.getTime() - 24 * 60 * 60 * 1000);
+}
+
 const getXtmDailyChartHistory = (
   blocks: XTMMiningHistory["blocks"],
 ): XTMHistoryCharts["blocks_found_chart"]["daily"] => {
-  const groupedBasedOnDate = groupBy(blocks, (i) => i.timestamp.split(" ")[0]);
+  const groupsArray: Record<string, XTMMiningHistory["blocks"]> = {};
 
-  const daily_history: XTMHistoryCharts["blocks_found_chart"]["daily"] = [];
-  for (const groupedDailyBlock of Object.entries(groupedBasedOnDate)) {
-    const [timestamp, daily_blocks] = groupedDailyBlock;
-    daily_history.push({
-      timestamp,
-      blocks_found: daily_blocks.length,
-      reward: calculateTotalXTM(daily_blocks),
-    });
+  const blocksCount = blocks.length;
+
+  const oneDayInMilliseconds = 86400000;
+  let startTime = new Date("2025-05-19 12:00:00Z").getTime();
+  let endTime = startTime + oneDayInMilliseconds;
+
+  const todayTime = getLatestNoonUTC().getTime();
+  let savedIndex = 0;
+
+  while (todayTime >= startTime) {
+    const subArray: XTMMiningHistory["blocks"] = [];
+    for (let i = savedIndex; i < blocksCount; i++) {
+      const date = new Date(blocks[i].timestamp.concat("Z")).getTime();
+      if (date >= startTime && date < endTime) {
+        subArray.push(blocks[i]);
+        savedIndex = i + 1;
+      } else {
+        break;
+      }
+    }
+    groupsArray[new Date(startTime).toISOString().split("T")[0]] = subArray;
+    startTime = startTime + oneDayInMilliseconds;
+    endTime = endTime + oneDayInMilliseconds;
   }
 
-  //Handle if latest block is still from yesterday's
-  const todayInUTC = new Date().toISOString().split("T")[0];
-  const latestBlockFound = daily_history.at(-1).timestamp;
-  if (todayInUTC !== latestBlockFound) {
-    daily_history.push({
-      blocks_found: 0,
-      reward: 0,
-      timestamp: todayInUTC,
+  const dailyHistory: XTMHistoryCharts["blocks_found_chart"]["daily"] = [];
+  for (const entry of Object.entries(groupsArray)) {
+    const [dateKey, blocks] = entry;
+    dailyHistory.push({
+      timestamp: dateKey,
+      reward: calculateTotalXTM(blocks),
+      blocks_found: blocks.length,
     });
   }
-
-  return daily_history;
+  return dailyHistory;
 };
 
 const getXtmWeeklyChartHistory = async (
