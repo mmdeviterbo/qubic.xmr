@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "clear && next dev --turbopack",
     "format": "sh ./src/scripts/format.sh",
     "build": "next build",
     "start": "next start",
