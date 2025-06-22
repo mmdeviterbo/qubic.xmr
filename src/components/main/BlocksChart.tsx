@@ -163,7 +163,7 @@ const BlockChart: FC<BlockChartProps> = ({
               const lines = [value];
               if (totalUSDT) {
                 if (index !== 0) {
-                  lines.push(``);
+                  // lines.push(``);
                 }
                 lines.push(totalUSDT);
               }
