@@ -117,8 +117,13 @@ const BlockChart: FC<BlockChartProps> = ({
             borderRadius: timeframe === Timeframe.DAILY ? 1 : 2,
             datalabels: {
               font: {
-                size:
-                  timeframe === Timeframe.DAILY ? 10 : isWiderScreen ? 12 : 9,
+                size: isWiderScreen
+                  ? timeframe === Timeframe.EPOCH
+                    ? 12
+                    : 10
+                  : timeframe === Timeframe.EPOCH
+                    ? 8
+                    : 7,
               },
             },
           },
@@ -162,9 +167,9 @@ const BlockChart: FC<BlockChartProps> = ({
               const totalUSDT = getTotalUSDT(index, timeframe);
               const lines = [value];
               if (totalUSDT) {
-                if (index !== 0) {
-                  // lines.push(``);
-                }
+                // if (index !== 0) {
+                //   lines.push(``);
+                // }
                 lines.push(totalUSDT);
               }
               return lines;
@@ -172,7 +177,7 @@ const BlockChart: FC<BlockChartProps> = ({
             textAlign: "center",
             anchor: timeframe === Timeframe.DAILY ? "end" : "center",
             align: timeframe === Timeframe.DAILY ? "top" : "center",
-            offset: timeframe === Timeframe.DAILY ? 2 : 0,
+            offset: timeframe === Timeframe.DAILY ? 1 : 0,
           },
           legend: {
             display: false,
