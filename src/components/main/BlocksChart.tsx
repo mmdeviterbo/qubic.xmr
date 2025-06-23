@@ -210,7 +210,7 @@ const BlockChart: FC<BlockChartProps> = ({
               },
             ]}
           />
-          <div className="z-1 pl-12 md:pl-16 md:tracking-wide flex items-end gap-1 opacity-[0.06] h-[45%] absolute text-xs md:text-sm">
+          <div className="z-1 pl-12 md:pl-16 flex items-end gap-1 opacity-[0.06] h-[45%] absolute text-xs md:text-sm">
             Powered by
             <span className="cfb-token-text font-normal">$CFB</span>
           </div>

@@ -59,7 +59,7 @@ const DistributionChart: FC<DistributionChartProps> = ({
       plugins: [ChartDataLabels],
       type: "doughnut",
       data: {
-        labels: ["qubic.org", "Others"],
+        labels: ["qubic.org", "others"],
         datasets: [
           {
             label: "Block distribution",
