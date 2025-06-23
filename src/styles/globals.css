@@ -85,3 +85,7 @@ img[id^=cfb-token]:hover {
   font-weight: 400;
   font-style: normal;
 }
+
+.cfb-token-text-normal {
+  font-family: "Bungee", sans-serif;
+}
