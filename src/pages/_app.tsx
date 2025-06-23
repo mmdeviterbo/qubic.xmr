@@ -35,7 +35,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta
           name="description "
           content={
-            "Qubic Custom Mining (PoC) is the first to execute Useful Proof of Work (UPoW). Powered by $CFB on cfbtoken.com, a first memecoin on Qubic. UI made by Marty de Viterbo."
+            "Qubic Custom Mining (PoC) is the first in history to execute Useful Proof of Work (UPoW). This dashboard is powered by $CFB on cfbtoken.com, a first memecoin on Qubic. UI made by Marty de Viterbo."
           }
         />
       </Head>
