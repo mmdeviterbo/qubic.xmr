@@ -83,7 +83,7 @@ const MainPage: NextPage<{
         />
       </main>
 
-      <footer className="mx-auto w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-4 my-8">
+      <footer className="mx-auto w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-4 my-4">
         <Footer />
       </footer>
     </>
@@ -131,39 +131,5 @@ export const getStaticProps = async () => {
     };
   }
 };
-
-// export const getServerSideProps = async () => {
-//   try {
-//     const baseUrl = process.env.BASE_URL;
-
-//     const miningStatsResponse = await axios.get<MiningStats>(
-//       `${baseUrl}/api/mining-stats`,
-//     );
-
-//     const calculatedMiningStatsResponse =
-//       await axios.get<CalculatedMiningStats>(
-//         `${baseUrl}/api/calculated-mining-stats`,
-//       );
-
-//     let miningStatsProps: MiningStats;
-//     if (miningStatsResponse.status === 200) {
-//       miningStatsProps = miningStatsResponse?.data;
-//     }
-
-//     let calculatedMiningStatsProps: CalculatedMiningStats;
-//     if (calculatedMiningStatsResponse.status === 200) {
-//       calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
-//     }
-
-//     return {
-//       props: {
-//         miningStatsProps,
-//         calculatedMiningStatsProps,
-//       },
-//     };
-//   } catch (e) {
-//     return { props: {} };
-//   }
-// };
 
 export default MainPage;

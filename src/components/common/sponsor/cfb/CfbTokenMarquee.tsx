@@ -1,29 +1,45 @@
-import { memo, useLayoutEffect, useMemo, useState, type FC } from "react";
-import Marquee from "react-fast-marquee";
-import { openCfbTokenSite } from "./CfbToken";
+import {
+  Fragment,
+  memo,
+  useLayoutEffect,
+  useMemo,
+  useState,
+  type FC,
+} from "react";
 import Image from "next/image";
+import Marquee from "react-fast-marquee";
+
+import { openCfbTokenSite } from "./CfbToken";
 
 const CfbTokenMarquee: FC = () => {
   const [width, setWidth] = useState(50);
 
   const marginRight = useMemo(() => "mr-4 md:mr-6", []);
 
-  const separatorPeriod = useMemo(
-    () => <span className={`text-3xl md:text-4xl ${marginRight}`}>•</span>,
-    [],
-  );
+  const cfbImagePaths = useMemo(() => {
+    return [
+      "/marquee/cfb-brainy.png",
+      "/marquee/cfb-broly.png",
+      "/marquee/cfb-cyberpunk-ronin.png",
+      "/marquee/cfb-default.png",
+      "/marquee/cfb-dwarf.png",
+      "/marquee/cfb-giga-chad.png",
+      "/marquee/cfb-logan.png",
+      "/marquee/cfb-luffy.png",
+    ];
+  }, []);
 
   useLayoutEffect(() => {
     function handleResize() {
       const windowWidth = window.innerWidth;
       if (windowWidth >= 1024) {
-        setWidth(60);
+        setWidth(140);
       } else if (windowWidth >= 768) {
-        setWidth(55);
+        setWidth(135);
       } else if (windowWidth >= 560) {
-        setWidth(50);
+        setWidth(135);
       } else {
-        setWidth(45);
+        setWidth(135);
       }
     }
     handleResize();
@@ -39,20 +55,36 @@ const CfbTokenMarquee: FC = () => {
       autoFill
     >
       <div
-        className="cursor-pointer flex items-center gap-1 md:gap-2 mx-4 md:mx-8 my-1"
+        className="flex items-center justify-center my-1"
         onClick={openCfbTokenSite}
       >
-        <Image
-          className="hover:scale-110 transition-all"
-          alt="CFB Token"
-          src="/cfb_token.png"
-          width={width}
-          height={width}
-          draggable={false}
-        />
-        <span className="hover:scale-110 transition-all cfb-token-text white text-3xl md:text-4xl">
-          $CFB
-        </span>
+        {cfbImagePaths.map((path) => (
+          <Fragment key={path}>
+            <Image
+              quality={80}
+              src={path}
+              alt={path
+                .replace("/marquee/", "")
+                .replace("-", " ")
+                .replace(".png", "")
+                .toUpperCase()}
+              width={width}
+              height={width}
+              className="cursor-pointer hover:scale-110 transition-all"
+            />
+            <span
+              className="mx-6 cursor-pointer tracking-wider hover:scale-110 transition-all cfb-token-text white text-5xl md:text-6xl"
+              style={{
+                backgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundImage:
+                  "linear-gradient(0deg, rgb(255, 212, 107) 0%, rgb(186, 77, 65) 100%)",
+              }}
+            >
+              $CFB
+            </span>
+          </Fragment>
+        ))}
       </div>
     </Marquee>
   );
