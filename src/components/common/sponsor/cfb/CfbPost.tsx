@@ -1,9 +1,8 @@
 "use client";
-import { memo, useEffect, useMemo, useState, type FC } from "react";
+import { memo, useEffect, useState, type FC } from "react";
 import { Tweet } from "react-tweet";
 
 import Modal from "../../Modal";
-import useCreatePortal from "@/hooks/useCreatePortal";
 
 const isCfbPostShownId = "is-cfb-post-shown-key";
 
