@@ -73,7 +73,7 @@ const CfbTokenMarquee: FC = () => {
               className="cursor-pointer hover:scale-110 transition-all"
             />
             <span
-              className="mx-6 cursor-pointer tracking-wider hover:scale-110 transition-all cfb-token-text white text-5xl md:text-6xl"
+              className="mx-6 md:mx-8 cursor-pointer tracking-wider hover:scale-110 transition-all cfb-token-text white text-5xl md:text-6xl"
               style={{
                 backgroundClip: "text",
                 WebkitTextFillColor: "transparent",
