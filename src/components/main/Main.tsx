@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 
 import QubicLogo from "../common/logos/QubicLogo";
 import Card from "../common/Card";
-// import ChartContainer from
 import BlocksChart from "./BlocksChart";
 import DistributionChart from "./DistributionChart";
 import MaxHashratesChart from "./MaxHashratesChart";
@@ -13,6 +12,11 @@ import { SuperCfbToken } from "../common/sponsor/cfb/CfbToken";
 
 const ChartContainer = dynamic(
   () => import("@/components/common/ChartContainer"),
+  { ssr: false },
+);
+
+const CfbPost = dynamic(
+  () => import("@/components/common/sponsor/cfb/CfbPost"),
   { ssr: false },
 );
 
@@ -136,6 +140,8 @@ const Main: FC<MainProps> = ({
             ),
           }}
         />
+
+        <CfbPost />
 
         <CfbMarquee />
 
