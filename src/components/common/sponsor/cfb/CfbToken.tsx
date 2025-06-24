@@ -37,12 +37,12 @@ export const SuperCfbToken: FC<{ customClass?: string; showFire: boolean }> = ({
       <Fire show={showFire} />
       <div
         id="cfb-token-container"
-        className={`absolute z-100 right-4 md:right-6 ${customClass}`}
+        className={`absolute z-25 right-4 md:right-6 ${customClass}`}
       >
         <Image
           id="cfb-token"
           onClick={openCfbTokenSite}
-          style={{ zIndex: 100 }}
+          style={{ zIndex: 25 }}
           className="cursor-pointer"
           alt="CFB Token"
           src="/super_monero.png"

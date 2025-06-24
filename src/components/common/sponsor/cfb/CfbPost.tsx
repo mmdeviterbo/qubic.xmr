@@ -1,31 +1,51 @@
 "use client";
-import { memo, useEffect, useState, type FC } from "react";
-import { Tweet } from "react-tweet";
-
+import { memo, useCallback, useEffect, useState, type FC } from "react";
+import { XEmbed } from "react-social-media-embed";
+import useBreakpoints from "@/hooks/useBreakpoints";
 import Modal from "../../Modal";
 
 const isCfbPostShownId = "is-cfb-post-shown-key";
 
 const CfbPost: FC = () => {
-  const isShownLocally = localStorage.getItem(isCfbPostShownId);
+  const { isLg } = useBreakpoints();
 
+  const [open, setOpen] = useState(false);
+
+  const isShownLocally = localStorage.getItem(isCfbPostShownId);
   const setCfbPostShown = (value: boolean) =>
     localStorage.setItem(isCfbPostShownId, value.toString());
 
-  const [show, setShow] = useState(false);
+  const onOpenModal = useCallback(() => setOpen(true), []);
+  const onCloseModal = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
     if (isShownLocally !== "true") {
       setTimeout(() => {
-        setShow(true);
+        onOpenModal();
         setCfbPostShown(true);
       }, 750);
     }
   }, [isShownLocally]);
 
   return (
-    <Modal setShow={setShow} show={show}>
-      <Tweet id="1937417135313072364" />
+    <Modal show={open} setShow={setOpen}>
+      <XEmbed
+        url="https://x.com/c_f_b_token/status/1937417135313072364"
+        width={isLg ? 480 : 320}
+        style={{
+          backgroundColor: "white",
+          zIndex: 100,
+          height: isLg ? "80vh" : "70vh",
+        }}
+      />
+      <div className="flex flex-col items-center gap-4">
+        <button
+          className="w-24 h-10 mt-4 text-sm cursor-pointer bg-white text-black border border-gray-300 hover:bg-gray-100 font-medium rounded-full"
+          onClick={onCloseModal}
+        >
+          Close
+        </button>
+      </div>
     </Modal>
   );
 };

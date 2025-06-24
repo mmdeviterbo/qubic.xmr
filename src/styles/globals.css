@@ -90,22 +90,4 @@ img[id^=cfb-token]:hover {
   font-family: "Bungee", sans-serif;
 }
 
-.react-tweet-theme {
-  div[class^="tweet-replies-module"] {
-    display: none !important;
-  }
-
-  p {
-    font-size: larger;
-  }
-  
-  @media (width <= 768px) {
-    height: 70vh !important;
-    width: 85vw !important;
-    p {
-      font-size: small;
-    }
-  }
-}
-
 

@@ -12,7 +12,7 @@ const CfbMarquee: FC = () => {
 
   return (
     <Marquee
-      style={{ zIndex: 100 }}
+      style={{ zIndex: 25 }}
       gradient={true}
       gradientColor="rgb(16 24 32 / var(--tw-bg-opacity))"
       gradientWidth={25}
