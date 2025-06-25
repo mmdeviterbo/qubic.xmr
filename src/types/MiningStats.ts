@@ -58,7 +58,6 @@ export interface XMRMiningHistory {
 }
 
 export type CalculatedMiningStats = {
-  epoch: number;
   max_hashrate_stats: {
     max_hashrate: number;
     max_hashrate_last_update: string;

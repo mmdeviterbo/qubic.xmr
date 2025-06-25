@@ -68,8 +68,6 @@ export default async function handler(
   try {
     const xmrHistory = await getXMRMiningHistory();
 
-    const epoch = Number(xmrHistory.at(-1).qubic_epoch);
-
     const { blocks_found_chart, max_hashrates_chart } =
       await getChartHistory(xmrHistory);
 
@@ -89,7 +87,6 @@ export default async function handler(
     res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=480");
 
     res.status(200).json({
-      epoch,
       max_hashrate_stats: {
         max_hashrate,
         max_hashrate_last_update,

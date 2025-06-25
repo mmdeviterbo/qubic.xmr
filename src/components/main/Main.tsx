@@ -57,7 +57,6 @@ const Main: FC<MainProps> = ({
   } = miningStats ?? {};
 
   const {
-    epoch,
     max_hashrate_stats: { max_hashrate, max_hashrate_last_update } = {},
     monero_history_charts: {
       blocks_found_chart: monero_blocks_found_chart,
@@ -102,16 +101,15 @@ const Main: FC<MainProps> = ({
     );
   }, [pool_hashrate_ranking, pool_hashrate, monero_network_hashrate]);
 
-  const epochLabel = useMemo(
-    () =>
-      Labels.EPOCH_BLOCKS_FOUND.replace(
-        "<number>",
-        isLoadingCalculatedMiningStats || !isValidValue(epoch, false)
-          ? ""
-          : epoch?.toString(),
-      ),
-    [epoch, isLoadingCalculatedMiningStats],
-  );
+  const epochLabel = useMemo(() => {
+    const latestEpoch = monero_blocks_found_chart?.weekly?.at(-1)?.epoch;
+    return Labels.EPOCH_BLOCKS_FOUND.replace(
+      "<number>",
+      isLoadingCalculatedMiningStats || !isValidValue(latestEpoch, false)
+        ? ""
+        : latestEpoch?.toString(),
+    );
+  }, [monero_blocks_found_chart?.weekly, isLoadingCalculatedMiningStats]);
 
   return (
     <>
