@@ -1,7 +1,7 @@
 import axios from "axios";
 import maxBy from "lodash/maxBy";
 
-import { PRICES } from "@/utils/checkpoints.json";
+import { PRICES, MAX_HASHRATES } from "@/utils/checkpoints.json";
 import type { XMRHistoryCharts, XMRMiningHistory } from "@/types/MiningStats";
 import { roundToHundreds } from "./numbers";
 import {
@@ -109,13 +109,6 @@ const getWeeklyBlocksFound = async (
       weeklyHistory[i].timestamp.concat("Z"),
     ).getTime();
 
-    // const previousEndIndex =
-    //   i - 1 >= 0 ? weeklyHistory[i - 1]?.index : weeklyHistory[i]?.index;
-    // const epoch =
-    //   history.at(endIndex).qubic_epoch !== "0"
-    //     ? Number(history.at(endIndex).qubic_epoch)
-    //     : Number(history.at(previousEndIndex).qubic_epoch) + 1;
-
     const isLastItem = maxWeeklyHistoryLength === i + 1;
     mexcXMRArgs.push({
       startTime: isLastItem ? startTime - 3600000 : startTime,
@@ -156,19 +149,21 @@ const getMaxHashratesPerEpoch = (
 
   const maxWeeklyHistoryLength = weeklyHistory.length;
   for (let i = 0; i < maxWeeklyHistoryLength; i++) {
+    const isEpochExist = MAX_HASHRATES.find((m) => m.epoch === epoch);
+    if (isEpochExist) {
+      charts.push({
+        max_hashrate: Number(isEpochExist.max_hashrate),
+        epoch: epoch,
+      });
+      continue;
+    }
+
     const startIndex = weeklyHistory[i - 1]?.index ?? 0;
     const endIndex = weeklyHistory[i].index;
     const maxHashratePerEpoch = maxBy(
       history.slice(startIndex, endIndex),
       (i) => Number(i.pool_hashrate),
     );
-
-    // const previousEndIndex =
-    //   i - 1 >= 0 ? weeklyHistory[i - 1]?.index : weeklyHistory[i]?.index;
-    // const epoch =
-    //   history.at(endIndex).qubic_epoch !== "0"
-    //     ? Number(history.at(endIndex).qubic_epoch)
-    //     : Number(history.at(previousEndIndex).qubic_epoch) + 1;
 
     charts.push({
       max_hashrate: Number(maxHashratePerEpoch.pool_hashrate),

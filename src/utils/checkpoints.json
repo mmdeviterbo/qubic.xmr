@@ -3,6 +3,32 @@
     "latestIndex": 723416,
     "latestMaxHashrateIndex": 665852
   },
+  "MAX_HASHRATES": [
+    {
+      "max_hashrate": 75357010,
+      "epoch": 161
+    },
+    {
+      "max_hashrate": 202921924,
+      "epoch": 162
+    },
+    {
+      "max_hashrate": 316551877,
+      "epoch": 163
+    },
+    {
+      "max_hashrate": 517928988,
+      "epoch": 164
+    },
+    {
+      "max_hashrate": 783783916,
+      "epoch": 165
+    },
+    {
+      "max_hashrate": 802856321,
+      "epoch": 166
+    }
+  ],
   "PRICES": {
     "XMR": [
       {
