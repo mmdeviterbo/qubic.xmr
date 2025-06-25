@@ -104,7 +104,13 @@ const getWeeklyBlocksFound = async (
     const startTime = new Date(
       weeklyHistory[i].timestamp.concat("Z"),
     ).getTime();
-    const epoch = Number(history.at(endIndex).qubic_epoch);
+
+    const previousEndIndex =
+      i - 1 >= 0 ? weeklyHistory[i - 1]?.index : weeklyHistory[i]?.index;
+    const epoch =
+      history.at(endIndex).qubic_epoch !== "0"
+        ? Number(history.at(endIndex).qubic_epoch)
+        : Number(history.at(previousEndIndex).qubic_epoch) + 1;
 
     const isLastItem = maxWeeklyHistoryLength === i + 1;
     mexcXMRArgs.push({
