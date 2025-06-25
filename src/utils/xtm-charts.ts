@@ -182,9 +182,9 @@ const getXtmWeeklyChartHistory = async (
 
   if (latestBlockFoundEpoch !== currentEpoch) {
     weeklyXtmChartHistory.push({
-      blocks_found: 0,
       epoch: currentEpoch,
       reward: 0,
+      blocks_found: 0,
       total_usdt: 0,
     });
   }
@@ -195,7 +195,7 @@ const getXtmWeeklyChartHistory = async (
   for (let i = 0; i < chartLength; i++) {
     const chart = weeklyXtmChartHistory[i];
     chart.total_usdt = roundToHundreds(
-      Math.trunc(safeTradeXTMPrices[i] * chart.reward),
+      Math.trunc((safeTradeXTMPrices[i] ?? 0) * chart.reward),
     );
   }
   return weeklyXtmChartHistory;
