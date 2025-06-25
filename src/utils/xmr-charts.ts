@@ -149,9 +149,17 @@ const getMaxHashratesPerEpoch = (
       history.slice(startIndex, endIndex),
       (i) => Number(i.pool_hashrate),
     );
+
+    const previousEndIndex =
+      i - 1 >= 0 ? weeklyHistory[i - 1]?.index : weeklyHistory[i]?.index;
+    const epoch =
+      history.at(endIndex).qubic_epoch !== "0"
+        ? Number(history.at(endIndex).qubic_epoch)
+        : Number(history.at(previousEndIndex).qubic_epoch) + 1;
+
     charts.push({
       max_hashrate: Number(maxHashratePerEpoch.pool_hashrate),
-      epoch: Number(history.at(endIndex).qubic_epoch),
+      epoch: epoch,
     });
   }
   return charts;
