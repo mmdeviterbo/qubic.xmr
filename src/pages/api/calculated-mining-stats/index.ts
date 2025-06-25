@@ -17,11 +17,11 @@ import CHECKPOINTS from "@/utils/checkpoints.json";
 const getMaxHashrateHistory = (
   history: XMRMiningHistory[],
 ): XMRMiningHistory => {
-  console.log("latestIndex: ", history.length - 1);
-  console.log(
-    "latestMaxHashrateIndex: ",
-    history.findIndex((i) => Number(i.pool_hashrate) === 802856321),
-  );
+  // console.log("latestIndex: ", history.length - 1);
+  // console.log(
+  //   "latestMaxHashrateIndex: ",
+  //   history.findIndex((i) => Number(i.pool_hashrate) === 802856321),
+  // );
 
   const latestIndex = CHECKPOINTS.MAX_HASHRATE.latestIndex;
   const latestMaxHashrateIndex =
