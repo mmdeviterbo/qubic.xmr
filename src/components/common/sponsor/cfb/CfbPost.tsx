@@ -29,15 +29,17 @@ const CfbPost: FC = () => {
 
   return (
     <Modal show={open} setShow={setOpen}>
-      <XEmbed
-        url="https://x.com/c_f_b_token/status/1937746120660099305"
-        width={isLg ? 480 : 320}
-        style={{
-          backgroundColor: "white",
-          zIndex: 100,
-          // height: isLg ? "80vh" : "70vh",
-        }}
-      />
+      {open && (
+        <XEmbed
+          url="https://x.com/c_f_b_token/status/1937746120660099305"
+          width={isLg ? 480 : 320}
+          style={{
+            backgroundColor: "white",
+            zIndex: 100,
+            // height: isLg ? "80vh" : "70vh",
+          }}
+        />
+      )}
       <div className="flex flex-col items-center gap-4">
         <button
           className="w-24 h-10 mt-4 text-sm cursor-pointer bg-white text-black border border-gray-300 hover:bg-gray-100 font-medium rounded-full"
