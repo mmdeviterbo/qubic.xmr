@@ -134,11 +134,12 @@ const getWeeklyBlocksFound = async (
   }
 
   const mexcXMRPrices = await getMEXCXMRPrice(mexcXMRArgs);
+
   const chartLength = charts.length;
   for (let i = 0; i < chartLength; i++) {
     const chart = charts[i];
     chart.total_usdt = roundToHundreds(
-      Math.trunc(mexcXMRPrices[i] * chart.reward),
+      Math.trunc((mexcXMRPrices[i] ?? 0) * chart.reward),
     );
   }
 
