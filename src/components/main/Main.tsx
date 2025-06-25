@@ -1,14 +1,27 @@
 import { memo, useMemo, type FC, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 
-import QubicLogo from "../common/logos/QubicLogo";
-import Card from "../common/Card";
-import BlocksChart from "./BlocksChart";
-import DistributionChart from "./DistributionChart";
-import MaxHashratesChart from "./MaxHashratesChart";
-import CfbMarquee from "../common/sponsor/cfb/CfbMarquee";
-import Tab from "../common/Tab";
-import { SuperCfbToken } from "../common/sponsor/cfb/CfbToken";
+const Tab = dynamic(() => import("@/components/common/Tab"), { ssr: false });
+
+const BlocksChart = dynamic(() => import("@/components/main/BlocksChart"), {
+  ssr: false,
+});
+
+const DistributionChart = dynamic(
+  () => import("@/components/main/DistributionChart"),
+  { ssr: false },
+);
+
+const MaxHashratesChart = dynamic(
+  () => import("@/components/main/MaxHashratesChart"),
+  { ssr: false },
+);
+
+const QubicLogo = dynamic(() => import("@/components/common/logos/QubicLogo"), {
+  ssr: false,
+});
+
+const Card = dynamic(() => import("@/components/common/Card"), { ssr: false });
 
 const ChartContainer = dynamic(
   () => import("@/components/common/ChartContainer"),
@@ -17,6 +30,16 @@ const ChartContainer = dynamic(
 
 const CfbPost = dynamic(
   () => import("@/components/common/sponsor/cfb/CfbPost"),
+  { ssr: false },
+);
+
+const CfbToken = dynamic(
+  () => import("@/components/common/sponsor/cfb/CfbToken"),
+  { ssr: false },
+);
+
+const CfbMarquee = dynamic(
+  () => import("@/components/common/sponsor/cfb/CfbMarquee"),
   { ssr: false },
 );
 
@@ -127,7 +150,7 @@ const Main: FC<MainProps> = ({
           properties={{
             isOnline: connected_miners > 0 && pool_blocks_found > 0,
             cfbToken: (
-              <SuperCfbToken
+              <CfbToken
                 showFire={
                   isValidValue(pool_hashrate) &&
                   isValidValue(max_hashrate, false)

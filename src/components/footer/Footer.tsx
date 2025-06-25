@@ -1,10 +1,11 @@
+"use client";
 import { type FC, memo, useMemo } from "react";
 import {
   BUY_CFB_TOKEN_URL,
   CFB_DISCORD_URL,
   CFB_TOKEN_URL,
   CFB_TOKEN_X_URL,
-  DONATE_X_URL,
+  // DONATE_X_URL,
   QUBIC_XMR_STATS_URL,
   QUBIC_XMR_STREAMLIT_APP_URL,
   TARI_BLOCKS_HISTORY_URL,

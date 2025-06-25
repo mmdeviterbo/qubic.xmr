@@ -1,3 +1,4 @@
+"use client";
 import { memo, type FC } from "react";
 import { EXPLORER_QUBIC_URL } from "@/utils/constants";
 

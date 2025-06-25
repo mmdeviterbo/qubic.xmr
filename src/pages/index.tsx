@@ -4,15 +4,19 @@ import type { NextPage } from "next";
 import axios from "axios";
 import isEmpty from "lodash/isEmpty";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
 
 import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
 import Main from "@/components/main/Main";
-import Footer from "@/components/footer/Footer";
 import {
   CALCULATED_MINING_STATS_URL,
   MINING_STATS_URL,
   SWR_HOOK_DEFAULTS,
 } from "@/utils/constants";
+
+const Footer = dynamic(() => import("@/components/footer/Footer"), {
+  ssr: false,
+});
 
 const MINING_STATS_DELAY = 10000;
 const CALCULATED_MINING_STATS_DELAY = 90000;

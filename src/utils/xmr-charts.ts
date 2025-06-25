@@ -153,7 +153,7 @@ const getMaxHashratesPerEpoch = (
     if (isEpochExist) {
       charts.push({
         max_hashrate: Number(isEpochExist.max_hashrate),
-        epoch: epoch,
+        epoch: epoch++,
       });
       continue;
     }
