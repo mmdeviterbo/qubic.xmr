@@ -176,11 +176,11 @@ const getXtmWeeklyChartHistory = async (
   }
 
   //Handle if latest block is still from previous epoch
-  const latestBlockFound = weeklyXtmChartHistory.at(-1).epoch;
+  const latestBlockFoundEpoch = weeklyXtmChartHistory.at(-1).epoch;
   const currentEpoch = (await axios.get(QUBIC_LIVE_STATS_URL))?.data?.data
     ?.epoch;
 
-  if (latestBlockFound !== currentEpoch) {
+  if (latestBlockFoundEpoch !== currentEpoch) {
     weeklyXtmChartHistory.push({
       blocks_found: 0,
       epoch: currentEpoch,

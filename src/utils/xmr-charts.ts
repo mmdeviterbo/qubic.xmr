@@ -10,6 +10,8 @@ import {
   MEXCInterval,
 } from "./constants";
 
+const epoch_mining_start = 161;
+
 const getMEXCXMRPrice = async (
   args: {
     interval: MEXCInterval;
@@ -91,6 +93,8 @@ const getWeeklyBlocksFound = async (
 
   const mexcXMRArgs = [];
 
+  let epoch = epoch_mining_start;
+
   for (let i = 0; i < maxWeeklyHistoryLength; i++) {
     const startIndex = weeklyHistory[i - 1]?.index;
     const endIndex = weeklyHistory[i].index;
@@ -105,12 +109,12 @@ const getWeeklyBlocksFound = async (
       weeklyHistory[i].timestamp.concat("Z"),
     ).getTime();
 
-    const previousEndIndex =
-      i - 1 >= 0 ? weeklyHistory[i - 1]?.index : weeklyHistory[i]?.index;
-    const epoch =
-      history.at(endIndex).qubic_epoch !== "0"
-        ? Number(history.at(endIndex).qubic_epoch)
-        : Number(history.at(previousEndIndex).qubic_epoch) + 1;
+    // const previousEndIndex =
+    //   i - 1 >= 0 ? weeklyHistory[i - 1]?.index : weeklyHistory[i]?.index;
+    // const epoch =
+    //   history.at(endIndex).qubic_epoch !== "0"
+    //     ? Number(history.at(endIndex).qubic_epoch)
+    //     : Number(history.at(previousEndIndex).qubic_epoch) + 1;
 
     const isLastItem = maxWeeklyHistoryLength === i + 1;
     mexcXMRArgs.push({
@@ -118,12 +122,12 @@ const getWeeklyBlocksFound = async (
       endTime: isLastItem ? startTime : startTime + 3600000,
       interval: MEXCInterval.ONE_HOUR,
       symbol: "XMRUSDT",
-      epoch,
+      epoch: epoch,
     });
 
     charts.push({
       blocks_found,
-      epoch,
+      epoch: epoch++,
       reward: blocks_found * blockToXMRConversion,
       total_usdt: 0,
     });
@@ -147,6 +151,8 @@ const getMaxHashratesPerEpoch = (
 ): XMRHistoryCharts["max_hashrates_chart"] => {
   let charts = [] as unknown as XMRHistoryCharts["max_hashrates_chart"];
 
+  let epoch = epoch_mining_start;
+
   const maxWeeklyHistoryLength = weeklyHistory.length;
   for (let i = 0; i < maxWeeklyHistoryLength; i++) {
     const startIndex = weeklyHistory[i - 1]?.index ?? 0;
@@ -156,16 +162,16 @@ const getMaxHashratesPerEpoch = (
       (i) => Number(i.pool_hashrate),
     );
 
-    const previousEndIndex =
-      i - 1 >= 0 ? weeklyHistory[i - 1]?.index : weeklyHistory[i]?.index;
-    const epoch =
-      history.at(endIndex).qubic_epoch !== "0"
-        ? Number(history.at(endIndex).qubic_epoch)
-        : Number(history.at(previousEndIndex).qubic_epoch) + 1;
+    // const previousEndIndex =
+    //   i - 1 >= 0 ? weeklyHistory[i - 1]?.index : weeklyHistory[i]?.index;
+    // const epoch =
+    //   history.at(endIndex).qubic_epoch !== "0"
+    //     ? Number(history.at(endIndex).qubic_epoch)
+    //     : Number(history.at(previousEndIndex).qubic_epoch) + 1;
 
     charts.push({
       max_hashrate: Number(maxHashratePerEpoch.pool_hashrate),
-      epoch: epoch,
+      epoch: epoch++,
     });
   }
   return charts;
