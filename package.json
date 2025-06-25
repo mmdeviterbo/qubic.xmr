@@ -15,7 +15,6 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "datetime-difference": "^1.0.2",
     "dayjs": "^1.11.13",
-    "gsap": "^3.13.0",
     "lodash": "^4.17.21",
     "next": "15.3.2",
     "papaparse": "^5.5.3",
