@@ -3,6 +3,10 @@ export const ABOUT_ME_NOTE =
 export const DONATE_X_URL =
   "https://explorer.qubic.org/network/address/DWAHBPNMHBEUYCXUCNDPZITBOEBAGKUGIOPFEBZSRDAWTCCHMWSGJZQGIFUM";
 
+export const proxyUrl = (url: string): string =>
+  `https://pro.cors.lol/?url=${url}&token=Ctln384fGdUX39Ld`;
+export const isClient = typeof window !== "undefined";
+
 export const QUBIC_URL = "qubic.org";
 export const QUBIC_LIVE_STATS_URL = `https://rpc.${QUBIC_URL}/v1/latest-stats`;
 export const QUBIC_XMR_STATS_URL = `https://xmr-stats.${QUBIC_URL}`;

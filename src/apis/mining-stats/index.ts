@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import orderBy from "lodash/orderBy";
 
@@ -6,26 +5,36 @@ import type { MiningStats, MoneroBlockDistribution } from "@/types/MiningStats";
 import {
   ABOUT_ME_NOTE,
   blockToXMRConversion,
+  isClient,
   MONERO_MINING_BLOCK_DISTRIBUTION_URL,
   MONERO_MINING_LATEST_BLOCK_FOUND_URL,
   MONERO_MINING_POOLS_STATS_URL,
+  proxyUrl,
   QUBIC_URL,
   QUBIC_XMR_STATS_API_URL,
   QUBIC_XMR_STATS_URL,
 } from "@/utils/constants";
-import getMiningStats from "@/apis/mining-stats";
 
 const getMiningPoolsStats = async (latestBlockFoundTime: number) => {
+  let poolsStatsUrl = MONERO_MINING_POOLS_STATS_URL(latestBlockFoundTime);
+  poolsStatsUrl = isClient ? proxyUrl(poolsStatsUrl) : poolsStatsUrl;
+
   const poolsStats: Record<string, number | string>[] = (
-    await axios.get(MONERO_MINING_POOLS_STATS_URL(latestBlockFoundTime))
+    await axios.get(poolsStatsUrl)
   )?.data?.data;
 
   return poolsStats;
 };
 
 const getBlockDistributions = async (latestBlockFoundTime: number) => {
+  let blockDistributionUrl =
+    MONERO_MINING_BLOCK_DISTRIBUTION_URL(latestBlockFoundTime);
+  blockDistributionUrl = isClient
+    ? proxyUrl(blockDistributionUrl)
+    : blockDistributionUrl;
+
   const blockDistributions: MoneroBlockDistribution = (
-    await axios.get(MONERO_MINING_BLOCK_DISTRIBUTION_URL(latestBlockFoundTime))
+    await axios.get(blockDistributionUrl)
   )?.data;
 
   const last1000Blocks =
@@ -69,10 +78,10 @@ const getHashrateAverages = (poolsStats: Record<string, number | string>[]) => {
   };
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<MiningStats>,
-) {
+const getMiningStats = async (): Promise<MiningStats> => {
+  let url = isClient
+    ? proxyUrl(QUBIC_XMR_STATS_API_URL)
+    : QUBIC_XMR_STATS_API_URL;
   try {
     let {
       pool_hashrate,
@@ -80,10 +89,14 @@ export default async function handler(
       connected_miners,
       last_block_found,
       pool_blocks_found,
-    } = (await axios.get(QUBIC_XMR_STATS_API_URL)).data;
+    } = (await axios.get(url)).data;
 
+    let latestBlockFoundTimeUrl = MONERO_MINING_LATEST_BLOCK_FOUND_URL();
+    latestBlockFoundTimeUrl = isClient
+      ? proxyUrl(latestBlockFoundTimeUrl)
+      : latestBlockFoundTimeUrl;
     const latestBlockFoundTime: number = (
-      await axios.get(MONERO_MINING_LATEST_BLOCK_FOUND_URL())
+      await axios.get(latestBlockFoundTimeUrl)
     )?.data;
 
     const poolsStats = await getMiningPoolsStats(latestBlockFoundTime);
@@ -95,7 +108,7 @@ export default async function handler(
     const monero_block_distributions =
       await getBlockDistributions(latestBlockFoundTime);
 
-    const newMiningStats: MiningStats = {
+    const miningStats: MiningStats = {
       pool_hashrate,
       network_hashrate,
       connected_miners,
@@ -112,14 +125,15 @@ export default async function handler(
       pool_hashrate_ranking: hashrateRanking ?? 0,
       developer: ABOUT_ME_NOTE,
     };
-
-    res.setHeader("Cache-Control", "public, max-age=10");
-    res.setHeader("CDN-Cache-Control", "public, max-age=20");
-    res.setHeader("Vercel-CDN-Cache-Control", "public, max-age=40");
-
-    res.status(200).json(newMiningStats);
+    return miningStats;
   } catch (error) {
-    console.log("/api/mining-stats: ", error);
-    res.status(403);
+    console.log(
+      "Error mining stats: ",
+      error,
+      isClient ? " on client" : " on server",
+    );
+    return null;
   }
-}
+};
+
+export default getMiningStats;
