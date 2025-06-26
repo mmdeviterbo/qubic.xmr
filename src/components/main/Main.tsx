@@ -136,7 +136,7 @@ const Main: FC<MainProps> = ({
 
   return (
     <>
-      <div className="ml-2 md:ml-1 md:mb-2 z-100">
+      <div className="ml-2 md:ml-1 md:mb-1 z-100">
         <QubicLogo showTitle={true} />
       </div>
 
@@ -150,14 +150,7 @@ const Main: FC<MainProps> = ({
           properties={{
             isOnline: connected_miners > 0 && pool_blocks_found > 0,
             cfbToken: (
-              <CfbToken
-                showFire={
-                  isValidValue(pool_hashrate) &&
-                  isValidValue(max_hashrate, false)
-                    ? pool_hashrate >= max_hashrate
-                    : false
-                }
-              />
+              <CfbToken />
             ),
           }}
         />

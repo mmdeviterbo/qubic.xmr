@@ -1,15 +1,13 @@
 "use client";
 import { type FC, useLayoutEffect, useState } from "react";
 import Image from "next/image";
-import Fire from "@/components/effects/Fire";
 import { CFB_TOKEN_URL } from "@/utils/constants";
 
 export const openCfbTokenSite = () =>
   window.open(CFB_TOKEN_URL, "_blank", "noopener");
 
-const CfbToken: FC<{ customClass?: string; showFire: boolean }> = ({
+const CfbToken: FC<{ customClass?: string }> = ({
   customClass = "bottom-0",
-  showFire = false,
 }) => {
   const [width, setWidth] = useState(130);
 
@@ -35,7 +33,6 @@ const CfbToken: FC<{ customClass?: string; showFire: boolean }> = ({
 
   return (
     <>
-      <Fire show={showFire} />
       <div
         id="cfb-token-container"
         className={`absolute z-25 right-4 md:right-6 ${customClass}`}
