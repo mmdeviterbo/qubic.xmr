@@ -136,7 +136,7 @@ const Main: FC<MainProps> = ({
 
   return (
     <>
-      <div className="ml-2 md:ml-1 md:mb-1 z-100">
+      <div className="z-100">
         <QubicLogo showTitle={true} />
       </div>
 
@@ -149,9 +149,7 @@ const Main: FC<MainProps> = ({
           loading={isLoadingMiningStats}
           properties={{
             isOnline: connected_miners > 0 && pool_blocks_found > 0,
-            cfbToken: (
-              <CfbToken />
-            ),
+            cfbToken: <CfbToken />,
           }}
         />
 

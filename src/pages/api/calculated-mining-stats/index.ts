@@ -66,6 +66,8 @@ export default async function handler(
   res: NextApiResponse<CalculatedMiningStats>,
 ) {
   try {
+    const start = performance.now();
+
     const xmrHistory = await getXMRMiningHistory();
 
     const { blocks_found_chart, max_hashrates_chart } =
@@ -81,6 +83,9 @@ export default async function handler(
       tari_blocks_found,
       tari_block_distributions,
     } = await getTariMiningStats();
+
+    const end = performance.now();
+    console.log("Calculated Mining stats: ", (end - start) / 1000);
 
     res.setHeader("Cache-Control", "public, max-age=90, s-maxage=120");
     res.setHeader("CDN-Cache-Control", "public, s-maxage=240");
