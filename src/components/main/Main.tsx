@@ -142,7 +142,6 @@ const Main: FC<MainProps> = ({
 
       <div className="flex flex-col">
         <Card
-          index={0}
           label={Labels.HASHRATE}
           value={formatHashrate(pool_hashrate)}
           subValue={hashrateRanking}
