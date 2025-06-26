@@ -5,6 +5,7 @@ import {
   CFB_DISCORD_URL,
   CFB_TOKEN_URL,
   CFB_TOKEN_X_URL,
+  DONATE_X_URL,
   // DONATE_X_URL,
   QUBIC_XMR_STATS_URL,
   QUBIC_XMR_STREAMLIT_APP_URL,
@@ -18,6 +19,10 @@ const Footer: FC = () => {
 
   const leftLinks = useMemo(() => {
     return [
+      {
+        label: "Buy me a coffe (spanish latte)",
+        href: DONATE_X_URL,
+      },
       {
         label: "Official Stats",
         href: QUBIC_XMR_STATS_URL,
