@@ -147,7 +147,6 @@ const Main: FC<MainProps> = ({
           subValue={hashrateRanking}
           loading={isLoadingMiningStats}
           properties={{
-            isOnline: connected_miners > 0 && pool_blocks_found > 0,
             cfbToken: <CfbToken />,
           }}
         />
