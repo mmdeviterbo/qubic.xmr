@@ -63,8 +63,9 @@ import { isValidValue } from "@/utils/numbers";
 export interface MainProps {
   miningStats: MiningStats;
   isLoadingMiningStats: boolean;
-  calculatedMiningStats: CalculatedXMRMiningStats;
-  isLoadingCalculatedMiningStats: boolean;
+
+  calculatedXMRMiningStats: CalculatedXMRMiningStats;
+  isLoadingCalculatedXMRMiningStats: boolean;
 
   calculatedXTMMiningStats: XTMHistoryCharts;
   isLoadingCalculatedXTMMiningStats: boolean;
@@ -76,8 +77,8 @@ const Main: FC<MainProps> = ({
   isLoadingMiningStats,
 
   //xmr
-  calculatedMiningStats,
-  isLoadingCalculatedMiningStats,
+  calculatedXMRMiningStats,
+  isLoadingCalculatedXMRMiningStats,
 
   //xtm
   calculatedXTMMiningStats,
@@ -98,7 +99,7 @@ const Main: FC<MainProps> = ({
       blocks_found_chart: monero_blocks_found_chart,
       max_hashrates_chart,
     } = {},
-  } = calculatedMiningStats ?? {};
+  } = calculatedXMRMiningStats ?? {};
 
   const {
     tari_blocks_found,
@@ -144,11 +145,11 @@ const Main: FC<MainProps> = ({
     const latestEpoch = monero_blocks_found_chart?.weekly?.at(-1)?.epoch;
     return Labels.EPOCH_BLOCKS_FOUND.replace(
       "<number>",
-      isLoadingCalculatedMiningStats || !isValidValue(latestEpoch, false)
+      isLoadingCalculatedXMRMiningStats || !isValidValue(latestEpoch, false)
         ? ""
         : latestEpoch?.toString(),
     );
-  }, [monero_blocks_found_chart?.weekly, isLoadingCalculatedMiningStats]);
+  }, [monero_blocks_found_chart?.weekly, isLoadingCalculatedXMRMiningStats]);
 
   return (
     <>
@@ -177,7 +178,7 @@ const Main: FC<MainProps> = ({
             label: formatPeakHashrateDateDifference(
               max_hashrate_last_update,
             ).join(""),
-            value: isLoadingCalculatedMiningStats
+            value: isLoadingCalculatedXMRMiningStats
               ? ""
               : formatHashrate(max_hashrate),
           }}
@@ -196,7 +197,7 @@ const Main: FC<MainProps> = ({
             <MaxHashratesChart
               id="hashrate-line-chart"
               max_hashrates_chart={max_hashrates_chart}
-              loading={isLoadingCalculatedMiningStats}
+              loading={isLoadingCalculatedXMRMiningStats}
             />
           }
         />
@@ -225,7 +226,7 @@ const Main: FC<MainProps> = ({
               : "-",
           },
         ]}
-        loading={isLoadingCalculatedMiningStats}
+        loading={isLoadingCalculatedXMRMiningStats}
         chart={
           <Tab
             tabs={[
@@ -235,7 +236,7 @@ const Main: FC<MainProps> = ({
                   <BlocksChart
                     id="monero-blocks-bar-chart"
                     blocks_found_chart={monero_blocks_found_chart}
-                    loading={isLoadingCalculatedMiningStats}
+                    loading={isLoadingCalculatedXMRMiningStats}
                   />
                 ),
               },

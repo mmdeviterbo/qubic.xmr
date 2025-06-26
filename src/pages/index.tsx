@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 
 import axios from "axios";
@@ -6,41 +5,28 @@ import isEmpty from "lodash/isEmpty";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
 
+import Main from "@/components/main/Main";
 import type {
   CalculatedXMRMiningStats,
   MiningStats,
   XTMHistoryCharts,
 } from "@/types/MiningStats";
-import Main from "@/components/main/Main";
-import {
-  CALCULATED_MINING_STATS_URL,
-  SWR_HOOK_DEFAULTS,
-} from "@/utils/constants";
 import getMiningStats from "@/apis/mining-stats";
-import getTariMiningStats from "@/apis/calculated-xtm-stats";
+import getTariCalculatedMiningStats from "@/apis/calculated-xtm-stats";
+import getMoneroCalculatedMiningStats from "@/apis/calculated-xmr-stats";
+import { SWR_HOOK_DEFAULTS } from "@/utils/constants";
 
 const Footer = dynamic(() => import("@/components/footer/Footer"), {
   ssr: false,
 });
 
 const MINING_STATS_DELAY = 2000;
-const CALCULATED_XMR_MINING_STATS_DELAY = 10000;
-const CALCULATED_XTM_MINING_STATS_DELAY = 5000;
+const CALCULATED_XMR_MINING_STATS_DELAY = 6000;
+const CALCULATED_XTM_MINING_STATS_DELAY = 6000;
 
 const MainPage: NextPage<{
-  calculatedMiningStatsProps?: CalculatedXMRMiningStats;
-}> = ({ calculatedMiningStatsProps }) => {
-  const [
-    enableFetchCalculatedhMiningStats,
-    setEnableFetchCalculatedhMiningStats,
-  ] = useState(isEmpty(calculatedMiningStatsProps));
-
-  useEffect(() => {
-    setTimeout(() => {
-      setEnableFetchCalculatedhMiningStats(true);
-    }, CALCULATED_XMR_MINING_STATS_DELAY);
-  }, []);
-
+  calculatedXMRMiningStatsProps?: CalculatedXMRMiningStats;
+}> = ({ calculatedXMRMiningStatsProps }) => {
   const { data: miningStats } = useSWR<MiningStats>(
     "/mining-stats",
     getMiningStats,
@@ -53,11 +39,11 @@ const MainPage: NextPage<{
   );
 
   const {
-    data: calculatedMiningStats = calculatedMiningStatsProps,
-    isLoading: isLoadingCalculatedMiningStats,
+    data: calculatedXMRMiningStats,
+    isLoading: isLoadingCalculatedXMRMiningStats,
   } = useSWR<CalculatedXMRMiningStats>(
-    enableFetchCalculatedhMiningStats ? CALCULATED_MINING_STATS_URL : null,
-    async () => (await fetch(CALCULATED_MINING_STATS_URL)).json(),
+    "/calculated-xmr-mining-stats",
+    getMoneroCalculatedMiningStats,
     {
       ...SWR_HOOK_DEFAULTS,
       refreshInterval: CALCULATED_XMR_MINING_STATS_DELAY,
@@ -67,8 +53,8 @@ const MainPage: NextPage<{
   );
 
   const { data: calculatedXTMMiningStats } = useSWR<XTMHistoryCharts>(
-    "/calculated-xmr-mining-stats",
-    getTariMiningStats,
+    "/calculated-xtm-mining-stats",
+    getTariCalculatedMiningStats,
     {
       ...SWR_HOOK_DEFAULTS,
       refreshInterval: CALCULATED_XTM_MINING_STATS_DELAY,
@@ -84,12 +70,16 @@ const MainPage: NextPage<{
         <Main
           miningStats={miningStats}
           isLoadingMiningStats={isEmpty(miningStats)}
-          calculatedMiningStats={
-            isLoadingCalculatedMiningStats
-              ? calculatedMiningStatsProps
-              : calculatedMiningStats
+          calculatedXMRMiningStats={
+            isLoadingCalculatedXMRMiningStats ||
+            isEmpty(calculatedXMRMiningStats)
+              ? calculatedXMRMiningStatsProps
+              : calculatedXMRMiningStats
           }
-          isLoadingCalculatedMiningStats={isEmpty(calculatedMiningStatsProps)}
+          isLoadingCalculatedXMRMiningStats={
+            isEmpty(calculatedXMRMiningStatsProps) &&
+            isEmpty(calculatedXMRMiningStats)
+          }
           calculatedXTMMiningStats={calculatedXTMMiningStats}
           isLoadingCalculatedXTMMiningStats={isEmpty(calculatedXTMMiningStats)}
         />
@@ -102,31 +92,28 @@ const MainPage: NextPage<{
   );
 };
 
-// export const getStaticProps = async () => {
-//   try {
-//     const baseUrl = process.env.BASE_URL;
+export const getStaticProps = async () => {
+  try {
+    const baseUrl = process.env.BASE_URL;
 
-//     const calculatedMiningStatsResponse =
-//       await axios.get<CalculatedXMRMiningStats>(
-//         `${baseUrl}/api/calculated-mining-stats`,
-//       );
+    const calculatedMiningStatsResponse =
+      await axios.get<CalculatedXMRMiningStats>(
+        `${baseUrl}/api/calculated-mining-stats`,
+      );
 
-//     let calculatedMiningStatsProps: CalculatedXMRMiningStats;
-//     if (calculatedMiningStatsResponse.status === 200) {
-//       calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
-//     }
-
-//     return {
-//       props: { calculatedMiningStatsProps },
-//       revalidate: 12,
-//     };
-//   } catch (e) {
-//     console.log("getStaticProps error: ", e);
-//     return {
-//       props: { calculatedMiningStatsProps: null },
-//       revalidate: 12,
-//     };
-//   }
-// };
+    return {
+      props: {
+        calculatedXMRMiningStatsProps: calculatedMiningStatsResponse?.data,
+      },
+      revalidate: 12,
+    };
+  } catch (e) {
+    console.log("getStaticProps error: ", e);
+    return {
+      props: { calculatedXMRMiningStatsProps: null },
+      revalidate: 12,
+    };
+  }
+};
 
 export default MainPage;

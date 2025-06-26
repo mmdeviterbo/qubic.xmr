@@ -6,8 +6,10 @@ import type { XMRHistoryCharts, XMRMiningHistory } from "@/types/MiningStats";
 import { roundToHundreds } from "./numbers";
 import {
   blockToXMRConversion,
+  isClient,
   MEXC_KLINES_URL,
   MEXCInterval,
+  proxyUrl,
 } from "./constants";
 
 const epoch_mining_start = 161;
@@ -27,9 +29,16 @@ const getMEXCXMRPrice = async (
     if (existingPrice) {
       prices.push(existingPrice);
     } else {
-      apis.push(
-        axios.get(MEXC_KLINES_URL("XMRUSDT", interval, startTime, endTime)),
+      let mexcKLinesUrl = MEXC_KLINES_URL(
+        "XMRUSDT",
+        interval,
+        startTime,
+        endTime,
       );
+      mexcKLinesUrl = isClient
+        ? proxyUrl(encodeURIComponent(mexcKLinesUrl))
+        : mexcKLinesUrl;
+      apis.push(axios.get(mexcKLinesUrl));
     }
   });
 
@@ -90,7 +99,6 @@ const getWeeklyBlocksFound = async (
     [] as unknown as XMRHistoryCharts["blocks_found_chart"]["weekly"];
 
   const maxWeeklyHistoryLength = weeklyHistory.length;
-
   const mexcXMRArgs = [];
 
   let epoch = epoch_mining_start;
@@ -258,6 +266,8 @@ function getXmrDailyIndeces(history: XMRMiningHistory[]): number[] {
 export const getChartHistory = async (
   history: XMRMiningHistory[],
 ): Promise<XMRHistoryCharts> => {
+  history = history.at(-1).timestamp === "" ? history.slice(0, -1) : history;
+
   const historyWithIndexWeekly = getXmrWeeklyIndeces(history).map((i) => ({
     ...history[i],
     index: i,

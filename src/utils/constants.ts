@@ -96,8 +96,6 @@ export const enum SafeTradePeriod {
   ONE_WEEK = 10080,
 }
 
-export const CALCULATED_MINING_STATS_URL = "/api/calculated-mining-stats";
-
 export const SWR_HOOK_DEFAULTS = {
   revalidateOnFocus: true,
   revalidateOnReconnect: true,

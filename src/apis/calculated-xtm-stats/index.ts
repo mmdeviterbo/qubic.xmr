@@ -45,7 +45,7 @@ const getBlockDistributions = (
   };
 };
 
-const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
+const getTariCalculatedMiningStats = async (): Promise<XTMHistoryCharts> => {
   try {
     let xtmHistory = await getXtmBlocksHistory();
 
@@ -67,13 +67,11 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
       tari_block_distributions,
     };
   } catch (error) {
-    console.log(
-      "Calculated xtm-stats: ",
-      error,
-      isClient ? " on client" : " on server",
-    );
+    if (!isClient) {
+      console.log("Calculated xtm-stats: ", error);
+    }
     return null;
   }
 };
 
-export default getTariMiningStats;
+export default getTariCalculatedMiningStats;

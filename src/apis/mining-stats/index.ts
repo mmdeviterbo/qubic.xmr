@@ -127,11 +127,9 @@ const getMiningStats = async (): Promise<MiningStats> => {
     };
     return miningStats;
   } catch (error) {
-    console.log(
-      "Error mining stats: ",
-      error,
-      isClient ? " on client" : " on server",
-    );
+    if (!isClient) {
+      console.log("Error mining stats: ", error);
+    }
     return null;
   }
 };
