@@ -7,7 +7,7 @@ import maxBy from "lodash/maxBy";
 
 import getTariMiningStats from "../../../apis/calculated-xtm-stats";
 import type {
-  CalculatedMiningStats,
+  CalculatedXMRMiningStats,
   XMRMiningHistory,
 } from "@/types/MiningStats";
 
@@ -63,7 +63,7 @@ export const getXMRMiningHistory = async () => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<CalculatedMiningStats>,
+  res: NextApiResponse<CalculatedXMRMiningStats>,
 ) {
   try {
     const start = performance.now();
@@ -78,18 +78,12 @@ export default async function handler(
     const max_hashrate_last_update = maxHashrateHistory.timestamp;
     const max_hashrate_last_epoch = Number(maxHashrateHistory.qubic_epoch);
 
-    const {
-      blocks_found_chart: tari_history_charts,
-      tari_blocks_found,
-      tari_block_distributions,
-    } = await getTariMiningStats();
-
     const end = performance.now();
     console.log("Calculated Mining stats: ", (end - start) / 1000);
 
-    res.setHeader("Cache-Control", "public, max-age=90, s-maxage=120");
-    res.setHeader("CDN-Cache-Control", "public, s-maxage=240");
-    res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=480");
+    res.setHeader("Cache-Control", "public, max-age=20, s-maxage=40");
+    res.setHeader("CDN-Cache-Control", "public, s-maxage=60");
+    res.setHeader("Vercel-CDN-Cache-Control", "public, s-maxage=120");
 
     res.status(200).json({
       max_hashrate_stats: {
@@ -101,9 +95,6 @@ export default async function handler(
         blocks_found_chart,
         max_hashrates_chart,
       },
-      tari_history_charts,
-      tari_blocks_found,
-      tari_block_distributions,
     });
   } catch (e) {
     console.log("/api/calculated-mining-stats: ", e);

@@ -6,24 +6,29 @@ import isEmpty from "lodash/isEmpty";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
 
-import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
+import type {
+  CalculatedXMRMiningStats,
+  MiningStats,
+  XTMHistoryCharts,
+} from "@/types/MiningStats";
 import Main from "@/components/main/Main";
 import {
   CALCULATED_MINING_STATS_URL,
-  MINING_STATS_URL,
   SWR_HOOK_DEFAULTS,
 } from "@/utils/constants";
 import getMiningStats from "@/apis/mining-stats";
+import getTariMiningStats from "@/apis/calculated-xtm-stats";
 
 const Footer = dynamic(() => import("@/components/footer/Footer"), {
   ssr: false,
 });
 
 const MINING_STATS_DELAY = 2000;
-const CALCULATED_MINING_STATS_DELAY = 90000;
+const CALCULATED_XMR_MINING_STATS_DELAY = 10000;
+const CALCULATED_XTM_MINING_STATS_DELAY = 5000;
 
 const MainPage: NextPage<{
-  calculatedMiningStatsProps?: CalculatedMiningStats;
+  calculatedMiningStatsProps?: CalculatedXMRMiningStats;
 }> = ({ calculatedMiningStatsProps }) => {
   const [
     enableFetchCalculatedhMiningStats,
@@ -33,11 +38,11 @@ const MainPage: NextPage<{
   useEffect(() => {
     setTimeout(() => {
       setEnableFetchCalculatedhMiningStats(true);
-    }, CALCULATED_MINING_STATS_DELAY);
+    }, CALCULATED_XMR_MINING_STATS_DELAY);
   }, []);
 
   const { data: miningStats } = useSWR<MiningStats>(
-    MINING_STATS_URL,
+    "/mining-stats",
     getMiningStats,
     {
       ...SWR_HOOK_DEFAULTS,
@@ -50,14 +55,25 @@ const MainPage: NextPage<{
   const {
     data: calculatedMiningStats = calculatedMiningStatsProps,
     isLoading: isLoadingCalculatedMiningStats,
-  } = useSWR<CalculatedMiningStats>(
+  } = useSWR<CalculatedXMRMiningStats>(
     enableFetchCalculatedhMiningStats ? CALCULATED_MINING_STATS_URL : null,
     async () => (await fetch(CALCULATED_MINING_STATS_URL)).json(),
     {
       ...SWR_HOOK_DEFAULTS,
-      refreshInterval: CALCULATED_MINING_STATS_DELAY,
-      focusThrottleInterval: CALCULATED_MINING_STATS_DELAY,
-      dedupingInterval: CALCULATED_MINING_STATS_DELAY,
+      refreshInterval: CALCULATED_XMR_MINING_STATS_DELAY,
+      focusThrottleInterval: CALCULATED_XMR_MINING_STATS_DELAY,
+      dedupingInterval: CALCULATED_XMR_MINING_STATS_DELAY,
+    },
+  );
+
+  const { data: calculatedXTMMiningStats } = useSWR<XTMHistoryCharts>(
+    "/calculated-xmr-mining-stats",
+    getTariMiningStats,
+    {
+      ...SWR_HOOK_DEFAULTS,
+      refreshInterval: CALCULATED_XTM_MINING_STATS_DELAY,
+      focusThrottleInterval: CALCULATED_XTM_MINING_STATS_DELAY,
+      dedupingInterval: CALCULATED_XTM_MINING_STATS_DELAY,
     },
   );
 
@@ -74,6 +90,8 @@ const MainPage: NextPage<{
               : calculatedMiningStats
           }
           isLoadingCalculatedMiningStats={isEmpty(calculatedMiningStatsProps)}
+          calculatedXTMMiningStats={calculatedXTMMiningStats}
+          isLoadingCalculatedXTMMiningStats={isEmpty(calculatedXTMMiningStats)}
         />
       </main>
 
@@ -84,31 +102,31 @@ const MainPage: NextPage<{
   );
 };
 
-export const getStaticProps = async () => {
-  try {
-    const baseUrl = process.env.BASE_URL;
+// export const getStaticProps = async () => {
+//   try {
+//     const baseUrl = process.env.BASE_URL;
 
-    const calculatedMiningStatsResponse =
-      await axios.get<CalculatedMiningStats>(
-        `${baseUrl}/api/calculated-mining-stats`,
-      );
+//     const calculatedMiningStatsResponse =
+//       await axios.get<CalculatedXMRMiningStats>(
+//         `${baseUrl}/api/calculated-mining-stats`,
+//       );
 
-    let calculatedMiningStatsProps: CalculatedMiningStats;
-    if (calculatedMiningStatsResponse.status === 200) {
-      calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
-    }
+//     let calculatedMiningStatsProps: CalculatedXMRMiningStats;
+//     if (calculatedMiningStatsResponse.status === 200) {
+//       calculatedMiningStatsProps = calculatedMiningStatsResponse?.data;
+//     }
 
-    return {
-      props: { calculatedMiningStatsProps },
-      revalidate: 12,
-    };
-  } catch (e) {
-    console.log("getStaticProps error: ", e);
-    return {
-      props: { calculatedMiningStatsProps: null },
-      revalidate: 12,
-    };
-  }
-};
+//     return {
+//       props: { calculatedMiningStatsProps },
+//       revalidate: 12,
+//     };
+//   } catch (e) {
+//     console.log("getStaticProps error: ", e);
+//     return {
+//       props: { calculatedMiningStatsProps: null },
+//       revalidate: 12,
+//     };
+//   }
+// };
 
 export default MainPage;

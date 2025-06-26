@@ -1,13 +1,18 @@
 import axios from "axios";
 
-import { TARI_BLOCKS_HISTORY_API_URL } from "@/utils/constants";
+import {
+  isClient,
+  proxyUrl,
+  TARI_BLOCKS_HISTORY_API_URL,
+} from "@/utils/constants";
 import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
 import { calculateTotalXTM, getXtmChartHistory } from "@/utils/xtm-charts";
 
 const getXtmBlocksHistory = async (): Promise<XTMMiningHistory> => {
-  const { data, status } = await axios.get<XTMMiningHistory>(
-    TARI_BLOCKS_HISTORY_API_URL,
-  );
+  let url = isClient
+    ? proxyUrl(TARI_BLOCKS_HISTORY_API_URL)
+    : TARI_BLOCKS_HISTORY_API_URL;
+  const { data, status } = await axios.get<XTMMiningHistory>(url);
   return status === 200 ? data : null;
 };
 
@@ -62,7 +67,12 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
       tari_block_distributions,
     };
   } catch (error) {
-    console.log("/api/calculated-xtm-stats: ", error);
+    console.log(
+      "Calculated xtm-stats: ",
+      error,
+      isClient ? " on client" : " on server",
+    );
+    return null;
   }
 };
 

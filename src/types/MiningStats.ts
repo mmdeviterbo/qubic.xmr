@@ -57,16 +57,13 @@ export interface XMRMiningHistory {
   // qubic_epoch: '162'
 }
 
-export type CalculatedMiningStats = {
+export type CalculatedXMRMiningStats = {
   max_hashrate_stats: {
     max_hashrate: number;
     max_hashrate_last_update: string;
     max_hashrate_last_epoch: number;
   };
   monero_history_charts: XMRHistoryCharts;
-  tari_blocks_found: XTMHistoryCharts["tari_blocks_found"];
-  tari_history_charts: XTMHistoryCharts["blocks_found_chart"];
-  tari_block_distributions: XTMHistoryCharts["tari_block_distributions"];
 };
 
 interface DailyChart {
@@ -82,6 +79,7 @@ interface WeeklyChart {
   total_usdt: number;
 }
 
+//xmr - response
 export type XMRHistoryCharts = {
   blocks_found_chart: {
     daily: DailyChart[];
@@ -93,6 +91,7 @@ export type XMRHistoryCharts = {
   }[];
 };
 
+//xtm - response
 export interface XTMMiningHistory {
   blocks: {
     block_height: number;
@@ -105,6 +104,7 @@ export interface XTMMiningHistory {
   total_found: number;
 }
 
+//xtm - transformed
 export type XTMHistoryCharts = {
   tari_blocks_found: {
     pool_blocks_found: number;

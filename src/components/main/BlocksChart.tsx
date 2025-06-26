@@ -210,10 +210,12 @@ const BlockChart: FC<BlockChartProps> = ({
               },
             ]}
           />
-          <div className="z-1 pl-12 md:pl-16 flex items-end gap-1 opacity-[0.065] h-[45%] absolute text-base md:text-xl">
-            Powered by
-            <span className="cfb-token-text-normal">$CFB</span>
-          </div>
+          {!loading && (
+            <div className="z-1 pl-12 md:pl-16 flex items-end gap-1 opacity-[0.065] h-[45%] absolute text-base md:text-xl">
+              Powered by
+              <span className="cfb-token-text-normal">$CFB</span>
+            </div>
+          )}
           <canvas id={id} />
         </div>
       )}

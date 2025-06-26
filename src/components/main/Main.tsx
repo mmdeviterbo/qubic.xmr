@@ -43,7 +43,11 @@ const CfbMarquee = dynamic(
   { ssr: false },
 );
 
-import type { CalculatedMiningStats, MiningStats } from "@/types/MiningStats";
+import type {
+  CalculatedXMRMiningStats,
+  MiningStats,
+  XTMHistoryCharts,
+} from "@/types/MiningStats";
 import {
   formatLatestBlockFoundSubValue,
   formatPeakHashrateDateDifference,
@@ -59,21 +63,30 @@ import { isValidValue } from "@/utils/numbers";
 export interface MainProps {
   miningStats: MiningStats;
   isLoadingMiningStats: boolean;
-  calculatedMiningStats: CalculatedMiningStats;
+  calculatedMiningStats: CalculatedXMRMiningStats;
   isLoadingCalculatedMiningStats: boolean;
+
+  calculatedXTMMiningStats: XTMHistoryCharts;
+  isLoadingCalculatedXTMMiningStats: boolean;
 }
 
 const Main: FC<MainProps> = ({
+  //basic stats
   miningStats,
   isLoadingMiningStats,
+
+  //xmr
   calculatedMiningStats,
   isLoadingCalculatedMiningStats,
+
+  //xtm
+  calculatedXTMMiningStats,
+  isLoadingCalculatedXTMMiningStats,
 }) => {
   const {
     pool_hashrate,
     pool_hashrate_ranking,
     network_hashrate: monero_network_hashrate,
-    connected_miners,
     monero_blocks_found: { last_block_found, pool_blocks_found } = {},
     hashrate_averages: { hashrate_average_1h, hashrate_average_7d } = {},
     monero_block_distributions,
@@ -85,10 +98,13 @@ const Main: FC<MainProps> = ({
       blocks_found_chart: monero_blocks_found_chart,
       max_hashrates_chart,
     } = {},
-    tari_blocks_found,
-    tari_history_charts,
-    tari_block_distributions,
   } = calculatedMiningStats ?? {};
+
+  const {
+    tari_blocks_found,
+    blocks_found_chart: tari_history_charts,
+    tari_block_distributions,
+  } = calculatedXTMMiningStats ?? {};
 
   const monero_daily_blocks_found = useMemo(
     () => monero_blocks_found_chart?.daily?.at(-1).blocks_found,
@@ -265,7 +281,7 @@ const Main: FC<MainProps> = ({
               : "-",
           },
         ]}
-        loading={isLoadingCalculatedMiningStats}
+        loading={isLoadingCalculatedXTMMiningStats}
         chart={
           <Tab
             tabs={[
@@ -275,7 +291,7 @@ const Main: FC<MainProps> = ({
                   <BlocksChart
                     id="tari-blocks-bar-chart"
                     blocks_found_chart={tari_history_charts}
-                    loading={isLoadingCalculatedMiningStats}
+                    loading={isLoadingCalculatedXTMMiningStats}
                   />
                 ),
               },
@@ -285,17 +301,12 @@ const Main: FC<MainProps> = ({
                   <DistributionChart
                     id="tari-distribution-chart"
                     block_distributions={tari_block_distributions}
-                    loading={isLoadingCalculatedMiningStats}
+                    loading={isLoadingCalculatedXTMMiningStats}
                   />
                 ),
               },
             ]}
           />
-          // <BlocksChart
-          //   id="tari-blocks-bar-chart"
-          //   blocks_found_chart={tari_history_charts}
-          //   loading={isLoadingCalculatedMiningStats}
-          // />
         }
       />
     </>
