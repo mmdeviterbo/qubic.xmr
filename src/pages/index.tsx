@@ -61,10 +61,6 @@ const MainPage: NextPage<{
     },
   );
 
-  useEffect(() => {
-    console.log(miningStats);
-  }, [miningStats]);
-
   return (
     <>
       <main className="mx-auto mt-1.5 md:mt-8 w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] max-w-[1204px] px-3 md:px-12 pt-6 md:pt-4">
