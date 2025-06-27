@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 
@@ -13,7 +13,8 @@ export default function AdBanner() {
       try {
         // Only push if the ad hasn't been rendered yet
         if (!adRef.current?.querySelector("iframe")) {
-          ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+          ((window as any).adsbygoogle =
+            (window as any).adsbygoogle || []).push({});
           setAdLoaded(true);
         }
       } catch (e) {
