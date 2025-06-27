@@ -53,8 +53,12 @@ const QubicLogo: FC<QubicLogoProps> = ({ showTitle }) => {
 
   return (
     <div
-      className={`flex pl-4 w-fit p-2 rounded-md`}
+      className={`flex pl-4 w-fit p-2 rounded-md cursor-pointer`}
       style={{ backgroundColor: brandingColor.bgColor }}
+      onClick={(e) => {
+        e.preventDefault();
+        window.open(EXPLORER_QUBIC_URL, "_blank", "noopener,noreferrer");
+      }}
     >
       <svg
         width="95"
@@ -62,11 +66,6 @@ const QubicLogo: FC<QubicLogoProps> = ({ showTitle }) => {
         viewBox="0 0 95 26"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="cursor-pointer"
-        onClick={(e) => {
-          e.preventDefault();
-          window.open(EXPLORER_QUBIC_URL, "_blank", "noopener,noreferrer");
-        }}
       >
         <path
           d="M5.25 2H0.75C0.335786 2 0 2.33579 0 2.75V19.25C0 19.6642 0.335786 20 0.75 20H5.25C5.66421 20 6 19.6642 6 19.25V2.75C6 2.33579 5.66421 2 5.25 2Z"

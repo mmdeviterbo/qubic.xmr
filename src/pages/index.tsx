@@ -20,7 +20,7 @@ const Footer = dynamic(() => import("@/components/footer/Footer"), {
   ssr: false,
 });
 
-const MINING_STATS_DELAY = 2000;
+const MINING_STATS_DELAY = 3000;
 const CALCULATED_XMR_MINING_STATS_DELAY = 6000;
 const CALCULATED_XTM_MINING_STATS_DELAY = 6000;
 
