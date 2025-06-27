@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 
 export default function AdBanner() {
-  const adRef = useRef<HTMLDivElement>(null);
+  const adRef = useRef(null);
   const [adLoaded, setAdLoaded] = useState(false);
 
   useEffect(() => {
