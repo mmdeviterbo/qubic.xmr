@@ -48,6 +48,11 @@ export const SAFE_TRADE_KLINES_URL = (
 ) =>
   `${SAFE_TRADE_URL}/trade/public/markets/${id}/k-line?period=${period}&time_from=${time_from}&time_to=${time_to}&limit=${limit}`;
 
+const QUBIC_RAILWAY_SERVER = "https://qubicxmr-server-production.up.railway.app";
+export const QUBIC_RAILWAY_BLOCKS = `${QUBIC_RAILWAY_SERVER}/daily-blocks-found`;
+export const QUBIC_RAILWAY_MAX_HASHRATES = `${QUBIC_RAILWAY_SERVER}/max-hashrates`;
+
+
 export const QUBIC_SOLO_MINING_HISTORY =
   "http://66.179.92.83/data/qpool_V1.csv";
 

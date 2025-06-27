@@ -85,6 +85,7 @@ const getDailyBlocksFound = (
     charts.push({
       timestamp: history.at(startIndex).timestamp.split(" ")[0],
       blocks_found,
+      epoch: Number(history.at(startIndex).qubic_epoch),
       reward: blocks_found * blockToXMRConversion,
     });
   }
