@@ -20,10 +20,6 @@ const Footer = dynamic(() => import("@/components/footer/Footer"), {
   ssr: false,
 });
 
-const AdsBanner = dynamic(() => import("@/components/analytics/AdsBanner"), {
-  ssr: false,
-});
-
 const MINING_STATS_DELAY = 3000;
 const CALCULATED_XMR_MINING_STATS_DELAY = 6000;
 const CALCULATED_XTM_MINING_STATS_DELAY = 12000;
@@ -92,10 +88,6 @@ const MainPage: NextPage<{
       <footer className="mx-auto w-full flex flex-col gap-4 lg:w-2/3 xl:w-[55%] px-3 md:px-12 py-4 my-4">
         <Footer />
       </footer>
-
-      <div>
-        <AdsBanner />
-      </div>
     </>
   );
 };

@@ -12,7 +12,6 @@ import {
   TARI_BLOCKS_HISTORY_URL,
 } from "@/utils/constants";
 import useBreakpoints from "@/hooks/useBreakpoints";
-import CfbTokenMarquee from "../common/sponsor/cfb/CfbTokenMarquee";
 
 const Footer: FC = () => {
   const { isMd, isLg } = useBreakpoints();
@@ -61,8 +60,6 @@ const Footer: FC = () => {
 
   return (
     <div className="flex flex-col mb-1">
-      <CfbTokenMarquee />
-
       <div
         className="flex items-start justify-evenly my-4 text-gray-50"
         style={{
