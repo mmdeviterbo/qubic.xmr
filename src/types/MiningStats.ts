@@ -70,7 +70,7 @@ interface DailyChart {
   timestamp: string;
   blocks_found: number;
   reward: number;
-  epoch: number;
+  epoch?: number;
 }
 
 interface WeeklyChart {
