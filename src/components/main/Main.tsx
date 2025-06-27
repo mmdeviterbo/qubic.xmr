@@ -212,20 +212,22 @@ const Main: FC<MainProps> = ({
             ? pool_blocks_found?.toLocaleString()
             : "-",
         }}
-        rightSubtitles={[
-          {
-            label: Labels.DAILY_BLOCKS_FOUND,
-            value: isValidValue(monero_daily_blocks_found)
-              ? monero_daily_blocks_found?.toLocaleString()
-              : "-",
-          },
-          {
-            label: epochLabel,
-            value: isValidValue(monero_weekly_blocks_found)
-              ? monero_weekly_blocks_found?.toLocaleString()
-              : "-",
-          },
-        ]}
+        rightSubtitles={
+          [
+            // {
+            //   label: Labels.DAILY_BLOCKS_FOUND,
+            //   value: isValidValue(monero_daily_blocks_found)
+            //     ? monero_daily_blocks_found?.toLocaleString()
+            //     : "-",
+            // },
+            // {
+            //   label: epochLabel,
+            //   value: isValidValue(monero_weekly_blocks_found)
+            //     ? monero_weekly_blocks_found?.toLocaleString()
+            //     : "-",
+            // },
+          ]
+        }
         loading={isLoadingCalculatedXMRMiningStats || isLoadingMiningStats}
         chart={
           <Tab
@@ -237,6 +239,7 @@ const Main: FC<MainProps> = ({
                     id="monero-blocks-bar-chart"
                     blocks_found_chart={monero_blocks_found_chart}
                     loading={isLoadingCalculatedXMRMiningStats}
+                    showTimeframe={false}
                   />
                 ),
               },

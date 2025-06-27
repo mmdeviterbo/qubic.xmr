@@ -78,10 +78,22 @@ const getHashrateAverages = (poolsStats: Record<string, number | string>[]) => {
   };
 };
 
-const getMiningStats = async (): Promise<MiningStats> => {
+export const getOfficialMiningStats = async (): Promise<
+  Pick<
+    MiningStats,
+    "pool_hashrate" | "network_hashrate" | "connected_miners"
+  > & {
+    last_block_found: number;
+    pool_blocks_found: number;
+  }
+> => {
   let url = isClient
     ? proxyUrl(QUBIC_XMR_STATS_API_URL)
     : QUBIC_XMR_STATS_API_URL;
+  return (await axios.get(url)).data;
+};
+
+const getMiningStats = async (): Promise<MiningStats> => {
   try {
     let {
       pool_hashrate,
@@ -89,7 +101,7 @@ const getMiningStats = async (): Promise<MiningStats> => {
       connected_miners,
       last_block_found,
       pool_blocks_found,
-    } = (await axios.get(url)).data;
+    } = await getOfficialMiningStats();
 
     let latestBlockFoundTimeUrl = MONERO_MINING_LATEST_BLOCK_FOUND_URL();
     latestBlockFoundTimeUrl = isClient

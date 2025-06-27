@@ -24,6 +24,7 @@ interface BlockChartProps {
   id: string;
   blocks_found_chart: XMRHistoryCharts["blocks_found_chart"];
   loading: boolean;
+  showTimeframe?: boolean;
 }
 
 enum Timeframe {
@@ -35,6 +36,7 @@ const BlockChart: FC<BlockChartProps> = ({
   id,
   blocks_found_chart,
   loading,
+  showTimeframe = true,
 }) => {
   const { isMd, isLg } = useBreakpoints();
 
@@ -196,20 +198,22 @@ const BlockChart: FC<BlockChartProps> = ({
         <ChartSkeleton />
       ) : (
         <div className="relative flex flex-col">
-          <FilterButtons
-            buttons={[
-              {
-                label: "Epoch",
-                onClick: () => setTimeframe(Timeframe.EPOCH),
-                isActive: Timeframe.EPOCH === timeframe,
-              },
-              {
-                label: "1d",
-                onClick: () => setTimeframe(Timeframe.DAILY),
-                isActive: Timeframe.DAILY === timeframe,
-              },
-            ]}
-          />
+          {showTimeframe && (
+            <FilterButtons
+              buttons={[
+                {
+                  label: "Epoch",
+                  onClick: () => setTimeframe(Timeframe.EPOCH),
+                  isActive: Timeframe.EPOCH === timeframe,
+                },
+                {
+                  label: "1d",
+                  onClick: () => setTimeframe(Timeframe.DAILY),
+                  isActive: Timeframe.DAILY === timeframe,
+                },
+              ]}
+            />
+          )}
           {!loading && (
             <div className="z-1 pl-12 md:pl-16 flex items-end gap-1 opacity-[0.065] h-[45%] absolute text-base md:text-xl">
               Powered by

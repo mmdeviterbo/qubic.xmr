@@ -15,6 +15,7 @@ import {
   QUBIC_SOLO_MINING_HISTORY,
 } from "@/utils/constants";
 import CHECKPOINTS from "@/utils/checkpoints.json";
+import { getOfficialMiningStats } from "../mining-stats";
 
 const getMaxHashrateHistory = (
   history: XMRMiningHistory[],
@@ -73,8 +74,12 @@ const getMoneroCalculatedMiningStats =
 
       const xmrHistory = await getXMRMiningHistory();
 
-      const { blocks_found_chart, max_hashrates_chart } =
-        await getChartHistory(xmrHistory);
+      const { pool_blocks_found } = await getOfficialMiningStats();
+
+      const { blocks_found_chart, max_hashrates_chart } = await getChartHistory(
+        xmrHistory,
+        pool_blocks_found,
+      );
 
       const maxHashrateHistory = getMaxHashrateHistory(xmrHistory);
       const max_hashrate = Number(maxHashrateHistory.pool_hashrate);

@@ -1,4 +1,32 @@
 {
+  "BLOCKS_FOUND": {
+    "WEEKLY": [
+      {
+        "blocks_found": 11,
+        "epoch": 161
+      },
+      {
+        "blocks_found": 63,
+        "epoch": 162
+      },
+      {
+        "blocks_found": 88,
+        "epoch": 163
+      },
+      {
+        "blocks_found": 143,
+        "epoch": 164
+      },
+      {
+        "blocks_found": 228,
+        "epoch": 165
+      },
+      {
+        "blocks_found": 317,
+        "epoch": 166
+      }
+    ]
+  },
   "MAX_HASHRATE": {
     "latestIndex": 723416,
     "latestMaxHashrateIndex": 665852

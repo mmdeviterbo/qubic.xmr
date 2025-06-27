@@ -94,6 +94,7 @@ const getDailyBlocksFound = (
 const getWeeklyBlocksFound = async (
   weeklyHistory: XMRMiningHistory[],
   history: XMRMiningHistory[],
+  pool_blocks_found: number,
 ): Promise<XMRHistoryCharts["blocks_found_chart"]["weekly"]> => {
   let charts =
     [] as unknown as XMRHistoryCharts["blocks_found_chart"]["weekly"];
@@ -118,20 +119,45 @@ const getWeeklyBlocksFound = async (
     ).getTime();
 
     const isLastItem = maxWeeklyHistoryLength === i + 1;
-    mexcXMRArgs.push({
-      startTime: isLastItem ? startTime - 3600000 : startTime,
-      endTime: isLastItem ? startTime : startTime + 3600000,
-      interval: MEXCInterval.ONE_HOUR,
-      symbol: "XMRUSDT",
-      epoch: epoch,
-    });
+    if (isLastItem) {
+      let lastItemStartTime = new Date().getTime();
+      mexcXMRArgs.push({
+        startTime: lastItemStartTime - 3600000,
+        endTime: lastItemStartTime,
+        interval: MEXCInterval.ONE_HOUR,
+        symbol: "XMRUSDT",
+        epoch: epoch,
+      });
+    } else {
+      mexcXMRArgs.push({
+        startTime: startTime,
+        endTime: startTime + 3600000,
+        interval: MEXCInterval.ONE_HOUR,
+        symbol: "XMRUSDT",
+        epoch: epoch,
+      });
+    }
 
-    charts.push({
-      blocks_found,
-      epoch: epoch++,
-      reward: blocks_found * blockToXMRConversion,
-      total_usdt: 0,
-    });
+    if (isLastItem) {
+      let previousTotalBlocks = charts.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.blocks_found,
+        0,
+      );
+      const currentBlocksFound = pool_blocks_found - previousTotalBlocks;
+      charts.push({
+        blocks_found: currentBlocksFound,
+        epoch: epoch++,
+        reward: currentBlocksFound * blockToXMRConversion,
+        total_usdt: 0,
+      });
+    } else {
+      charts.push({
+        blocks_found,
+        epoch: epoch++,
+        reward: blocks_found * blockToXMRConversion,
+        total_usdt: 0,
+      });
+    }
   }
 
   const mexcXMRPrices = await getMEXCXMRPrice(mexcXMRArgs);
@@ -265,6 +291,7 @@ function getXmrDailyIndeces(history: XMRMiningHistory[]): number[] {
 
 export const getChartHistory = async (
   history: XMRMiningHistory[],
+  pool_blocks_found: number,
 ): Promise<XMRHistoryCharts> => {
   history = history.at(-1).timestamp === "" ? history.slice(0, -1) : history;
 
@@ -272,7 +299,11 @@ export const getChartHistory = async (
     ...history[i],
     index: i,
   }));
-  const weekly = await getWeeklyBlocksFound(historyWithIndexWeekly, history);
+  const weekly = await getWeeklyBlocksFound(
+    historyWithIndexWeekly,
+    history,
+    pool_blocks_found,
+  );
 
   const historyWithIndexDaily: XMRMiningHistory[] = getXmrDailyIndeces(
     history,
