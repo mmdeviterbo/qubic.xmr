@@ -20,7 +20,7 @@ const Footer: FC = () => {
   const leftLinks = useMemo(() => {
     return [
       {
-        label: "Buy me a coffe (spanish latte)",
+        label: "Buy me a coffee (spanish latte)",
         href: DONATE_X_URL,
       },
       {

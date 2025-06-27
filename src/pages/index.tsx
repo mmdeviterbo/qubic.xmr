@@ -39,7 +39,7 @@ const MainPage: NextPage<{
   );
 
   const {
-    data: calculatedXMRMiningStats,
+    data: calculatedXMRMiningStats = calculatedXMRMiningStatsProps,
     isLoading: isLoadingCalculatedXMRMiningStats,
   } = useSWR<CalculatedXMRMiningStats>(
     "/calculated-xmr-mining-stats",

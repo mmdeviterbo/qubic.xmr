@@ -226,7 +226,7 @@ const Main: FC<MainProps> = ({
               : "-",
           },
         ]}
-        loading={isLoadingCalculatedXMRMiningStats}
+        loading={isLoadingCalculatedXMRMiningStats || isLoadingMiningStats}
         chart={
           <Tab
             tabs={[
