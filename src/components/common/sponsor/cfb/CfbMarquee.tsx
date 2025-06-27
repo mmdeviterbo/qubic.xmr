@@ -7,7 +7,18 @@ const CfbMarquee: FC = () => {
   const marginRight = useMemo(() => "mr-4 md:mr-6", []);
 
   const separatorPeriod = useMemo(
-    () => <span className={`text-3xl md:text-4xl ${marginRight}`}>•</span>,
+    () => (
+      <span
+        className={`text-3xl md:text-4xl ${marginRight}`}
+        style={{
+          WebkitUserSelect: "none",
+          msUserSelect: "none",
+          userSelect: "none",
+        }}
+      >
+        •
+      </span>
+    ),
     [],
   );
 
@@ -23,6 +34,11 @@ const CfbMarquee: FC = () => {
       <span
         onClick={openCfbTokenSite}
         className="cfb-token-text cursor-pointer"
+        style={{
+          WebkitUserSelect: "none",
+          msUserSelect: "none",
+          userSelect: "none",
+        }}
       >
         Powered by&nbsp;
         <span
@@ -43,6 +59,11 @@ const CfbMarquee: FC = () => {
       <span
         className={`cfb-token-text cursor-pointer ${marginRight}`}
         onClick={openCfbTokenSite}
+        style={{
+          WebkitUserSelect: "none",
+          msUserSelect: "none",
+          userSelect: "none",
+        }}
       >
         1st memecoin on Qubic
       </span>
