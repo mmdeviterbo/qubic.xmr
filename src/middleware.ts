@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
   const host = request.headers.get("host");
 
   // Replace with your actual custom domain
-  if (host?.includes("vercel.app")) {
+  if (host?.includes("qubic-xmr.vercel.app")) {
     const customDomain = "https://www.qubic-xmr.live";
     return NextResponse.redirect(customDomain, 301);
   }
