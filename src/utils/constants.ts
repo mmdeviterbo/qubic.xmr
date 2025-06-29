@@ -13,7 +13,7 @@ export const QUBIC_XMR_STATS_URL = `https://xmr-stats.${QUBIC_URL}`;
 export const QUBIC_XMR_STATS_API_URL = `${QUBIC_XMR_STATS_URL}/stats`;
 export const EXPLORER_QUBIC_URL = `https://explorer.${QUBIC_URL}/network`;
 const MONERO_MINING_POOLS_STATS_BASE_URL = "miningpoolstats.stream";
-export const MONERO_MINING_POOLS_STATS_LIST_URL = `${MONERO_MINING_POOLS_STATS_BASE_URL}/monero`;
+export const MONERO_MINING_POOLS_STATS_LIST_URL = `https://${MONERO_MINING_POOLS_STATS_BASE_URL}/monero`;
 
 export const MONERO_MINING_LATEST_BLOCK_FOUND_URL = `https://${MONERO_MINING_POOLS_STATS_BASE_URL}/data/time`;
 export const MONERO_MINING_POOLS_STATS_URL = (seconds: number) =>

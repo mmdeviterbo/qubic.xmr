@@ -17,7 +17,7 @@ const Footer: FC = () => {
   const leftLinks = useMemo(() => {
     return [
       {
-        label: "Buy me a coffee (spanish latte)",
+        label: "Buy me a coffee",
         href: DONATE_X_URL,
       },
       {
@@ -25,7 +25,7 @@ const Footer: FC = () => {
         href: QUBIC_XMR_STATS_URL,
       },
       {
-        label: "Qubic-Tari Live Stats",
+        label: "Qubic-Tari Stats (@spettro)",
         href: TARI_BLOCKS_HISTORY_URL,
       },
       {
