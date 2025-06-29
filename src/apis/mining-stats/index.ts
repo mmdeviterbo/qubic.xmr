@@ -103,10 +103,10 @@ const getMiningStats = async (): Promise<MiningStats> => {
       pool_blocks_found,
     } = await getOfficialMiningStats();
 
-    let latestBlockFoundTimeUrl = MONERO_MINING_LATEST_BLOCK_FOUND_URL();
-    latestBlockFoundTimeUrl = isClient
-      ? proxyUrl(latestBlockFoundTimeUrl)
-      : latestBlockFoundTimeUrl;
+    let latestBlockFoundTimeUrl = isClient
+      ? proxyUrl(MONERO_MINING_LATEST_BLOCK_FOUND_URL)
+      : MONERO_MINING_LATEST_BLOCK_FOUND_URL;
+
     const latestBlockFoundTime: number = (
       await axios.get(latestBlockFoundTimeUrl)
     )?.data;

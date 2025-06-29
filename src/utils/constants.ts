@@ -16,8 +16,7 @@ const MONERO_MINING_POOLS_STATS_BASE_URL = "miningpoolstats.stream";
 export const QUBIC_XMR_STREAMLIT_APP_URL =
   "https://qubic-xmr-stats.streamlit.app";
 
-export const MONERO_MINING_LATEST_BLOCK_FOUND_URL = (seconds?: number) =>
-  `https://${MONERO_MINING_POOLS_STATS_BASE_URL}/data/time?t=${seconds}`;
+export const MONERO_MINING_LATEST_BLOCK_FOUND_URL = `https://${MONERO_MINING_POOLS_STATS_BASE_URL}/data/time`;
 export const MONERO_MINING_POOLS_STATS_URL = (seconds: number) =>
   `https://data.${MONERO_MINING_POOLS_STATS_BASE_URL}/data/monero.js?t=${seconds}`;
 export const MONERO_MINING_BLOCK_DISTRIBUTION_URL = (seconds: number) =>
