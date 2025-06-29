@@ -31,6 +31,11 @@ enum Timeframe {
   DAILY,
 }
 
+enum ChartType {
+  BAR = "bar",
+  LINE = "line",
+}
+
 const BlockChart: FC<BlockChartProps> = ({
   id,
   blocks_found_chart,
@@ -45,9 +50,12 @@ const BlockChart: FC<BlockChartProps> = ({
     [id],
   );
 
+  const [chartType, setChartType] = useState<ChartType>(ChartType.BAR);
   const [timeframe, setTimeframe] = useState<Timeframe>(Timeframe.EPOCH);
 
   const [xy, setXY] = useState<{ x: string[]; y: number[] }>();
+
+  const isBarChart = useMemo(() => chartType === ChartType.BAR, [chartType]);
 
   const getTotalReward = useCallback(
     (index: number, timeframe: Timeframe): string => {
@@ -104,9 +112,9 @@ const BlockChart: FC<BlockChartProps> = ({
       return;
     }
 
-    const barChart = new Chart(ctx, {
+    const chart = new Chart(ctx, {
       plugins: [ChartDataLabels],
-      type: "bar",
+      type: chartType,
       data: {
         labels: xy.x,
         datasets: [
@@ -115,6 +123,7 @@ const BlockChart: FC<BlockChartProps> = ({
             data: xy.y,
             borderWidth: 1,
             borderRadius: timeframe === Timeframe.DAILY ? 1 : 2,
+            pointRadius: 0,
             datalabels: {
               font: {
                 size: isWiderScreen
@@ -163,21 +172,24 @@ const BlockChart: FC<BlockChartProps> = ({
           datalabels: {
             color: "white",
             formatter: (value, context) => {
-              const index = context.dataIndex;
-              const totalUSDT = getTotalUSDT(index, timeframe);
-              const lines = [value];
-              if (totalUSDT) {
-                // if (index !== 0) {
-                //   lines.push(``);
-                // }
-                lines.push(totalUSDT);
+              if (isBarChart) {
+                const index = context.dataIndex;
+                const totalUSDT = getTotalUSDT(index, timeframe);
+                const lines = [value];
+                if (totalUSDT) {
+                  // if (index !== 0) {
+                  //   lines.push(``);
+                  // }
+                  lines.push(totalUSDT);
+                }
+                return lines;
               }
-              return lines;
+              return "";
             },
             textAlign: "center",
             anchor: timeframe === Timeframe.DAILY ? "end" : "center",
             align: timeframe === Timeframe.DAILY ? "top" : "center",
-            offset: timeframe === Timeframe.DAILY ? 1 : 0,
+            offset: timeframe === Timeframe.DAILY ? 0.5 : 0,
           },
           legend: {
             display: false,
@@ -186,9 +198,9 @@ const BlockChart: FC<BlockChartProps> = ({
       },
     });
     return () => {
-      barChart.destroy();
+      chart.destroy();
     };
-  }, [xy, id]);
+  }, [xy, id, chartType]);
 
   return (
     <div className="w-full relative">
@@ -197,7 +209,7 @@ const BlockChart: FC<BlockChartProps> = ({
       ) : (
         <div className="relative flex flex-col">
           <FilterButtons
-            buttons={[
+            leftButtons={[
               {
                 label: "Epoch",
                 onClick: () => setTimeframe(Timeframe.EPOCH),
@@ -207,6 +219,50 @@ const BlockChart: FC<BlockChartProps> = ({
                 label: "1d",
                 onClick: () => setTimeframe(Timeframe.DAILY),
                 isActive: Timeframe.DAILY === timeframe,
+              },
+            ]}
+            rightButtons={[
+              {
+                label: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+                    <path d="M18 17V9" />
+                    <path d="M13 17V5" />
+                    <path d="M8 17v-3" />
+                  </svg>
+                ),
+                onClick: () => setChartType(ChartType.BAR),
+                isActive: isBarChart,
+              },
+              {
+                label: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+                    <path d="m19 9-5 5-4-4-3 3" />
+                  </svg>
+                ),
+                onClick: () => setChartType(ChartType.LINE),
+                isActive: !isBarChart,
               },
             ]}
           />

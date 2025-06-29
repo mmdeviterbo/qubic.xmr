@@ -104,7 +104,7 @@ const DistributionChart: FC<DistributionChartProps> = ({
       ) : (
         <div className="flex flex-col">
           <FilterButtons
-            buttons={[
+            leftButtons={[
               {
                 label: `Last ${Number(LAST_N_DISTRIBUTION.THOUSAND).toLocaleString()}`,
                 onClick: () =>
