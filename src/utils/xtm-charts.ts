@@ -45,8 +45,7 @@ const getSafeTradeXTMPrice = async (
   const response = await Promise.all(apis);
   for await (const data of response) {
     const price = await data.json();
-    console.log(price)
-
+    // if(price)
     prices.push(price[0]?.[4]);
   }
   return prices;
