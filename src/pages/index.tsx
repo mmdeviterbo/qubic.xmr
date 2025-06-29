@@ -25,7 +25,7 @@ import {
 } from "@/utils/constants";
 
 const MINING_STATS_DELAY = 2000;
-const CALCULATED_XTM_MINING_STATS_DELAY = 15000;
+const CALCULATED_XTM_MINING_STATS_DELAY = 10000;
 
 const MainPage: NextPage<{
   miningStatsProps?: MiningStats;
