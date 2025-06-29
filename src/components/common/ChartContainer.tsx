@@ -1,5 +1,7 @@
 import { memo, type FC, type ReactNode } from "react";
 
+import isEmpty from "lodash/isEmpty";
+
 type Subtitle = {
   label: string;
   sublabel?: string;
@@ -52,12 +54,10 @@ const ChartContainer: FC<ChartContainerProps> = ({
               key={r.label}
               className={`flex gap-3 justify-between ${loading ? "items-center mb-1 gap-1" : "gap-3 "}`}
             >
-              {!loading ? (
+              {!loading && !isEmpty(r.value) && (
                 <span className="text-gray-50 whitespace-nowrap">
                   {r.label}
                 </span>
-              ) : (
-                <div className="animate-pulse w-10 h-3 rounded-xl bg-gray-800" />
               )}
 
               {!loading ? (
