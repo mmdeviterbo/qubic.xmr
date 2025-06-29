@@ -1,4 +1,3 @@
-"use client";
 import { memo, useMemo, type FC } from "react";
 import Marquee from "react-fast-marquee";
 import { openCfbTokenSite } from "./CfbToken";

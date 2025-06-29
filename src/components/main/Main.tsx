@@ -10,6 +10,7 @@ import MaxHashratesChart from "@/components/main/MaxHashratesChart";
 import QubicLogo from "@/components/common/logos/QubicLogo";
 import Card from "@/components/common/Card";
 import Tab from "@/components/common/Tab";
+import CfbMarquee from "../common/sponsor/cfb/CfbMarquee";
 
 const CfbPost = dynamic(
   () => import("@/components/common/sponsor/cfb/CfbPost"),
@@ -18,11 +19,6 @@ const CfbPost = dynamic(
 
 const CfbToken = dynamic(
   () => import("@/components/common/sponsor/cfb/CfbToken"),
-  { ssr: false },
-);
-
-const CfbMarquee = dynamic(
-  () => import("@/components/common/sponsor/cfb/CfbMarquee"),
   { ssr: false },
 );
 
