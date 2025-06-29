@@ -40,13 +40,10 @@ const getSafeTradeXTMPrice = async (
     }
   });
 
-  console.log("apis: ", apis.length)
-
   const response = await Promise.all(apis);
   for await (const data of response) {
     const price = await data.json();
-    // if(price)
-    prices.push(price[0]?.[4]);
+    prices.push(price?.[0]?.[4]);
   }
   return prices;
 };
