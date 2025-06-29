@@ -20,7 +20,15 @@ const getMiningPoolsStats = async (latestBlockFoundTime: number) => {
   poolsStatsUrl = isClient ? proxyUrl(poolsStatsUrl) : poolsStatsUrl;
 
   const poolsStats: Record<string, number | string>[] = (
-    await axios.get(poolsStatsUrl)
+    await axios.get(poolsStatsUrl, {
+      headers: {
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+        "Surrogate-Control": "no-store",
+      },
+    })
   )?.data?.data;
 
   return poolsStats;
@@ -108,7 +116,15 @@ const getMiningStats = async (): Promise<MiningStats> => {
       : MONERO_MINING_LATEST_BLOCK_FOUND_URL;
 
     const latestBlockFoundTime: number = (
-      await axios.get(latestBlockFoundTimeUrl)
+      await axios.get(latestBlockFoundTimeUrl, {
+        headers: {
+          "Cache-Control":
+            "no-store, no-cache, must-revalidate, proxy-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+          "Surrogate-Control": "no-store",
+        },
+      })
     )?.data;
 
     const poolsStats = await getMiningPoolsStats(latestBlockFoundTime);
