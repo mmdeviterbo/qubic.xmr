@@ -72,7 +72,7 @@ const BlockChart: FC<BlockChartProps> = ({
     while (currentY < maxY) {
       currentY = currentY + yInterval;
     }
-    setMaxYInterval(currentY + yInterval);
+    setMaxYInterval(currentY + 10);
   }, [timeframe, chartType, yInterval, xy]);
 
   const getTotalReward = useCallback(
@@ -162,7 +162,7 @@ const BlockChart: FC<BlockChartProps> = ({
         scales: {
           y: {
             beginAtZero: true,
-            max: maxYInterval,
+            // max: maxYInterval,
           },
         },
         plugins: {
