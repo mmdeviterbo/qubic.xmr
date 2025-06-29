@@ -144,7 +144,7 @@ const BlockChart: FC<BlockChartProps> = ({
         responsive: true,
         layout: {
           padding: {
-            top: timeframe === Timeframe.DAILY ? 10 : 0,
+            top: timeframe === Timeframe.DAILY ? 15 : 0,
             right: 2,
           },
         },
