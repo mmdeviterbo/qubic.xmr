@@ -189,7 +189,6 @@ const BlockChart: FC<BlockChartProps> = ({
             textAlign: "center",
             anchor: timeframe === Timeframe.DAILY ? "end" : "center",
             align: timeframe === Timeframe.DAILY ? "top" : "center",
-            offset: timeframe === Timeframe.DAILY ? 0.5 : 0,
           },
           legend: {
             display: false,
