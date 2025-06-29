@@ -98,7 +98,15 @@ export const getOfficialMiningStats = async (): Promise<
   let url = isClient
     ? proxyUrl(QUBIC_XMR_STATS_API_URL)
     : QUBIC_XMR_STATS_API_URL;
-  return (await axios.get(url)).data;
+  const response = await axios.get(url, {
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+      "Surrogate-Control": "no-store",
+    },
+  });
+  return response.data;
 };
 
 const getMiningStats = async (): Promise<MiningStats> => {
