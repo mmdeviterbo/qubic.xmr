@@ -29,10 +29,15 @@ const MINING_STATS_DELAY = 2000;
 const CALCULATED_XTM_MINING_STATS_DELAY = 10000;
 
 const MainPage: NextPage<{
+  miningStatsProps?: MiningStats;
   advanceMiningStatsProps?: AdvanceMiningCharts;
   calculatedXTMMiningStatsProps?: XTMHistoryCharts;
-}> = ({ advanceMiningStatsProps, calculatedXTMMiningStatsProps }) => {
-  const { data: miningStats } = useSWR<MiningStats>(
+}> = ({
+  miningStatsProps,
+  advanceMiningStatsProps,
+  calculatedXTMMiningStatsProps,
+}) => {
+  const { data: miningStats = miningStatsProps } = useSWR<MiningStats>(
     "/mining-stats",
     getMiningStats,
     {
@@ -85,6 +90,8 @@ const MainPage: NextPage<{
 
 export const getStaticProps = async () => {
   try {
+    const miningStats = await getMiningStats();
+
     const baseUrl = process.env.BASE_URL;
     const tariMiningStats = await axios.get(
       `${baseUrl}/api/calculated-xtm-stats`,
@@ -98,6 +105,7 @@ export const getStaticProps = async () => {
 
     return {
       props: {
+        miningStatsProps: miningStats,
         advanceMiningStatsProps: advanceMiningStats,
         calculatedXTMMiningStatsProps: calculatedXTMMiningStats,
       },
@@ -107,6 +115,7 @@ export const getStaticProps = async () => {
     console.log("getStaticProps error: ", e);
     return {
       props: {
+        miningStats: null,
         advanceMiningStatsProps: null,
         calculatedXTMMiningStatsProps: null,
       },
