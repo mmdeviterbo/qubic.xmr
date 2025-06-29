@@ -1,14 +1,13 @@
 import { type FC, memo, useLayoutEffect, useMemo, useState } from "react";
 
 import isNull from "lodash/isNull";
+import isEmpty from "lodash/isEmpty";
 import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import isEmpty from "lodash/isEmpty";
 
-import type { MiningStats, XMRHistoryCharts } from "@/types/MiningStats";
+import type { MiningStats } from "@/types/MiningStats";
 import ChartSkeleton from "../common/ChartSkeleton";
-import { formatLargeNumber } from "@/utils/numbers";
-import { Labels, moneroTicker, tariTicker } from "@/utils/constants";
+import { Labels } from "@/utils/constants";
 import FilterButtons from "../common/FilterButtons";
 
 interface DistributionChartProps {

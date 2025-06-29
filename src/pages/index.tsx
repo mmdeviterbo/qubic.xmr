@@ -1,32 +1,35 @@
+import { useState } from "react";
 import type { NextPage } from "next";
 
-import axios from "axios";
 import isEmpty from "lodash/isEmpty";
 import useSWR from "swr";
-import dynamic from "next/dynamic";
 
 import Main from "@/components/main/Main";
+import Footer from "@/components/footer/Footer";
+
+import type { MiningStats, XTMHistoryCharts } from "@/types/MiningStats";
 import type {
-  CalculatedXMRMiningStats,
-  MiningStats,
-  XTMHistoryCharts,
+  AdvanceMiningCharts,
+  AdvanceMiningStatsResponse,
 } from "@/types/MiningStats";
 import getMiningStats from "@/apis/mining-stats";
 import getTariCalculatedMiningStats from "@/apis/calculated-xtm-stats";
-import getMoneroCalculatedMiningStats from "@/apis/calculated-xmr-stats";
-import { SWR_HOOK_DEFAULTS } from "@/utils/constants";
+import {
+  getAdvanceMiningStats,
+  transformAdvanceMiningStats,
+} from "@/apis/advance-mining-stats";
+import useServerSentEvents from "@/hooks/useServerSentEvents";
+import {
+  QUBIC_RAILWAY_SERVER_ADVANCE_MINING_STATS_EVENT_STREAM,
+  SWR_HOOK_DEFAULTS,
+} from "@/utils/constants";
 
-const Footer = dynamic(() => import("@/components/footer/Footer"), {
-  ssr: false,
-});
-
-const MINING_STATS_DELAY = 3000;
-const CALCULATED_XMR_MINING_STATS_DELAY = 6000;
-const CALCULATED_XTM_MINING_STATS_DELAY = 12000;
+const MINING_STATS_DELAY = 2000;
+const CALCULATED_XTM_MINING_STATS_DELAY = 6000;
 
 const MainPage: NextPage<{
-  calculatedXMRMiningStatsProps?: CalculatedXMRMiningStats;
-}> = ({ calculatedXMRMiningStatsProps }) => {
+  advanceMiningStatsProps?: AdvanceMiningCharts;
+}> = ({ advanceMiningStatsProps: advanceMiningStatsProps }) => {
   const { data: miningStats } = useSWR<MiningStats>(
     "/mining-stats",
     getMiningStats,
@@ -38,19 +41,12 @@ const MainPage: NextPage<{
     },
   );
 
-  const {
-    data: calculatedXMRMiningStats = calculatedXMRMiningStatsProps,
-    isLoading: isLoadingCalculatedXMRMiningStats,
-  } = useSWR<CalculatedXMRMiningStats>(
-    "/calculated-xmr-mining-stats",
-    getMoneroCalculatedMiningStats,
-    {
-      ...SWR_HOOK_DEFAULTS,
-      refreshInterval: CALCULATED_XMR_MINING_STATS_DELAY,
-      focusThrottleInterval: CALCULATED_XMR_MINING_STATS_DELAY,
-      dedupingInterval: CALCULATED_XMR_MINING_STATS_DELAY,
-    },
-  );
+  const [advanceMiningStats, setAdvanceMiningStats] =
+    useState<AdvanceMiningCharts>(advanceMiningStatsProps);
+  useServerSentEvents<AdvanceMiningStatsResponse>(async (data) => {
+    const transformedData = await transformAdvanceMiningStats(data);
+    setAdvanceMiningStats(transformedData);
+  }, QUBIC_RAILWAY_SERVER_ADVANCE_MINING_STATS_EVENT_STREAM);
 
   const { data: calculatedXTMMiningStats } = useSWR<XTMHistoryCharts>(
     "/calculated-xtm-mining-stats",
@@ -70,16 +66,8 @@ const MainPage: NextPage<{
         <Main
           miningStats={miningStats}
           isLoadingMiningStats={isEmpty(miningStats)}
-          calculatedXMRMiningStats={
-            isLoadingCalculatedXMRMiningStats ||
-            isEmpty(calculatedXMRMiningStats)
-              ? calculatedXMRMiningStatsProps
-              : calculatedXMRMiningStats
-          }
-          isLoadingCalculatedXMRMiningStats={
-            isEmpty(calculatedXMRMiningStatsProps) &&
-            isEmpty(calculatedXMRMiningStats)
-          }
+          advanceMiningStats={advanceMiningStats}
+          isLoadingAdvanceMiningStats={isEmpty(advanceMiningStats)}
           calculatedXTMMiningStats={calculatedXTMMiningStats}
           isLoadingCalculatedXTMMiningStats={isEmpty(calculatedXTMMiningStats)}
         />
@@ -94,24 +82,17 @@ const MainPage: NextPage<{
 
 export const getStaticProps = async () => {
   try {
-    const baseUrl = process.env.BASE_URL;
-
-    const calculatedMiningStatsResponse =
-      await axios.get<CalculatedXMRMiningStats>(
-        `${baseUrl}/api/calculated-mining-stats`,
-      );
+    const advanceMiningStats = await getAdvanceMiningStats();
 
     return {
-      props: {
-        calculatedXMRMiningStatsProps: calculatedMiningStatsResponse?.data,
-      },
-      revalidate: 12,
+      props: { advanceMiningStatsProps: advanceMiningStats },
+      revalidate: 5,
     };
   } catch (e) {
     console.log("getStaticProps error: ", e);
     return {
-      props: { calculatedXMRMiningStatsProps: null },
-      revalidate: 12,
+      props: { advanceMiningStatsProps: null },
+      revalidate: 5,
     };
   }
 };

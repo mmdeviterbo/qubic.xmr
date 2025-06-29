@@ -1,32 +1,15 @@
 import { memo, useMemo, type FC, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 
-const Tab = dynamic(() => import("@/components/common/Tab"), { ssr: false });
+import maxBy from "lodash/maxBy";
 
-const BlocksChart = dynamic(() => import("@/components/main/BlocksChart"), {
-  ssr: false,
-});
-
-const DistributionChart = dynamic(
-  () => import("@/components/main/DistributionChart"),
-  { ssr: false },
-);
-
-const MaxHashratesChart = dynamic(
-  () => import("@/components/main/MaxHashratesChart"),
-  { ssr: false },
-);
-
-const QubicLogo = dynamic(() => import("@/components/common/logos/QubicLogo"), {
-  ssr: false,
-});
-
-const Card = dynamic(() => import("@/components/common/Card"), { ssr: false });
-
-const ChartContainer = dynamic(
-  () => import("@/components/common/ChartContainer"),
-  { ssr: false },
-);
+import ChartContainer from "@/components/common/ChartContainer";
+import BlocksChart from "@/components/main/BlocksChart";
+import DistributionChart from "@/components/main/DistributionChart";
+import MaxHashratesChart from "@/components/main/MaxHashratesChart";
+import QubicLogo from "@/components/common/logos/QubicLogo";
+import Card from "@/components/common/Card";
+import Tab from "@/components/common/Tab";
 
 const CfbPost = dynamic(
   () => import("@/components/common/sponsor/cfb/CfbPost"),
@@ -43,11 +26,8 @@ const CfbMarquee = dynamic(
   { ssr: false },
 );
 
-import type {
-  CalculatedXMRMiningStats,
-  MiningStats,
-  XTMHistoryCharts,
-} from "@/types/MiningStats";
+import type { MiningStats, XTMHistoryCharts } from "@/types/MiningStats";
+import { type AdvanceMiningCharts } from "@/types/MiningStats";
 import {
   formatLatestBlockFoundSubValue,
   formatPeakHashrateDateDifference,
@@ -64,8 +44,8 @@ export interface MainProps {
   miningStats: MiningStats;
   isLoadingMiningStats: boolean;
 
-  calculatedXMRMiningStats: CalculatedXMRMiningStats;
-  isLoadingCalculatedXMRMiningStats: boolean;
+  advanceMiningStats: AdvanceMiningCharts;
+  isLoadingAdvanceMiningStats: boolean;
 
   calculatedXTMMiningStats: XTMHistoryCharts;
   isLoadingCalculatedXTMMiningStats: boolean;
@@ -77,8 +57,8 @@ const Main: FC<MainProps> = ({
   isLoadingMiningStats,
 
   //xmr
-  calculatedXMRMiningStats,
-  isLoadingCalculatedXMRMiningStats,
+  advanceMiningStats,
+  isLoadingAdvanceMiningStats,
 
   //xtm
   calculatedXTMMiningStats,
@@ -93,13 +73,8 @@ const Main: FC<MainProps> = ({
     monero_block_distributions,
   } = miningStats ?? {};
 
-  const {
-    max_hashrate_stats: { max_hashrate, max_hashrate_last_update } = {},
-    monero_history_charts: {
-      blocks_found_chart: monero_blocks_found_chart,
-      max_hashrates_chart,
-    } = {},
-  } = calculatedXMRMiningStats ?? {};
+  const { blocksChart: moneroBlocksChart, hashratesChart } =
+    advanceMiningStats ?? {};
 
   const {
     tari_blocks_found,
@@ -108,12 +83,12 @@ const Main: FC<MainProps> = ({
   } = calculatedXTMMiningStats ?? {};
 
   const monero_daily_blocks_found = useMemo(
-    () => monero_blocks_found_chart?.daily?.at(-1).blocks_found,
-    [monero_blocks_found_chart?.daily?.at(-1)],
+    () => moneroBlocksChart?.daily?.at(-1).blocks_found,
+    [moneroBlocksChart?.daily?.at(-1)],
   );
   const monero_weekly_blocks_found = useMemo(
-    () => monero_blocks_found_chart?.weekly?.at(-1).blocks_found,
-    [monero_blocks_found_chart?.weekly?.at(-1)],
+    () => moneroBlocksChart?.weekly?.at(-1).blocks_found,
+    [moneroBlocksChart?.weekly?.at(-1)],
   );
 
   const tari_daily_blocks_found = useMemo(
@@ -124,6 +99,10 @@ const Main: FC<MainProps> = ({
     () => tari_history_charts?.weekly?.at(-1).blocks_found,
     [tari_history_charts?.weekly?.at(-1)],
   );
+
+  const highestHashrate = useMemo(() => {
+    return maxBy(hashratesChart, "max_hashrate");
+  }, [hashratesChart]);
 
   const hashrateRanking = useMemo<ReactNode>(() => {
     return (
@@ -142,14 +121,14 @@ const Main: FC<MainProps> = ({
   }, [pool_hashrate_ranking, pool_hashrate, monero_network_hashrate]);
 
   const epochLabel = useMemo(() => {
-    const latestEpoch = monero_blocks_found_chart?.weekly?.at(-1)?.epoch;
+    const latestEpoch = moneroBlocksChart?.weekly?.at(-1)?.epoch;
     return Labels.EPOCH_BLOCKS_FOUND.replace(
       "<number>",
-      isLoadingCalculatedXMRMiningStats || !isValidValue(latestEpoch, false)
+      isLoadingAdvanceMiningStats || !isValidValue(latestEpoch, false)
         ? ""
         : latestEpoch?.toString(),
     );
-  }, [monero_blocks_found_chart?.weekly, isLoadingCalculatedXMRMiningStats]);
+  }, [moneroBlocksChart?.weekly, isLoadingAdvanceMiningStats]);
 
   return (
     <>
@@ -176,13 +155,13 @@ const Main: FC<MainProps> = ({
           title={Labels.HASHRATE_PERFORMANCE}
           leftSubtitle={{
             label: formatPeakHashrateDateDifference(
-              max_hashrate_last_update,
+              highestHashrate?.timestamp,
             ).join(""),
-            value: isLoadingCalculatedXMRMiningStats
+            value: isLoadingAdvanceMiningStats
               ? ""
-              : formatHashrate(max_hashrate),
+              : formatHashrate(highestHashrate?.max_hashrate),
           }}
-          loading={isLoadingMiningStats}
+          loading={false}
           rightSubtitles={[
             {
               label: Labels.AVG_1H_HASHRATE,
@@ -196,8 +175,8 @@ const Main: FC<MainProps> = ({
           chart={
             <MaxHashratesChart
               id="hashrate-line-chart"
-              max_hashrates_chart={max_hashrates_chart}
-              loading={isLoadingCalculatedXMRMiningStats}
+              max_hashrates_chart={hashratesChart}
+              loading={isLoadingAdvanceMiningStats}
             />
           }
         />
@@ -212,23 +191,21 @@ const Main: FC<MainProps> = ({
             ? pool_blocks_found?.toLocaleString()
             : "-",
         }}
-        rightSubtitles={
-          [
-            // {
-            //   label: Labels.DAILY_BLOCKS_FOUND,
-            //   value: isValidValue(monero_daily_blocks_found)
-            //     ? monero_daily_blocks_found?.toLocaleString()
-            //     : "-",
-            // },
-            // {
-            //   label: epochLabel,
-            //   value: isValidValue(monero_weekly_blocks_found)
-            //     ? monero_weekly_blocks_found?.toLocaleString()
-            //     : "-",
-            // },
-          ]
-        }
-        loading={isLoadingCalculatedXMRMiningStats || isLoadingMiningStats}
+        rightSubtitles={[
+          {
+            label: Labels.DAILY_BLOCKS_FOUND,
+            value: isValidValue(monero_daily_blocks_found)
+              ? monero_daily_blocks_found?.toLocaleString()
+              : "-",
+          },
+          {
+            label: epochLabel,
+            value: isValidValue(monero_weekly_blocks_found)
+              ? monero_weekly_blocks_found?.toLocaleString()
+              : "-",
+          },
+        ]}
+        loading={isLoadingAdvanceMiningStats || isLoadingMiningStats}
         chart={
           <Tab
             tabs={[
@@ -237,9 +214,8 @@ const Main: FC<MainProps> = ({
                 child: (
                   <BlocksChart
                     id="monero-blocks-bar-chart"
-                    blocks_found_chart={monero_blocks_found_chart}
-                    loading={isLoadingCalculatedXMRMiningStats}
-                    showTimeframe={false}
+                    blocks_found_chart={moneroBlocksChart}
+                    loading={isLoadingAdvanceMiningStats}
                   />
                 ),
               },

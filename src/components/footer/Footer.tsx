@@ -1,4 +1,3 @@
-"use client";
 import { type FC, memo, useMemo } from "react";
 import {
   BUY_CFB_TOKEN_URL,

@@ -1,6 +1,6 @@
 export const formatLargeNumber = (value: number): string => {
   if (!isValidValue(value)) {
-    return "-";
+    return "";
   }
   if (value >= 1_000_000) {
     return (value / 1_000_000).toFixed(2) + "M";
@@ -16,7 +16,7 @@ export const roundToHundreds = (value: number) => {
 
 export const formatHashrate = (value: number, scale = 2): string => {
   if (!isValidValue(value)) {
-    return "-";
+    return "";
   }
 
   if (value >= 1000000000) {

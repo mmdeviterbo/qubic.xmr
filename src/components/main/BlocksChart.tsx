@@ -13,18 +13,17 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import dayjs from "dayjs";
 import isEmpty from "lodash/isEmpty";
 
-import type { XMRHistoryCharts } from "@/types/MiningStats";
 import ChartSkeleton from "../common/ChartSkeleton";
 import { formatLargeNumber } from "@/utils/numbers";
 import { moneroTicker, tariTicker } from "@/utils/constants";
 import FilterButtons from "../common/FilterButtons";
 import useBreakpoints from "@/hooks/useBreakpoints";
+import { type AdvanceMiningCharts } from "@/types/MiningStats";
 
 interface BlockChartProps {
   id: string;
-  blocks_found_chart: XMRHistoryCharts["blocks_found_chart"];
+  blocks_found_chart: AdvanceMiningCharts["blocksChart"];
   loading: boolean;
-  showTimeframe?: boolean;
 }
 
 enum Timeframe {
@@ -36,7 +35,6 @@ const BlockChart: FC<BlockChartProps> = ({
   id,
   blocks_found_chart,
   loading,
-  showTimeframe = true,
 }) => {
   const { isMd, isLg } = useBreakpoints();
 
@@ -198,22 +196,20 @@ const BlockChart: FC<BlockChartProps> = ({
         <ChartSkeleton />
       ) : (
         <div className="relative flex flex-col">
-          {showTimeframe && (
-            <FilterButtons
-              buttons={[
-                {
-                  label: "Epoch",
-                  onClick: () => setTimeframe(Timeframe.EPOCH),
-                  isActive: Timeframe.EPOCH === timeframe,
-                },
-                {
-                  label: "1d",
-                  onClick: () => setTimeframe(Timeframe.DAILY),
-                  isActive: Timeframe.DAILY === timeframe,
-                },
-              ]}
-            />
-          )}
+          <FilterButtons
+            buttons={[
+              {
+                label: "Epoch",
+                onClick: () => setTimeframe(Timeframe.EPOCH),
+                isActive: Timeframe.EPOCH === timeframe,
+              },
+              {
+                label: "1d",
+                onClick: () => setTimeframe(Timeframe.DAILY),
+                isActive: Timeframe.DAILY === timeframe,
+              },
+            ]}
+          />
           {!loading && (
             <div className="z-1 pl-12 md:pl-16 flex items-end gap-1 opacity-[0.065] h-[45%] absolute text-base md:text-xl">
               Powered by

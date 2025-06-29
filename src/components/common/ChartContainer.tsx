@@ -1,4 +1,3 @@
-"use client";
 import { memo, type FC, type ReactNode } from "react";
 
 type Subtitle = {

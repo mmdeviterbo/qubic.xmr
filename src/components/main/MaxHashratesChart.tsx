@@ -4,14 +4,14 @@ import isEmpty from "lodash/isEmpty";
 import Chart from "chart.js/auto";
 
 import ChartSkeleton from "../common/ChartSkeleton";
-import type { XMRHistoryCharts } from "@/types/MiningStats";
+import { MaxHashratesWeeklyChart } from "@/types/MiningStats";
 import { formatHashrate } from "@/utils/numbers";
 import { Labels } from "@/utils/constants";
 import useBreakpoints from "@/hooks/useBreakpoints";
 
 interface MaxHashratesChartProps {
   id: string;
-  max_hashrates_chart: XMRHistoryCharts["max_hashrates_chart"];
+  max_hashrates_chart: MaxHashratesWeeklyChart[];
   loading: boolean;
 }
 

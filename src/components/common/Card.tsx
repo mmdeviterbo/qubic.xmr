@@ -1,4 +1,3 @@
-"use client";
 import { memo, type ReactElement, type FC, type ReactNode } from "react";
 
 interface CardProps {
