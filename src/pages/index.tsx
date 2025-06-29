@@ -25,7 +25,7 @@ import {
 } from "@/utils/constants";
 
 const MINING_STATS_DELAY = 2000;
-const CALCULATED_XTM_MINING_STATS_DELAY = 10000;
+const CALCULATED_XTM_MINING_STATS_DELAY = 15000;
 
 const MainPage: NextPage<{
   miningStatsProps?: MiningStats;
@@ -97,7 +97,7 @@ export const getStaticProps = async () => {
         advanceMiningStatsProps: advanceMiningStats,
         tariMiningStatsProps: tariMiningStats,
       },
-      revalidate: 5,
+      revalidate: 7,
     };
   } catch (e) {
     console.log("getStaticProps error: ", e);
@@ -107,7 +107,7 @@ export const getStaticProps = async () => {
         advanceMiningStatsProps: null,
         tariMiningStatsProps: null,
       },
-      revalidate: 5,
+      revalidate: 7,
     };
   }
 };
