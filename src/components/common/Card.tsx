@@ -1,19 +1,16 @@
 import { memo, type ReactElement, type FC, type ReactNode } from "react";
 
 interface CardProps {
-  index?: number;
   label: ReactNode;
   value: ReactNode;
   subValue?: ReactNode;
   loading: boolean;
   properties?: {
-    isOnline?: boolean;
     cfbToken: ReactElement;
   };
 }
 
 const Card: FC<CardProps> = ({
-  index,
   label,
   value,
   subValue,
@@ -28,7 +25,7 @@ const Card: FC<CardProps> = ({
 
       {loading ? (
         <div
-          className={`animate-pulse ${index === 0 ? "w-1/3" : "sm:w-1/2 w-2/3"} my-1 h-4 rounded-xl bg-gray-800`}
+          className={`animate-pulse mt-1 md:mt-2 w-32 my-1 h-6 rounded-xl bg-gray-800`}
         />
       ) : (
         <div className="flex flex-col">

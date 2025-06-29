@@ -1,20 +1,45 @@
-import { memo, type FC } from "react";
+"use client";
+import { memo, useMemo, type FC } from "react";
 import Marquee from "react-fast-marquee";
 import { openCfbTokenSite } from "./CfbToken";
 
 const CfbMarquee: FC = () => {
-  const marginRight = "mr-4 md:mr-6";
+  const marginRight = useMemo(() => "mr-4 md:mr-6", []);
+
+  const separatorPeriod = useMemo(
+    () => (
+      <span
+        className={`text-3xl md:text-4xl ${marginRight}`}
+        style={{
+          WebkitUserSelect: "none",
+          msUserSelect: "none",
+          userSelect: "none",
+        }}
+      >
+        •
+      </span>
+    ),
+    [],
+  );
 
   return (
     <Marquee
-      style={{ zIndex: 100 }}
+      style={{ zIndex: 25 }}
       gradient={true}
       gradientColor="rgb(16 24 32 / var(--tw-bg-opacity))"
       gradientWidth={25}
       autoFill
-      className="cfb-token-text tracking-wider grid items-center text-sm sm:text-lg md:text-xl"
+      className="tracking-wider my-2 md:my-4 grid place-items-center text-xl sm:text-2xl"
     >
-      <span onClick={openCfbTokenSite} className="cursor-pointer">
+      <span
+        onClick={openCfbTokenSite}
+        className="cfb-token-text cursor-pointer"
+        style={{
+          WebkitUserSelect: "none",
+          msUserSelect: "none",
+          userSelect: "none",
+        }}
+      >
         Powered by&nbsp;
         <span
           className={`md:ml-1 ${marginRight}`}
@@ -29,14 +54,21 @@ const CfbMarquee: FC = () => {
         </span>
       </span>
 
-      <span className={marginRight}>•</span>
+      {separatorPeriod}
 
-      <span className="cursor-pointer">
-        1st memecoin on&nbsp;
-        <span className={marginRight}>Qubic</span>
+      <span
+        className={`cfb-token-text cursor-pointer ${marginRight}`}
+        onClick={openCfbTokenSite}
+        style={{
+          WebkitUserSelect: "none",
+          msUserSelect: "none",
+          userSelect: "none",
+        }}
+      >
+        1st memecoin on Qubic
       </span>
 
-      <span className={`${marginRight}`}>•</span>
+      {separatorPeriod}
     </Marquee>
   );
 };

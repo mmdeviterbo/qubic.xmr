@@ -49,7 +49,7 @@ export const formatPeakHashrateDateDifference = (date: string) => {
     return [];
   }
 
-  const dateInt = new Date(`${date}Z`).getTime() / 1000;
+  const dateInt = Math.trunc(new Date(date).getTime() / 1000);
 
   const timeDifference = formatLatestBlockFoundSubValue(dateInt)?.replace(
     "≈",
@@ -114,7 +114,7 @@ export const formatLatestBlockFoundSubValue = (
 
   const latestBlockFound = isAlreadyInDateFormat
     ? last_block_found
-    : Number(`${last_block_found}000`);
+    : Number(last_block_found * 1000);
 
   const difference = datetimeDifference(new Date(latestBlockFound), new Date());
 

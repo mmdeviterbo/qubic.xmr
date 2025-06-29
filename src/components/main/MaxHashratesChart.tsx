@@ -4,14 +4,14 @@ import isEmpty from "lodash/isEmpty";
 import Chart from "chart.js/auto";
 
 import ChartSkeleton from "../common/ChartSkeleton";
-import type { XMRHistoryCharts } from "@/types/MiningStats";
+import { MaxHashratesWeeklyChart } from "@/types/MiningStats";
 import { formatHashrate } from "@/utils/numbers";
 import { Labels } from "@/utils/constants";
 import useBreakpoints from "@/hooks/useBreakpoints";
 
 interface MaxHashratesChartProps {
   id: string;
-  max_hashrates_chart: XMRHistoryCharts["max_hashrates_chart"];
+  max_hashrates_chart: MaxHashratesWeeklyChart[];
   loading: boolean;
 }
 
@@ -110,8 +110,15 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
   return (
     <div
       className="w-full relative"
-      style={{ minHeight: isSm ? "35dvh" : "50dvh" }}
+      style={{ minHeight: loading ? "fit-content" : isSm ? "35dvh" : "50dvh" }}
     >
+      {!loading && (
+        <div className="z-1 pl-12 md:pl-16 ml-8 md:ml-10 flex items-end gap-1 opacity-[0.065] h-[45%] absolute text-base md:text-xl">
+          Powered by
+          <span className="cfb-token-text-normal">$CFB</span>
+        </div>
+      )}
+
       {loading ? <ChartSkeleton /> : <canvas id={id} />}
     </div>
   );

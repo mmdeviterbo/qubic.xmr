@@ -1,7 +1,11 @@
 export const ABOUT_ME_NOTE =
   "Made by Marty De Viterbo habang nagkakape sa SM Dasma wahahaha -- May 18, 2025";
 export const DONATE_X_URL =
-  "https://x.com/cryptokendefi/status/1926657151927267699";
+  "https://explorer.qubic.org/network/address/DWAHBPNMHBEUYCXUCNDPZITBOEBAGKUGIOPFEBZSRDAWTCCHMWSGJZQGIFUM";
+
+export const proxyUrl = (url: string): string =>
+  `https://pro.cors.lol/?url=${url}&token=Ctln384fGdUX39Ld`;
+export const isClient = typeof window !== "undefined";
 
 export const QUBIC_URL = "qubic.org";
 export const QUBIC_LIVE_STATS_URL = `https://rpc.${QUBIC_URL}/v1/latest-stats`;
@@ -19,12 +23,44 @@ export const MONERO_MINING_POOLS_STATS_URL = (seconds: number) =>
 export const MONERO_MINING_BLOCK_DISTRIBUTION_URL = (seconds: number) =>
   `https://data.${MONERO_MINING_POOLS_STATS_BASE_URL}/data/blocks/monero.js?t=${seconds}`;
 
-export const QUBIC_SOLO_MINING_HISTORY =
-  "http://66.179.92.83/data/qpool_V1.csv";
+const MEXC_URL = "https://api.mexc.com/api/v3";
+const SAFE_TRADE_URL = "https://safetrade.com/api/v2";
+
+/**
+ * symbol: XMRUSDT
+ * interval: 60m, 4h, 1d, 1w, 1m
+ * startTime & endTime = 13-digit format
+ */
+export const MEXC_KLINES_URL = (
+  symbol: string,
+  interval: MEXCInterval,
+  startTime: number,
+  endTime: number,
+) =>
+  `${MEXC_URL}/klines?symbol=${symbol}&interval=${interval}&startTime=${startTime}&endTime=${endTime}`;
+
+export const SAFE_TRADE_KLINES_URL = (
+  id: string,
+  period: SafeTradePeriod,
+  time_from: number,
+  time_to: number,
+  limit: number,
+) =>
+  `${SAFE_TRADE_URL}/trade/public/markets/${id}/k-line?period=${period}&time_from=${time_from}&time_to=${time_to}&limit=${limit}`;
+
+const QUBIC_RAILWAY_SERVER_URL = process.env.NEXT_PUBLIC_QUBIC_RAILWAY_SERVER;
+export const QUBIC_RAILWAY_SERVER_ADVANCE_MINING_STATS = `${QUBIC_RAILWAY_SERVER_URL}/advance-mining-stats`;
+export const QUBIC_RAILWAY_SERVER_ADVANCE_MINING_STATS_EVENT_STREAM = `${QUBIC_RAILWAY_SERVER_URL}/advance-mining-stats-event-stream`;
 
 export const TARI_BLOCKS_HISTORY_URL =
   "https://tari-qubic-scanner.onrender.com";
 export const TARI_BLOCKS_HISTORY_API_URL = `${TARI_BLOCKS_HISTORY_URL}/api/found_blocks`;
+
+export const CFB_TOKEN_URL = "https://cfbtoken.com";
+export const BUY_CFB_TOKEN_URL =
+  "https://safetrade.com/exchange/CFB-USDT?type=basic";
+export const CFB_TOKEN_X_URL = "https://x.com/c_f_b_token";
+export const CFB_DISCORD_URL = "https://discord.com/invite/cAbXK8Kx35";
 
 export const moneroTicker = "XMR";
 export const tariTicker = "XTM";
@@ -47,15 +83,31 @@ export const enum Labels {
   MONERO_NETWORK_HASHRATE = "Monero Network Hashrate",
 }
 
-//APIs
-export const MINING_STATS_URL = "/api/mining-stats";
-export const CALCULATED_MINING_STATS_URL = "/api/calculated-mining-stats";
+export const enum MEXCInterval {
+  ONE_HOUR = "60m",
+  FOUR_HOURS = "4h",
+  ONE_DAY = "1d",
+  ONE_WEEK = "1w",
+}
+
+export const enum SafeTradePeriod {
+  ONE_HOUR = 60,
+  FOUR_HOURS = 240,
+  ONE_DAY = 1440,
+  ONE_WEEK = 10080,
+}
 
 export const SWR_HOOK_DEFAULTS = {
   revalidateOnFocus: true,
-  revalidateOnReconnect: false,
+  revalidateOnReconnect: true,
   revalidateIfStale: true,
   revalidateOnMount: true,
   refreshWhenHidden: false,
   refreshWhenOffline: false,
 };
+
+// NOTE:
+// mexc all trading pairs
+// https://api.mexc.com/api/v3/defaultSymbols
+
+// https://api.mexc.com/api/v3/klines?symbol=XMRUSDT&interval=60m&startTime=1742308800000&endTime=1742312400000

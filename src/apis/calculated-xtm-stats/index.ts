@@ -1,22 +1,24 @@
 import axios from "axios";
 
-import { TARI_BLOCKS_HISTORY_API_URL } from "@/utils/constants";
+import {
+  isClient,
+  proxyUrl,
+  TARI_BLOCKS_HISTORY_API_URL,
+} from "@/utils/constants";
 import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
 import { calculateTotalXTM, getXtmChartHistory } from "@/utils/xtm-charts";
-import { isEmpty } from "lodash";
 
 const getXtmBlocksHistory = async (): Promise<XTMMiningHistory> => {
-  const { data, status } = await axios.get<XTMMiningHistory>(
-    TARI_BLOCKS_HISTORY_API_URL,
-  );
+  let url = isClient
+    ? proxyUrl(TARI_BLOCKS_HISTORY_API_URL)
+    : TARI_BLOCKS_HISTORY_API_URL;
+  const { data, status } = await axios.get<XTMMiningHistory>(url);
   return status === 200 ? data : null;
 };
 
-const getBlockDistributions = async (xtmHistory: XTMMiningHistory): Promise<XTMHistoryCharts["tari_block_distributions"]> => {
-  if (isEmpty(xtmHistory)) {
-    return null;
-  }
-
+const getBlockDistributions = (
+  xtmHistory: XTMMiningHistory,
+): XTMHistoryCharts["tari_block_distributions"] => {
   const latestBlock = xtmHistory.last_scanned_height;
   const startOf100Blocks = latestBlock - 99;
   const startOf1000Blocks = latestBlock - 999;
@@ -43,7 +45,7 @@ const getBlockDistributions = async (xtmHistory: XTMMiningHistory): Promise<XTMH
   };
 };
 
-const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
+const getTariCalculatedMiningStats = async (): Promise<XTMHistoryCharts> => {
   try {
     let xtmHistory = await getXtmBlocksHistory();
 
@@ -53,7 +55,7 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
     const last_block_found = xtmHistory.blocks.at(-1).timestamp.concat("Z");
     const total_rewards = calculateTotalXTM(xtmHistory.blocks);
 
-    const tari_block_distributions = await getBlockDistributions(xtmHistory);
+    const tari_block_distributions = getBlockDistributions(xtmHistory);
 
     return {
       tari_blocks_found: {
@@ -62,11 +64,14 @@ const getTariMiningStats = async (): Promise<XTMHistoryCharts> => {
         last_block_found,
       },
       blocks_found_chart,
-      tari_block_distributions
+      tari_block_distributions,
     };
   } catch (error) {
-    console.log("/api/calculated-xtm-stats: ", error);
+    if (!isClient) {
+      console.log("Calculated xtm-stats: ", error);
+    }
+    return null;
   }
 };
 
-export default getTariMiningStats;
+export default getTariCalculatedMiningStats;

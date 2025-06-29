@@ -1,13 +1,22 @@
 export const formatLargeNumber = (value: number): string => {
   if (!isValidValue(value)) {
-    return "-";
+    return "";
   }
-  return value?.toLocaleString();
+  if (value >= 1_000_000) {
+    return (value / 1_000_000).toFixed(2) + "M";
+  } else if (value >= 1_000) {
+    return (value / 1_000).toFixed(2) + "k";
+  }
+  return value.toLocaleString();
+};
+
+export const roundToHundreds = (value: number) => {
+  return Math.round(value / 100) * 100;
 };
 
 export const formatHashrate = (value: number, scale = 2): string => {
   if (!isValidValue(value)) {
-    return "-";
+    return "";
   }
 
   if (value >= 1000000000) {
@@ -17,12 +26,13 @@ export const formatHashrate = (value: number, scale = 2): string => {
     return (value / 1000000).toFixed(scale).replace(/\.0$/, "") + " MH/s";
   }
   if (value >= 1000) {
-    return (value / 1000).toFixed(scale).replace(/\.0$/, "") + " KH/s";
+    return (value / 1000).toFixed(scale).replace(/\.0$/, "") + " kH/s";
   }
   if (value === 0) {
     return value.toString();
   }
-  return formatLargeNumber(value).concat(" H/s");
+
+  return value?.toLocaleString().concat(" H/s");
 };
 
 export const isValidValue = (value: number, isZeroAllowed = true) => {

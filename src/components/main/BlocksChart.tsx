@@ -13,15 +13,16 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import dayjs from "dayjs";
 import isEmpty from "lodash/isEmpty";
 
-import type { XMRHistoryCharts } from "@/types/MiningStats";
 import ChartSkeleton from "../common/ChartSkeleton";
 import { formatLargeNumber } from "@/utils/numbers";
 import { moneroTicker, tariTicker } from "@/utils/constants";
 import FilterButtons from "../common/FilterButtons";
+import useBreakpoints from "@/hooks/useBreakpoints";
+import { type AdvanceMiningCharts } from "@/types/MiningStats";
 
 interface BlockChartProps {
   id: string;
-  blocks_found_chart: XMRHistoryCharts["blocks_found_chart"];
+  blocks_found_chart: AdvanceMiningCharts["blocksChart"];
   loading: boolean;
 }
 
@@ -35,6 +36,10 @@ const BlockChart: FC<BlockChartProps> = ({
   blocks_found_chart,
   loading,
 }) => {
+  const { isMd, isLg } = useBreakpoints();
+
+  const isWiderScreen = useMemo(() => isMd || isLg, [isMd, isLg]);
+
   const ticker = useMemo(
     () => (id?.includes("monero") ? moneroTicker : tariTicker),
     [id],
@@ -58,6 +63,21 @@ const BlockChart: FC<BlockChartProps> = ({
       return totalReward;
     },
     [blocks_found_chart, ticker],
+  );
+
+  const getTotalUSDT = useCallback(
+    (index: number, timeframe: Timeframe): string => {
+      let formattedTotalUSDT = "";
+      if (timeframe === Timeframe.EPOCH) {
+        const total_usdt = blocks_found_chart?.weekly?.at(index)?.total_usdt;
+        if (!total_usdt) {
+          return formattedTotalUSDT;
+        }
+        formattedTotalUSDT = `$${formatLargeNumber(Number(total_usdt))}`;
+      }
+      return formattedTotalUSDT;
+    },
+    [blocks_found_chart],
   );
 
   useEffect(() => {
@@ -97,7 +117,13 @@ const BlockChart: FC<BlockChartProps> = ({
             borderRadius: timeframe === Timeframe.DAILY ? 1 : 2,
             datalabels: {
               font: {
-                size: timeframe === Timeframe.DAILY ? 10 : 12,
+                size: isWiderScreen
+                  ? timeframe === Timeframe.EPOCH
+                    ? 12
+                    : 10
+                  : timeframe === Timeframe.EPOCH
+                    ? 8
+                    : 7,
               },
             },
           },
@@ -110,21 +136,48 @@ const BlockChart: FC<BlockChartProps> = ({
           tooltip: {
             callbacks: {
               title: (tooltipItems) => {
-                const label = "Epoch ".concat(tooltipItems[0].label);
+                const label =
+                  timeframe === Timeframe.EPOCH
+                    ? "Epoch ".concat(tooltipItems[0].label)
+                    : tooltipItems[0].label;
                 return label;
               },
               label: (tooltipItem) => {
                 const label = tooltipItem.dataset.label;
                 const index = tooltipItem.dataIndex;
-                const value = tooltipItem.formattedValue.concat(
-                  ` ≈ ${getTotalReward(index, timeframe)}`,
-                );
-                return ` ${label.concat(`: ${value}`)}`;
+                const value = tooltipItem.formattedValue;
+
+                const totalReward = getTotalReward(index, timeframe);
+                const totalUSDT = getTotalUSDT(index, timeframe);
+                const lines = [
+                  ` ${label.concat(`: ${value}`)}`,
+                  ` ≈ ${totalReward}`,
+                ];
+                if (totalUSDT) {
+                  lines.push(` ≈ ${totalUSDT}`);
+                }
+                return lines;
               },
             },
           },
           datalabels: {
             color: "white",
+            formatter: (value, context) => {
+              const index = context.dataIndex;
+              const totalUSDT = getTotalUSDT(index, timeframe);
+              const lines = [value];
+              if (totalUSDT) {
+                // if (index !== 0) {
+                //   lines.push(``);
+                // }
+                lines.push(totalUSDT);
+              }
+              return lines;
+            },
+            textAlign: "center",
+            anchor: timeframe === Timeframe.DAILY ? "end" : "center",
+            align: timeframe === Timeframe.DAILY ? "top" : "center",
+            offset: timeframe === Timeframe.DAILY ? 1 : 0,
           },
           legend: {
             display: false,
@@ -142,7 +195,7 @@ const BlockChart: FC<BlockChartProps> = ({
       {loading ? (
         <ChartSkeleton />
       ) : (
-        <div className="flex flex-col">
+        <div className="relative flex flex-col">
           <FilterButtons
             buttons={[
               {
@@ -157,6 +210,12 @@ const BlockChart: FC<BlockChartProps> = ({
               },
             ]}
           />
+          {!loading && (
+            <div className="z-1 pl-12 md:pl-16 flex items-end gap-1 opacity-[0.065] h-[45%] absolute text-base md:text-xl">
+              Powered by
+              <span className="cfb-token-text-normal">$CFB</span>
+            </div>
+          )}
           <canvas id={id} />
         </div>
       )}

@@ -4,6 +4,9 @@ type Subtitle = {
   label: string;
   sublabel?: string;
   value: string | number;
+  properties?: {
+    animate?: boolean;
+  };
 };
 
 interface ChartContainerProps {
@@ -31,13 +34,15 @@ const ChartContainer: FC<ChartContainerProps> = ({
         {!loading && (
           <div>
             <div className="flex items-center gap-1">
-              <span className="text-lg md:text-2xl">{leftSubtitle.value}</span>
+              <span className={`text-lg md:text-2xl`}>
+                {leftSubtitle.value}
+              </span>
               <span className="ml-1 font-space text-sm text-gray-50">
                 {leftSubtitle?.sublabel}
               </span>
             </div>
 
-            <p className="text-gray-50 text-xs">{leftSubtitle.label}</p>
+            <p className="text-gray-50 text-xs">{leftSubtitle?.label ?? ""}</p>
           </div>
         )}
 
