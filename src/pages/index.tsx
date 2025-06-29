@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 
 import isEmpty from "lodash/isEmpty";
 import useSWR from "swr";
+import axios from "axios";
 
 import Main from "@/components/main/Main";
 import Footer from "@/components/footer/Footer";
@@ -25,11 +26,12 @@ import {
 } from "@/utils/constants";
 
 const MINING_STATS_DELAY = 2000;
-const CALCULATED_XTM_MINING_STATS_DELAY = 6000;
+const CALCULATED_XTM_MINING_STATS_DELAY = 10000;
 
 const MainPage: NextPage<{
   advanceMiningStatsProps?: AdvanceMiningCharts;
-}> = ({ advanceMiningStatsProps: advanceMiningStatsProps }) => {
+  calculatedXTMMiningStatsProps?: XTMHistoryCharts;
+}> = ({ advanceMiningStatsProps, calculatedXTMMiningStatsProps }) => {
   const { data: miningStats } = useSWR<MiningStats>(
     "/mining-stats",
     getMiningStats,
@@ -48,16 +50,17 @@ const MainPage: NextPage<{
     setAdvanceMiningStats(transformedData);
   }, QUBIC_RAILWAY_SERVER_ADVANCE_MINING_STATS_EVENT_STREAM);
 
-  const { data: calculatedXTMMiningStats } = useSWR<XTMHistoryCharts>(
-    "/calculated-xtm-mining-stats",
-    getTariCalculatedMiningStats,
-    {
-      ...SWR_HOOK_DEFAULTS,
-      refreshInterval: CALCULATED_XTM_MINING_STATS_DELAY,
-      focusThrottleInterval: CALCULATED_XTM_MINING_STATS_DELAY,
-      dedupingInterval: CALCULATED_XTM_MINING_STATS_DELAY,
-    },
-  );
+  const { data: calculatedXTMMiningStats = calculatedXTMMiningStatsProps } =
+    useSWR<XTMHistoryCharts>(
+      "/calculated-xtm-mining-stats",
+      getTariCalculatedMiningStats,
+      {
+        ...SWR_HOOK_DEFAULTS,
+        refreshInterval: CALCULATED_XTM_MINING_STATS_DELAY,
+        focusThrottleInterval: CALCULATED_XTM_MINING_STATS_DELAY,
+        dedupingInterval: CALCULATED_XTM_MINING_STATS_DELAY,
+      },
+    );
 
   return (
     <>
@@ -82,16 +85,31 @@ const MainPage: NextPage<{
 
 export const getStaticProps = async () => {
   try {
+    const baseUrl = process.env.BASE_URL;
+    const tariMiningStats = await axios.get(
+      `${baseUrl}/api/calculated-xtm-stats`,
+    );
+    let calculatedXTMMiningStats = null;
+    if (tariMiningStats.status === 200) {
+      calculatedXTMMiningStats = tariMiningStats.data;
+    }
+
     const advanceMiningStats = await getAdvanceMiningStats();
 
     return {
-      props: { advanceMiningStatsProps: advanceMiningStats },
+      props: {
+        advanceMiningStatsProps: advanceMiningStats,
+        calculatedXTMMiningStatsProps: calculatedXTMMiningStats,
+      },
       revalidate: 5,
     };
   } catch (e) {
     console.log("getStaticProps error: ", e);
     return {
-      props: { advanceMiningStatsProps: null },
+      props: {
+        advanceMiningStatsProps: null,
+        calculatedXTMMiningStatsProps: null,
+      },
       revalidate: 5,
     };
   }
