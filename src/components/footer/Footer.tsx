@@ -6,7 +6,7 @@ import {
   CFB_TOKEN_X_URL,
   DONATE_X_URL,
   QUBIC_XMR_STATS_URL,
-  QUBIC_XMR_STREAMLIT_APP_URL,
+  MONERO_MINING_POOLS_STATS_LIST_URL,
   TARI_BLOCKS_HISTORY_URL,
 } from "@/utils/constants";
 import useBreakpoints from "@/hooks/useBreakpoints";
@@ -21,7 +21,7 @@ const Footer: FC = () => {
         href: DONATE_X_URL,
       },
       {
-        label: "Official Stats",
+        label: "Qubic Official Stats",
         href: QUBIC_XMR_STATS_URL,
       },
       {
@@ -29,8 +29,8 @@ const Footer: FC = () => {
         href: TARI_BLOCKS_HISTORY_URL,
       },
       {
-        label: "Qubic-Monero Live Stats",
-        href: QUBIC_XMR_STREAMLIT_APP_URL,
+        label: "Mining Pool Stats",
+        href: MONERO_MINING_POOLS_STATS_LIST_URL,
       },
     ];
   }, []);
