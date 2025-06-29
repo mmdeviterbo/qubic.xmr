@@ -147,7 +147,7 @@ const Main: FC<MainProps> = ({
           }}
         />
 
-        {/* <CfbPost /> */}
+        <CfbPost />
 
         <CfbMarquee />
 

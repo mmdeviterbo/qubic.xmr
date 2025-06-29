@@ -4,7 +4,7 @@ import { XEmbed } from "react-social-media-embed";
 import useBreakpoints from "@/hooks/useBreakpoints";
 import Modal from "../../Modal";
 
-const isCfbPostShownId = "is-cfb-deposit-post-june-25-shown-key";
+const isCfbPostShownId = "is-cfb-deposit-post-june-29-shown-key";
 
 const CfbPost: FC = () => {
   const { isLg } = useBreakpoints();
@@ -31,21 +31,21 @@ const CfbPost: FC = () => {
     <Modal show={open} setShow={setOpen}>
       {open && (
         <XEmbed
-          url="https://x.com/c_f_b_token/status/1937883546422792250"
+          url="https://x.com/BitMartExchange/status/1938517271447838955"
           width={isLg ? 480 : 320}
           style={{
             backgroundColor: "white",
             zIndex: 100,
-            // height: isLg ? "80vh" : "70vh",
+            height: isLg ? "80vh" : "70vh",
           }}
         />
       )}
       <div className="flex flex-col items-center gap-4">
         <button
-          className="w-20 h-10 md:w-24 md:h-12 mt-4 text-sm cursor-pointer bg-transparent hover:bg-gray-900 text-white border border-white rounded-full"
+          className="w-15 h-10 md:w-18 md:h-12 mt-4 text-sm cursor-pointer bg-transparent hover:bg-gray-900 text-white border border-white rounded-full"
           onClick={onCloseModal}
         >
-          Close
+          X
         </button>
       </div>
     </Modal>
