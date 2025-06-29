@@ -12,13 +12,15 @@ import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import dayjs from "dayjs";
 import isEmpty from "lodash/isEmpty";
+import max from "lodash/max";
+import isUndefined from "lodash/isUndefined";
 
+import { type AdvanceMiningCharts } from "@/types/MiningStats";
 import ChartSkeleton from "../common/ChartSkeleton";
+import FilterButtons from "../common/FilterButtons";
 import { formatLargeNumber } from "@/utils/numbers";
 import { moneroTicker, tariTicker } from "@/utils/constants";
-import FilterButtons from "../common/FilterButtons";
 import useBreakpoints from "@/hooks/useBreakpoints";
-import { type AdvanceMiningCharts } from "@/types/MiningStats";
 
 interface BlockChartProps {
   id: string;
@@ -53,9 +55,25 @@ const BlockChart: FC<BlockChartProps> = ({
   const [chartType, setChartType] = useState<ChartType>(ChartType.BAR);
   const [timeframe, setTimeframe] = useState<Timeframe>(Timeframe.EPOCH);
 
+  const [yInterval, setYInterval] = useState<number>();
+  const [maxYInterval, setMaxYInterval] = useState<number>();
+
   const [xy, setXY] = useState<{ x: string[]; y: number[] }>();
 
   const isBarChart = useMemo(() => chartType === ChartType.BAR, [chartType]);
+
+  useEffect(() => {
+    if (isEmpty(xy?.y) || isUndefined(yInterval)) {
+      return undefined;
+    }
+
+    const maxY = max(xy.y);
+    let currentY = yInterval ?? 0;
+    while (currentY < maxY) {
+      currentY = currentY + yInterval;
+    }
+    setMaxYInterval(currentY + yInterval);
+  }, [timeframe, chartType, yInterval, xy]);
 
   const getTotalReward = useCallback(
     (index: number, timeframe: Timeframe): string => {
@@ -141,6 +159,12 @@ const BlockChart: FC<BlockChartProps> = ({
       options: {
         animation: false,
         responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: maxYInterval,
+          },
+        },
         plugins: {
           tooltip: {
             callbacks: {
@@ -196,10 +220,17 @@ const BlockChart: FC<BlockChartProps> = ({
         },
       },
     });
+
+    const ticks = chart?.scales?.y?.ticks;
+    if (ticks?.length >= 2) {
+      const step = ticks[1].value - ticks[0].value;
+      setYInterval(step);
+    }
+
     return () => {
       chart.destroy();
     };
-  }, [xy, id, chartType]);
+  }, [xy, id, chartType, maxYInterval]);
 
   return (
     <div className="w-full relative">

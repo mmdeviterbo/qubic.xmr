@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { PRICES } from "@/utils/checkpoints.json";
+import checkpoints from "@/utils/checkpoints.json";
 import type { XTMHistoryCharts, XTMMiningHistory } from "@/types/MiningStats";
 import { roundToHundreds } from "./numbers";
 import {
@@ -26,7 +26,9 @@ const getSafeTradeXTMPrice = async (
 
   const apis = [];
   args.forEach(({ period, time_from, time_to, limit, epoch }) => {
-    const existingPrice = PRICES.XTM.find((t) => t.epoch === epoch)?.price;
+    const existingPrice = checkpoints.PRICES.XTM.find(
+      (t) => t.epoch === epoch,
+    )?.price;
     if (existingPrice) {
       prices.push(existingPrice);
     } else {
