@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 
 const useServerSentEvents = <T>(
   callback: (state: T) => Promise<void>,

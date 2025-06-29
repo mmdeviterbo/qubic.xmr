@@ -1,4 +1,10 @@
-import { Dispatch, memo, SetStateAction, type FC, type ReactNode } from "react";
+import {
+  memo,
+  type Dispatch,
+  type SetStateAction,
+  type FC,
+  type ReactNode,
+} from "react";
 
 interface ModalProps {
   show: boolean;
