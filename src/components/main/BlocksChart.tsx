@@ -140,7 +140,7 @@ const BlockChart: FC<BlockChartProps> = ({
         ],
       },
       options: {
-        animation: true,
+        animation: false,
         responsive: true,
         layout: {
           padding: {

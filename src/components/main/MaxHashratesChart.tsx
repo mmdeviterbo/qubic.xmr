@@ -20,7 +20,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
   max_hashrates_chart,
   loading,
 }) => {
-  const { isSm } = useBreakpoints();
+  const { isSm, isLg } = useBreakpoints();
 
   const [xy, setXY] = useState<{ x: string[]; y: number[] }>();
 
@@ -52,7 +52,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
             label: Labels.PEAK_HASHRATE.concat(" per Epoch"),
             data: xy.y,
             borderWidth: 1,
-            pointRadius: 5,
+            pointRadius: isLg ? 4 : 3,
             pointHoverRadius: 8,
             pointStyle: "circle",
           },
