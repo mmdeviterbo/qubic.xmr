@@ -110,7 +110,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
   return (
     <div
       className="w-full relative"
-      style={{ minHeight: loading ? "fit-content" : isSm ? "35dvh" : "50dvh" }}
+      style={{ minHeight: loading ? "fit-content" : isSm ? "40vh" : "50dvh" }}
     >
       {!loading && (
         <div className="z-1 pl-12 md:pl-16 ml-8 md:ml-10 flex items-end gap-1 opacity-[0.065] h-[45%] absolute text-base md:text-xl">
