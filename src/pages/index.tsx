@@ -97,7 +97,7 @@ export const getStaticProps = async () => {
         advanceMiningStatsProps: advanceMiningStats,
         tariMiningStatsProps: tariMiningStats,
       },
-      revalidate: 7,
+      revalidate: 6,
     };
   } catch (e) {
     console.log("getStaticProps error: ", e);
@@ -107,7 +107,7 @@ export const getStaticProps = async () => {
         advanceMiningStatsProps: null,
         tariMiningStatsProps: null,
       },
-      revalidate: 7,
+      revalidate: 6,
     };
   }
 };
