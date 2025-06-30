@@ -132,7 +132,7 @@ const BlockChart: FC<BlockChartProps> = ({
                     ? 12
                     : 10
                   : timeframe === Timeframe.EPOCH
-                    ? 8
+                    ? 7.5
                     : 7,
               },
             },
