@@ -4,7 +4,7 @@ import { XEmbed } from "react-social-media-embed";
 import useBreakpoints from "@/hooks/useBreakpoints";
 import Modal from "../../Modal";
 
-const isCfbPostShownId = "1940746306777170250";
+const isCfbPostShownId = "1940823284985340272";
 
 const CfbPost: FC = () => {
   const { isLg } = useBreakpoints();
@@ -31,7 +31,7 @@ const CfbPost: FC = () => {
     <Modal show={open} setShow={setOpen}>
       {open && (
         <XEmbed
-          url="https://x.com/talentnodes/status/1940746306777170250"
+          url="https://x.com/_Qubic_/status/1940823284985340272"
           width={isLg ? 500 : 320}
           style={{
             backgroundColor: "white",
