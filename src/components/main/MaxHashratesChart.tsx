@@ -94,7 +94,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
           y: {
             ticks: {
               callback: function (value) {
-                return formatHashrate(Number(value), 0);
+                return formatHashrate(Number(value), 1);
               },
             },
             beginAtZero: true,
