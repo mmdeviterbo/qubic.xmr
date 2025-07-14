@@ -39,8 +39,8 @@ const CfbToken: FC<{ customClass?: string }> = ({
       >
         <div className="relative">
           <div className="wiggle z-100 italic bg-white border border-gray-300 rounded-lg p-2 md:p-4 w-fit text-gray-800 text-xs md:text-lg">
-              Thanks on the <br /> free stress-test!
-              <div className="absolute top-1/2 -right-2 transform -translate-y-1/2 w-4 h-4 bg-white border-t border-r border-gray-300 rotate-45"></div>
+            Thanks for the <br /> free stress-test!
+            <div className="absolute top-1/2 -right-2 transform -translate-y-1/2 w-4 h-4 bg-white border-t border-r border-gray-300 rotate-45"></div>
           </div>
         </div>
         <Image
