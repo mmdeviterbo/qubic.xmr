@@ -54,7 +54,7 @@ const BlockChart: FC<BlockChartProps> = ({
     const blocks = blocks_found_chart?.daily
       ?.map((b) => Number(b.blocks_found))
       ?.sort((a, b) => b - a);
-    const fiveHighestBlocks = blocks.slice(0, 5);
+    const fiveHighestBlocks = blocks?.slice(0, 5);
     if (!isEmpty(blocks_found_chart?.daily)) {
       fiveHighestBlocks.push(blocks_found_chart?.daily?.at(-1)?.blocks_found);
     }
@@ -85,14 +85,14 @@ const BlockChart: FC<BlockChartProps> = ({
   );
 
   const getTotalUSDT = useCallback(
-    (index: number, timeframe: Timeframe): string => {
+    (index: number, timeframe: Timeframe, scale: number): string => {
       let formattedTotalUSDT = "";
       if (timeframe === Timeframe.EPOCH) {
         const total_usdt = blocks_found_chart?.weekly?.at(index)?.total_usdt;
         if (!total_usdt) {
           return formattedTotalUSDT;
         }
-        formattedTotalUSDT = `$${formatLargeNumber(Number(total_usdt))}`;
+        formattedTotalUSDT = `$${formatLargeNumber(Number(total_usdt), scale)}`;
       }
       return formattedTotalUSDT;
     },
@@ -140,11 +140,11 @@ const BlockChart: FC<BlockChartProps> = ({
               font: {
                 size: isWiderScreen
                   ? timeframe === Timeframe.EPOCH
-                    ? 12
-                    : 10
+                    ? 10
+                    : 8
                   : timeframe === Timeframe.EPOCH
-                    ? 7.5
-                    : 7,
+                    ? 6.5
+                    : 6,
               },
             },
           },
@@ -180,7 +180,7 @@ const BlockChart: FC<BlockChartProps> = ({
                 const value = tooltipItem.formattedValue;
 
                 const totalReward = getTotalReward(index, timeframe);
-                const totalUSDT = getTotalUSDT(index, timeframe);
+                const totalUSDT = getTotalUSDT(index, timeframe, 2);
                 const lines = [
                   ` ${label.concat(`: ${value}`)}`,
                   ` ≈ ${totalReward}`,
@@ -197,7 +197,7 @@ const BlockChart: FC<BlockChartProps> = ({
             formatter: (value, context) => {
               if (isBarChart) {
                 const index = context.dataIndex;
-                const totalUSDT = getTotalUSDT(index, timeframe);
+                const totalUSDT = getTotalUSDT(index, timeframe, 1);
                 const lines = [value];
                 if (totalUSDT) {
                   // if (index !== 0) {

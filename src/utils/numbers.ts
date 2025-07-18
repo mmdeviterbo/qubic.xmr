@@ -1,11 +1,11 @@
-export const formatLargeNumber = (value: number): string => {
+export const formatLargeNumber = (value: number, scale = 2): string => {
   if (!isValidValue(value)) {
     return "";
   }
   if (value >= 1_000_000) {
-    return (value / 1_000_000).toFixed(2) + "M";
+    return (value / 1_000_000).toFixed(scale) + "M";
   } else if (value >= 1_000) {
-    return (value / 1_000).toFixed(2) + "k";
+    return (value / 1_000).toFixed(scale) + "k";
   }
   return value.toLocaleString();
 };
