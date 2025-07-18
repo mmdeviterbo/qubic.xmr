@@ -92,7 +92,7 @@ const BlockChart: FC<BlockChartProps> = ({
         if (!total_usdt) {
           return formattedTotalUSDT;
         }
-        formattedTotalUSDT = `$${formatLargeNumber(Number(total_usdt)).split(".")[0]}`;
+        formattedTotalUSDT = `$${formatLargeNumber(Number(total_usdt))}`;
       }
       return formattedTotalUSDT;
     },
