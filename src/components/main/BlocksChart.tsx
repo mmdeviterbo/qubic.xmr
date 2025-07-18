@@ -41,7 +41,7 @@ const BlockChart: FC<BlockChartProps> = ({
   blocks_found_chart,
   loading,
 }) => {
-  const { isMd, isLg } = useBreakpoints();
+  const { isMd, isLg, isSm } = useBreakpoints();
 
   const isWiderScreen = useMemo(() => isMd || isLg, [isMd, isLg]);
 
@@ -49,6 +49,17 @@ const BlockChart: FC<BlockChartProps> = ({
     () => (id?.includes("monero") ? moneroTicker : tariTicker),
     [id],
   );
+
+  const highestFiveAndLatestDailyBlocksFound = useMemo(() => {
+    const blocks = blocks_found_chart?.daily
+      ?.map((b) => Number(b.blocks_found))
+      ?.sort((a, b) => b - a);
+    const fiveHighestBlocks = blocks.slice(0, 5);
+    if (!isEmpty(blocks_found_chart?.daily)) {
+      fiveHighestBlocks.push(blocks_found_chart?.daily?.at(-1)?.blocks_found);
+    }
+    return fiveHighestBlocks;
+  }, [blocks_found_chart]);
 
   const [chartType, setChartType] = useState<ChartType>(ChartType.BAR);
   const [timeframe, setTimeframe] = useState<Timeframe>(Timeframe.EPOCH);
@@ -81,7 +92,7 @@ const BlockChart: FC<BlockChartProps> = ({
         if (!total_usdt) {
           return formattedTotalUSDT;
         }
-        formattedTotalUSDT = `$${formatLargeNumber(Number(total_usdt))}`;
+        formattedTotalUSDT = `$${formatLargeNumber(Number(total_usdt)).split(".")[0]}`;
       }
       return formattedTotalUSDT;
     },
@@ -194,7 +205,11 @@ const BlockChart: FC<BlockChartProps> = ({
                   // }
                   lines.push(totalUSDT);
                 }
-                return lines;
+                return (isSm || isMd) && timeframe === Timeframe.DAILY
+                  ? highestFiveAndLatestDailyBlocksFound?.includes(value)
+                    ? lines
+                    : ""
+                  : lines;
               }
               return "";
             },
@@ -213,7 +228,7 @@ const BlockChart: FC<BlockChartProps> = ({
     return () => {
       chart.destroy();
     };
-  }, [xy, id, chartType]);
+  }, [xy, id, chartType, isSm, isMd, timeframe]);
 
   return (
     <div className="w-full relative">
