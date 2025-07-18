@@ -50,15 +50,12 @@ const BlockChart: FC<BlockChartProps> = ({
     [id],
   );
 
-  const highestFiveAndLatestDailyBlocksFound = useMemo(() => {
+  const highestTenAndLatestDailyBlocksFound = useMemo(() => {
     const blocks = blocks_found_chart?.daily
       ?.map((b) => Number(b.blocks_found))
       ?.sort((a, b) => b - a);
-    const fiveHighestBlocks = blocks?.slice(0, 5);
-    if (!isEmpty(blocks_found_chart?.daily)) {
-      fiveHighestBlocks.push(blocks_found_chart?.daily?.at(-1)?.blocks_found);
-    }
-    return fiveHighestBlocks;
+    const tenHighestBlocks = blocks?.slice(0, 10);
+    return tenHighestBlocks;
   }, [blocks_found_chart]);
 
   const [chartType, setChartType] = useState<ChartType>(ChartType.BAR);
@@ -196,7 +193,9 @@ const BlockChart: FC<BlockChartProps> = ({
             color: "white",
             formatter: (value, context) => {
               if (isBarChart) {
-                const index = context.dataIndex;
+                console.log(context);
+                const index = context.dataIndex,
+                  total = context.dataset.data.length;
                 const totalUSDT = getTotalUSDT(index, timeframe, 1);
                 const lines = [value];
                 if (totalUSDT) {
@@ -206,7 +205,8 @@ const BlockChart: FC<BlockChartProps> = ({
                   lines.push(totalUSDT);
                 }
                 return (isSm || isMd) && timeframe === Timeframe.DAILY
-                  ? highestFiveAndLatestDailyBlocksFound?.includes(value)
+                  ? highestTenAndLatestDailyBlocksFound?.includes(value) ||
+                    index === total - 1
                     ? lines
                     : ""
                   : lines;
