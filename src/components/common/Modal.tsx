@@ -24,7 +24,7 @@ const Modal: FC<ModalProps> = ({ children, show, setShow }) => {
     <div
       id="modal"
       onClick={handleOutsideClick}
-      className={`fixed inset-0 bg-black/60 flex items-center justify-center z-200 transition-all transition-discrete oapcity-0 ${show ? "opacity-100" : "opacity-0 hidden"}`}
+      className={`fixed inset-0 bg-black/60 flex items-center justify-center z-200 transition-all transition-discrete opacity-0 ${show ? "opacity-100" : "opacity-0 hidden"}`}
     >
       <div id="modal-content" className="px-4 md:px-1">
         {children}
