@@ -70,10 +70,6 @@ img[id^=cfb-token] {
   animation: shimmer 2.5s infinite;
 }
 
-img[id^=cfb-token]:hover {
-  transform: scale(1.05);
-}
-
 @keyframes shimmer {
   100% {
     mask-position: left

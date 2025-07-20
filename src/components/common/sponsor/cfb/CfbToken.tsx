@@ -26,15 +26,15 @@ const CfbToken: FC<{ customClass?: string }> = ({
     function handleResize() {
       const windowWidth = window.innerWidth;
       if (windowWidth >= 1024) {
-        setWidth(155);
+        setWidth(165);
       } else if (windowWidth >= 768) {
-        setWidth(140);
+        setWidth(155);
       } else if (windowWidth >= 560) {
-        setWidth(130);
+        setWidth(140);
       } else if (windowWidth >= 375) {
-        setWidth(120);
+        setWidth(140);
       } else {
-        setWidth(110);
+        setWidth(120);
       }
     }
     handleResize();
@@ -48,7 +48,11 @@ const CfbToken: FC<{ customClass?: string }> = ({
         id="cfb-token-container"
         className={`absolute flex items-center gap-0.5 md:gap-8 z-100 right-6 md:right-10 ${customClass}`}
       >
-        <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal" infinite={true}>
+        <ReactCardFlip
+          isFlipped={isFlipped}
+          flipDirection="horizontal"
+          infinite={true}
+        >
           <Image
             id="cfb-token"
             onClick={openCfbTokenSite}
