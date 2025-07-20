@@ -3,7 +3,6 @@ import {
   memo,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useState,
 } from "react";
@@ -110,7 +109,7 @@ const BlockChart: FC<BlockChartProps> = ({
     setXY({ x, y });
   }, [timeframe, blocks_found_chart]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isEmpty(xy)) {
       return;
     }

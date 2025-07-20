@@ -1,4 +1,4 @@
-import { type FC, memo, useEffect, useLayoutEffect, useState } from "react";
+import { type FC, memo, useEffect, useState } from "react";
 
 import isEmpty from "lodash/isEmpty";
 import Chart from "chart.js/auto";
@@ -33,7 +33,7 @@ const MaxHashratesChart: FC<MaxHashratesChartProps> = ({
     setXY({ x, y });
   }, [max_hashrates_chart]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isEmpty(xy)) {
       return;
     }

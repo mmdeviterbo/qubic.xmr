@@ -1,4 +1,4 @@
-import { type FC, memo, useLayoutEffect, useMemo, useState } from "react";
+import { type FC, memo, useEffect, useMemo, useState } from "react";
 
 import isNull from "lodash/isNull";
 import isEmpty from "lodash/isEmpty";
@@ -44,7 +44,7 @@ const DistributionChart: FC<DistributionChartProps> = ({
       : block_distributions.last100Blocks;
   }, [isThousanDistributionType, block_distributions]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (isNull(countByDistributionType)) {
       return;
     }
