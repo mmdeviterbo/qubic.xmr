@@ -193,7 +193,6 @@ const BlockChart: FC<BlockChartProps> = ({
             color: "white",
             formatter: (value, context) => {
               if (isBarChart) {
-                console.log(context);
                 const index = context.dataIndex,
                   total = context.dataset.data.length;
                 const totalUSDT = getTotalUSDT(index, timeframe, 1);
