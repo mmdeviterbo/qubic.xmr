@@ -37,7 +37,7 @@ const CfbPost: FC = () => {
           style={{
             backgroundColor: "white",
             zIndex: 100,
-            height: isLg ? "85vh" : "75vh",
+            height: isLg ? "85vh" : "70vh",
           }}
           twitterTweetEmbedProps={{
             tweetId: url.split("/").at(-1),
