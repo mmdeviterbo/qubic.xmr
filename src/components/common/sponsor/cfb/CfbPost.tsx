@@ -4,7 +4,7 @@ import { XEmbed } from "react-social-media-embed";
 import useBreakpoints from "@/hooks/useBreakpoints";
 import Modal from "../../Modal";
 
-const url = "https://x.com/c_f_b_token/status/1946852162010812632";
+const url = "https://x.com/c_f_b_token/status/1946837891478585463";
 
 const CfbPost: FC = () => {
   const { isLg } = useBreakpoints();
@@ -37,9 +37,13 @@ const CfbPost: FC = () => {
           style={{
             backgroundColor: "white",
             zIndex: 100,
-            height: isLg ? "85vh" : "70vh",
+            // height: isLg ? "85vh" : "70vh",
           }}
           twitterTweetEmbedProps={{
+            options: {
+              conversation: "none",
+              dnt: false,
+            },
             tweetId: url.split("/").at(-1),
             onLoad: () => setLoaded(true),
           }}
