@@ -26,13 +26,13 @@ const CfbToken: FC<{ customClass?: string }> = ({
     function handleResize() {
       const windowWidth = window.innerWidth;
       if (windowWidth >= 1024) {
-        setWidth(160);
+        setWidth(155);
       } else if (windowWidth >= 768) {
-        setWidth(150);
+        setWidth(145);
       } else if (windowWidth >= 560) {
-        setWidth(140);
-      } else if (windowWidth >= 375) {
         setWidth(135);
+      } else if (windowWidth >= 375) {
+        setWidth(130);
       } else {
         setWidth(120);
       }
